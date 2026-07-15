@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reht.dev/schemas/0.1/governance-state.schema.json",
+  "title": "REHT Governance State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["state_id", "mode", "observed_at", "valid_until"],
+  "properties": {
+    "state_id": {"type": "string", "minLength": 1},
+    "mode": {"type": "string", "enum": ["NORMAL", "SAFE", "HALT"]},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "valid_until": {"type": "string", "format": "date-time"},
+    "conditions": {"type": "array", "items": {"type": "string"}},
+    "human_approval_ref": {"type": "string"},
+    "previous_state_id": {"type": "string"}
+  }
+}
