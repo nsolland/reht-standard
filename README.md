@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/assets/brand.jpg" alt="reht brand profile" width="880" />
+<img src="docs/assets/brand.png" alt="reht brand profile" width="880" />
 
 # reht standard
 
