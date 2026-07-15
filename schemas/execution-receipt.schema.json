@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reht.dev/schemas/0.1/execution-receipt.schema.json",
+  "title": "REHT Execution Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec_version",
+    "receipt_id",
+    "action_id",
+    "timestamp",
+    "result",
+    "governance_state",
+    "evidence_refs"
+  ],
+  "properties": {
+    "spec_version": {"type": "string", "const": "0.1.0-draft"},
+    "receipt_id": {"type": "string", "minLength": 1},
+    "action_id": {"type": "string", "minLength": 1},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "result": {
+      "type": "string",
+      "enum": [
+        "ADMISSIBLE",
+        "INADMISSIBLE",
+        "INDETERMINATE",
+        "REQUIRES_STEP_UP",
+        "NO_LONGER_ADMISSIBLE"
+      ]
+    },
+    "reason_codes": {"type": "array", "items": {"type": "string"}},
+    "governance_state": {"type": "string", "enum": ["NORMAL", "SAFE", "HALT"]},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "policy_refs": {"type": "array", "items": {"type": "string"}},
+    "evaluator_refs": {"type": "array", "items": {"type": "string"}},
+    "previous_receipt_hash": {"type": "string"},
+    "receipt_hash": {"type": "string"}
+  }
+}

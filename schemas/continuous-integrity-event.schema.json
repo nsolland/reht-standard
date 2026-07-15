@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reht.dev/schemas/0.1/continuous-integrity-event.schema.json",
+  "title": "REHT Continuous Integrity Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event_id", "action_id", "event_type", "observed_at", "materiality"],
+  "properties": {
+    "event_id": {"type": "string", "minLength": 1},
+    "action_id": {"type": "string", "minLength": 1},
+    "event_type": {"type": "string", "enum": ["AUTHORITY_CHANGED", "POLICY_CHANGED", "EVIDENCE_EXPIRED", "EVIDENCE_INVALIDATED", "STATE_CHANGED", "CONTEXT_CHANGED", "HUMAN_OVERRIDE", "EXECUTION_DEVIATION"]},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "materiality": {"type": "string", "enum": ["NON_MATERIAL", "MATERIAL", "CRITICAL"]},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "previous_result_ref": {"type": "string"},
+    "details": {"type": "object", "additionalProperties": true}
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reht.dev/schemas/0.1/authority-context.schema.json",
+  "title": "REHT Authority Context",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["authority_id", "principal_id", "scope", "valid_from", "valid_until"],
+  "properties": {
+    "authority_id": {"type": "string", "minLength": 1},
+    "principal_id": {"type": "string", "minLength": 1},
+    "scope": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "constraints": {"type": "array", "items": {"type": "string"}},
+    "delegation_chain": {"type": "array", "items": {"type": "string"}},
+    "valid_from": {"type": "string", "format": "date-time"},
+    "valid_until": {"type": "string", "format": "date-time"},
+    "revocation_ref": {"type": "string"}
+  }
+}

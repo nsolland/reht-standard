@@ -1,0 +1,16 @@
+{
+  "spec_version": "0.1.0-draft",
+  "action_id": "act-2026-0001",
+  "timestamp": "2026-07-15T13:00:00Z",
+  "actor": {"id": "agent.procurement.01", "type": "AGENT"},
+  "action_type": "CREATE_PURCHASE_ORDER",
+  "target": "erp://purchase-orders",
+  "authority": {
+    "scope": ["purchase_order:create", "supplier:approved-only"],
+    "delegation_refs": ["delegation-2026-0042"]
+  },
+  "evidence_refs": ["evidence-package-0001"],
+  "policy_refs": ["procurement-policy@3.2"],
+  "governance_state": "NORMAL",
+  "context": {"amount": 4200, "currency": "NOK", "supplier_id": "supplier-17"}
+}
