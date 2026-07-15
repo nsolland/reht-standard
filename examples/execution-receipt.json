@@ -1,0 +1,14 @@
+{
+  "spec_version": "0.1.0-draft",
+  "receipt_id": "receipt-2026-0001",
+  "action_id": "act-2026-0001",
+  "timestamp": "2026-07-15T13:00:01Z",
+  "result": "ADMISSIBLE",
+  "reason_codes": ["AUTHORITY_VALID", "POLICY_SATISFIED", "EVIDENCE_CURRENT"],
+  "governance_state": "NORMAL",
+  "evidence_refs": ["evidence-package-0001"],
+  "policy_refs": ["procurement-policy@3.2"],
+  "evaluator_refs": ["VAIG", "REHT"],
+  "previous_receipt_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "receipt_hash": "sha256:4e1f57f9c4e0f486f4f2e42265b586ea14df66213172fa14715a4d4998ff7831"
+}
