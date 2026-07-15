@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reht.dev/schemas/0.1/admissibility-result.schema.json",
+  "title": "REHT Admissibility Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["result_id", "action_id", "evaluated_at", "outcome", "valid_until", "reason_codes"],
+  "properties": {
+    "result_id": {"type": "string", "minLength": 1},
+    "action_id": {"type": "string", "minLength": 1},
+    "evaluated_at": {"type": "string", "format": "date-time"},
+    "valid_until": {"type": "string", "format": "date-time"},
+    "outcome": {"type": "string", "enum": ["ADMISSIBLE", "INADMISSIBLE", "INDETERMINATE", "REQUIRES_STEP_UP", "NO_LONGER_ADMISSIBLE"]},
+    "reason_codes": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "authority_ref": {"type": "string"},
+    "evidence_package_ref": {"type": "string"},
+    "policy_context_ref": {"type": "string"},
+    "governance_state_ref": {"type": "string"},
+    "evaluator_refs": {"type": "array", "items": {"type": "string"}},
+    "step_up_requirements": {"type": "array", "items": {"type": "string"}}
+  }
+}
