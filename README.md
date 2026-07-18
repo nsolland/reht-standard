@@ -34,6 +34,12 @@ It is not a model. It is not an agent. It is not a policy engine. It is the inte
 
 The standard is model agnostic, vendor neutral and implementation independent.
 
+It is also explicitly anti-lock-in:
+
+> **VALO and reht must not create agent, model or infrastructure lock-in. Policies, authority definitions, workflows, receipts and learned methods must remain portable and independently verifiable.**
+
+Models, agents, tools, runtimes and infrastructure providers may change. The governed meaning of authority, evidence, policy, workflow state and execution controls must survive those substitutions.
+
 ## 2. The missing layer
 
 Modern systems already answer two questions well:
@@ -64,6 +70,23 @@ Receipt
 ```
 
 reht occupies the position immediately before the execution boundary. Everything upstream is reasoning about the world. Everything downstream is an accountable effect on the world. The admissibility decision is the governed transition between the two.
+
+### 3.1 Portability and neutral infrastructure
+
+A conforming architecture should preserve the governed contracts when any surrounding component is replaced.
+
+This includes migration between:
+
+- foundation models and model providers;
+- internal and external agents;
+- MCP, A2A and future interoperability environments;
+- local, edge, sovereign and cloud infrastructure;
+- workflow engines and tool ecosystems;
+- storage, memory and context implementations.
+
+Portability does not mean that all implementations must disclose proprietary evaluation logic. It means that the inputs, authority definitions, policy references, workflow state, evidence bindings, decisions and receipts required to reconstruct and independently verify the governed action must not be trapped inside one vendor-specific runtime.
+
+**Models and agents may change. Authority, evidence and execution controls must remain portable.**
 
 ## 4. Public contracts
 
