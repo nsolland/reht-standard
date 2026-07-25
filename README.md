@@ -24,6 +24,15 @@
 
 ---
 
+## 0. Canonical contract reference (issue #991)
+
+**reht-standard is canonical ONLY for REHT-specific clearance and authorization standards.**
+Runtime execution-governance contracts (action envelope, authority/policy/evidence context,
+governance state, continuous integrity event, execution receipt) are defined by
+**RACS/spec** and MUST be referenced, not duplicated. See [CANONICAL.md](CANONICAL.md) for the
+mapping and the rules (RACS-JCS-1 canonicalization, SHA-256 digests). `admissibility-result`
+remains a REHT-specific output with no RACS equivalent.
+
 ## 1. Overview
 
 reht is a public standard that defines the language and contracts used to decide whether a specific action, proposed by an AI system or any autonomous process, is admissible to execute at a specific moment under a specific governed state.

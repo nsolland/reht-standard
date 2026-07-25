@@ -4,15 +4,61 @@
   "title": "REHT Continuous Integrity Event",
   "type": "object",
   "additionalProperties": false,
-  "required": ["event_id", "action_id", "event_type", "observed_at", "materiality"],
+  "required": [
+    "event_id",
+    "action_id",
+    "event_type",
+    "observed_at",
+    "materiality"
+  ],
   "properties": {
-    "event_id": {"type": "string", "minLength": 1},
-    "action_id": {"type": "string", "minLength": 1},
-    "event_type": {"type": "string", "enum": ["AUTHORITY_CHANGED", "POLICY_CHANGED", "EVIDENCE_EXPIRED", "EVIDENCE_INVALIDATED", "STATE_CHANGED", "CONTEXT_CHANGED", "HUMAN_OVERRIDE", "EXECUTION_DEVIATION"]},
-    "observed_at": {"type": "string", "format": "date-time"},
-    "materiality": {"type": "string", "enum": ["NON_MATERIAL", "MATERIAL", "CRITICAL"]},
-    "evidence_refs": {"type": "array", "items": {"type": "string"}},
-    "previous_result_ref": {"type": "string"},
-    "details": {"type": "object", "additionalProperties": true}
-  }
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "action_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "AUTHORITY_CHANGED",
+        "POLICY_CHANGED",
+        "EVIDENCE_EXPIRED",
+        "EVIDENCE_INVALIDATED",
+        "STATE_CHANGED",
+        "CONTEXT_CHANGED",
+        "HUMAN_OVERRIDE",
+        "EXECUTION_DEVIATION"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "materiality": {
+      "type": "string",
+      "enum": [
+        "NON_MATERIAL",
+        "MATERIAL",
+        "CRITICAL"
+      ]
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "previous_result_ref": {
+      "type": "string"
+    },
+    "details": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "racs_canonical": "https://racs.dev/schema/0.2/continuous-integrity-event-v0.2.schema.json",
+  "x-canonical-note": "REHT-specific profile. Runtime wire format, RACS-JCS-1 canonicalization and SHA-256 digest semantics are defined by the referenced RACS contract (issue #991)."
 }

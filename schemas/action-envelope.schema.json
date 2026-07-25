@@ -17,32 +17,96 @@
     "governance_state"
   ],
   "properties": {
-    "spec_version": {"type": "string", "const": "0.1.0-draft"},
-    "action_id": {"type": "string", "minLength": 1},
-    "timestamp": {"type": "string", "format": "date-time"},
+    "spec_version": {
+      "type": "string",
+      "const": "0.1.0-draft"
+    },
+    "action_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
     "actor": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "type"],
+      "required": [
+        "id",
+        "type"
+      ],
       "properties": {
-        "id": {"type": "string", "minLength": 1},
-        "type": {"type": "string", "enum": ["HUMAN", "AGENT", "SERVICE", "SYSTEM"]}
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "HUMAN",
+            "AGENT",
+            "SERVICE",
+            "SYSTEM"
+          ]
+        }
       }
     },
-    "action_type": {"type": "string", "minLength": 1},
-    "target": {"type": "string", "minLength": 1},
+    "action_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target": {
+      "type": "string",
+      "minLength": 1
+    },
     "authority": {
       "type": "object",
       "additionalProperties": true,
-      "required": ["scope"],
+      "required": [
+        "scope"
+      ],
       "properties": {
-        "scope": {"type": "array", "items": {"type": "string"}, "minItems": 1},
-        "delegation_refs": {"type": "array", "items": {"type": "string"}}
+        "scope": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "delegation_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
-    "evidence_refs": {"type": "array", "items": {"type": "string"}},
-    "policy_refs": {"type": "array", "items": {"type": "string"}},
-    "governance_state": {"type": "string", "enum": ["NORMAL", "SAFE", "HALT"]},
-    "context": {"type": "object", "additionalProperties": true}
-  }
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "policy_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "governance_state": {
+      "type": "string",
+      "enum": [
+        "NORMAL",
+        "SAFE",
+        "HALT"
+      ]
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "racs_canonical": "https://racs.dev/schema/0.2/action-envelope.schema.json",
+  "x-canonical-note": "REHT-specific profile. Runtime wire format, RACS-JCS-1 canonicalization and SHA-256 digest semantics are defined by the referenced RACS contract (issue #991)."
 }
