@@ -1,0 +1,21 @@
+{
+  "schema_version": "ExecutionEnvelopeV1",
+  "action_ref": "act-20260726-0001",
+  "clearance_id": "clr-20260726-0001",
+  "clearance_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "payload_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "principal_id": "human:njaal",
+  "executor_id": "agent:hermes:worker-01",
+  "tool_id": "connector:example",
+  "resource_scope": "tenant:example/resource:test",
+  "purpose_ref": "mission:p0-whole-system-security",
+  "policy_version": "2026-07-26",
+  "authority_snapshot_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "issued_at": "2026-07-26T04:30:00Z",
+  "expires_at": "2026-07-26T04:45:00Z",
+  "nonce": "nonce-20260726-0001",
+  "constraints": {
+    "one_time": true,
+    "fail_closed": true
+  }
+}
