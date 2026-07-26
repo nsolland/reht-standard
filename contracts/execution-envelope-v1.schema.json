@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reht.org/schemas/execution-envelope-v1.schema.json",
+  "title": "ExecutionEnvelopeV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "action_ref",
+    "clearance_id",
+    "clearance_digest",
+    "payload_digest",
+    "principal_id",
+    "executor_id",
+    "tool_id",
+    "resource_scope",
+    "purpose_ref",
+    "issued_at",
+    "expires_at",
+    "nonce"
+  ],
+  "properties": {
+    "schema_version": {"const": "ExecutionEnvelopeV1"},
+    "action_ref": {"type": "string", "minLength": 1},
+    "clearance_id": {"type": "string", "minLength": 1},
+    "clearance_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "payload_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "principal_id": {"type": "string", "minLength": 1},
+    "executor_id": {"type": "string", "minLength": 1},
+    "tool_id": {"type": "string", "minLength": 1},
+    "resource_scope": {"type": "string", "minLength": 1},
+    "purpose_ref": {"type": "string", "minLength": 1},
+    "policy_version": {"type": "string"},
+    "authority_snapshot_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "nonce": {"type": "string", "minLength": 16},
+    "constraints": {"type": "object", "additionalProperties": true}
+  }
+}
