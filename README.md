@@ -97,6 +97,12 @@ Portability does not mean that all implementations must disclose proprietary eva
 
 **Models and agents may change. Authority, evidence and execution controls must remain portable.**
 
+### 3.2 Provenance and expectation integrity
+
+AI-content and origin detectors may contribute evidence, but they do not establish authorship, intent, deception, accountable judgment or execution authority. Where disclosure or human control matters, reht binds production provenance, semantic-integrity evidence and human approval attestations to the admissibility evaluation and receipt.
+
+See [`docs/CLAUDEFISHING_PROVENANCE.md`](docs/CLAUDEFISHING_PROVENANCE.md) for the provider-neutral guidance.
+
 ## 4. Public contracts
 
 The standard defines a small set of stable, versioned contracts. Each has a JSON Schema in [`schemas/`](schemas/) and a normative description in [`SPECIFICATION.md`](SPECIFICATION.md).
@@ -138,6 +144,7 @@ An admissibility evaluation returns exactly one outcome:
 - Read the specification: [`SPECIFICATION.md`](SPECIFICATION.md)
 - Review the execution boundary: [`docs/BOUNDARIES.md`](docs/BOUNDARIES.md)
 - Read the threat model: [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md)
+- Review provenance and expectation integrity: [`docs/CLAUDEFISHING_PROVENANCE.md`](docs/CLAUDEFISHING_PROVENANCE.md)
 - Inspect the schemas: [`schemas/`](schemas/)
 - Explore reference payloads: [`examples/`](examples/)
 - Check conformance requirements: [`CONFORMANCE.md`](CONFORMANCE.md)
@@ -146,20 +153,21 @@ An admissibility evaluation returns exactly one outcome:
 
 ```
 .
-├── SPECIFICATION.md         Normative specification
-├── CONFORMANCE.md           Conformance requirements
-├── TRADEMARKS.md            Trademark and naming policy
-├── CHANGELOG.md             Versioned changes
-├── CONTRIBUTING.md          Contribution process
-├── SECURITY.md              Security disclosure policy
-├── NOTICE                   Attribution notices
-├── LICENSE                  Apache License 2.0
+├── SPECIFICATION.md                  Normative specification
+├── CONFORMANCE.md                    Conformance requirements
+├── TRADEMARKS.md                     Trademark and naming policy
+├── CHANGELOG.md                      Versioned changes
+├── CONTRIBUTING.md                   Contribution process
+├── SECURITY.md                       Security disclosure policy
+├── NOTICE                            Attribution notices
+├── LICENSE                           Apache License 2.0
 ├── docs/
-│   ├── BOUNDARIES.md        Execution boundary definition
-│   ├── THREAT_MODEL.md      Threat model
-│   └── VERSIONING.md        Versioning policy
-├── schemas/                 JSON Schema 2020-12 contracts
-└── examples/                Reference payloads
+│   ├── BOUNDARIES.md                 Execution boundary definition
+│   ├── CLAUDEFISHING_PROVENANCE.md   Provenance and expectation-integrity guidance
+│   ├── THREAT_MODEL.md               Threat model
+│   └── VERSIONING.md                 Versioning policy
+├── schemas/                          JSON Schema 2020-12 contracts
+└── examples/                         Reference payloads
 ```
 
 ## 9. Conformance
