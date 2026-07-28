@@ -1,0 +1,27 @@
+{
+  "policy_set_id": "policy-set/eu-ai-act",
+  "version": "2026.07.27",
+  "effective_at": "2026-08-02T00:00:00Z",
+  "jurisdiction": ["EU"],
+  "regulatory_profiles": [
+    {
+      "profile_id": "EU_AI_ACT_OMNIBUS_2026",
+      "legal_act_ref": "Regulation (EU) 2026/1744",
+      "version": "2026.07.27",
+      "jurisdiction": "EU",
+      "effective_at": "2026-08-02T00:00:00Z",
+      "classification": "not_applicable",
+      "active_obligation_ids": ["article_50_transparency"],
+      "evidence_refs": ["receipt:article50:disclosure:001"],
+      "accountable_owner_ref": "role:legal-risk-owner",
+      "profile_digest": "sha256:9a49a9d387fb70cdf4efcb8f5ea534db72ad3da409d0e358f8f30a19fdc7f58a"
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "article-50-evidence-required",
+      "effect": "REQUIRE",
+      "condition_ref": "evidence.article_50_disclosure_present"
+    }
+  ]
+}

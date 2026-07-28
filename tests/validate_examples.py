@@ -10,6 +10,10 @@ ROOT = Path(__file__).resolve().parents[1]
 CASES = [
     ("schemas/action-envelope.schema.json", "examples/admissible-action.json"),
     ("schemas/execution-receipt.schema.json", "examples/execution-receipt.json"),
+    (
+        "schemas/policy-context.schema.json",
+        "examples/eu-ai-act-omnibus-policy-context.json",
+    ),
 ]
 
 
