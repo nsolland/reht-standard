@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Interactive ACE and REHT shipping concept demo showing how scarce human judgment governs vessel and cargo release." />
+  <title>Shipping Operations — ACE + REHT</title>
+  <style>
+    :root{--bg:#06131b;--panel:#0c202b;--panel2:#102b38;--line:#244352;--text:#eef7f8;--muted:#9ab2ba;--cyan:#79d7dc;--ok:#8ce0b5;--warn:#f0c872;--danger:#ff9a91}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 75% 0,rgba(121,215,220,.12),transparent 32rem),var(--bg);color:var(--text);font:15px/1.5 Inter,system-ui,-apple-system,sans-serif}.shell{width:min(1180px,calc(100% - 32px));margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0}.brand{color:inherit;text-decoration:none;font-weight:850;letter-spacing:.04em}.back{color:var(--muted);text-decoration:none}.hero{padding:50px 0 30px;max-width:960px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:800;color:var(--cyan)}h1{font-size:clamp(42px,7vw,78px);line-height:.96;letter-spacing:-.055em;margin:14px 0 18px}.hero p{font-size:clamp(18px,2vw,23px);color:var(--muted);max-width:850px;margin:0}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0}.metric,.panel{background:rgba(12,32,43,.95);border:1px solid var(--line);border-radius:17px}.metric{padding:18px}.metric span{display:block;color:var(--muted);font-size:12px}.metric strong{display:block;font-size:25px;margin-top:6px;letter-spacing:-.025em}.metric small{display:block;color:var(--muted);margin-top:4px}.demo{display:grid;grid-template-columns:minmax(310px,.82fr) minmax(0,1.35fr);gap:18px;align-items:start}.controls,.result{padding:22px}.controls{position:sticky;top:16px}.panel h2{margin:0 0 6px}.intro{margin:0 0 18px;color:var(--muted)}.field{margin-top:18px}.field-head{display:flex;justify-content:space-between;gap:12px;font-weight:700}.field-head span:last-child{color:var(--cyan)}input[type=range]{width:100%;accent-color:var(--cyan)}.scale{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}.switches{margin-top:20px;border-bottom:1px solid var(--line)}.switch{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-top:1px solid var(--line)}.switch strong,.switch small{display:block}.switch small{color:var(--muted);margin-top:2px}.switch input{width:20px;height:20px;accent-color:var(--cyan)}button{font:inherit}.run{width:100%;border:0;border-radius:12px;background:var(--cyan);color:#06131b;padding:14px;font-weight:850;margin-top:20px;cursor:pointer}.decision-head{display:flex;justify-content:space-between;gap:16px;align-items:start}.decision{font-size:clamp(42px,7vw,72px);line-height:1;letter-spacing:-.05em;margin:9px 0}.badge{border:1px solid currentColor;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:850}.allow{color:var(--ok)}.step_up,.defer,.modify{color:var(--warn)}.deny,.halt{color:var(--danger)}.reason{font-size:19px;border-left:4px solid var(--cyan);padding-left:16px}.signal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0}.signal{background:var(--panel2);border:1px solid var(--line);border-radius:13px;padding:14px}.signal span{display:block;color:var(--muted);font-size:11px}.signal strong{display:block;margin-top:7px}.attention{margin-top:22px}.item{display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;padding:13px 0;border-top:1px solid var(--line)}.rank{width:29px;height:29px;border-radius:50%;display:grid;place-items:center;background:var(--panel2);color:var(--cyan);font-weight:850}.item span{display:block;color:var(--muted);font-size:13px}.item b{font-size:13px}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:22px 0}.step{border:1px solid var(--line);background:var(--panel2);padding:14px;border-radius:12px}.step span{color:var(--muted);font-size:11px}.step strong{display:block;margin-top:7px}.receipt{background:#03090d;border:1px solid var(--line);border-radius:13px;padding:16px;font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;overflow-wrap:anywhere;color:#c9d9dd}.receipt strong{color:var(--text)}.receipt .muted{color:#7f969e}.thesis{margin:44px 0 28px;padding:28px;background:var(--panel);border:1px solid var(--line);border-radius:17px;font-size:clamp(25px,4vw,44px);line-height:1.08;letter-spacing:-.035em}.disclaimer{color:var(--muted);font-size:13px;padding:20px 0 40px}@media(max-width:900px){.metrics{grid-template-columns:repeat(2,1fr)}.demo{grid-template-columns:1fr}.controls{position:static}.flow{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.metrics,.flow,.signal-grid{grid-template-columns:1fr}.controls,.result{padding:17px}.item{grid-template-columns:34px 1fr}.item b{grid-column:2}}
+  </style>
+</head>
+<body>
+  <header class="shell top"><a class="brand" href="../">ACE + REHT</a><a class="back" href="../">Back to demos</a></header>
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow">Shipping operations</div>
+      <h1>AI can optimize the voyage. It cannot legitimately release the vessel.</h1>
+      <p>AI screens thousands of operational signals. ACE places qualified human attention on the few uncertainties with physical, financial or legal consequence. REHT binds that judgment to the final dispatch action.</p>
+    </section>
+
+    <section class="metrics" aria-label="Economic metrics">
+      <div class="metric"><span>Operational signals screened</span><strong>16,420</strong><small>Weather, port, cargo and route data</small></div>
+      <div class="metric"><span>Qualified human attention</span><strong id="aceMinutesMetric">18 min</strong><small id="aceCostMetric">2 160 kr estimated</small></div>
+      <div class="metric"><span>Cargo value governed</span><strong>84 000 000 kr</strong><small>Physical and financial exposure</small></div>
+      <div class="metric"><span>Value governed per ACE hour</span><strong id="leverageMetric">280 000 000 kr</strong><small>Illustrative leverage</small></div>
+    </section>
+
+    <section class="demo" aria-label="Interactive shipping demo">
+      <aside class="panel controls">
+        <h2>Release MV Northstar</h2>
+        <p class="intro">Change the live execution context before the vessel and cargo are released.</p>
+
+        <div class="field">
+          <div class="field-head"><label for="aceMinutes">ACE investment</label><span id="aceMinutesValue">18 minutes</span></div>
+          <input id="aceMinutes" type="range" min="3" max="60" value="18" />
+          <div class="scale"><span>Automated glance</span><span>Qualified review</span></div>
+        </div>
+
+        <div class="field">
+          <div class="field-head"><label for="weatherRisk">Weather risk</label><span id="weatherRiskValue">32 / 100</span></div>
+          <input id="weatherRisk" type="range" min="0" max="100" value="32" />
+          <div class="scale"><span>Normal</span><span>Severe</span></div>
+        </div>
+
+        <div class="switches">
+          <label class="switch" for="cargoDocs"><span><strong>Dangerous-goods documents valid</strong><small>Manifest, declaration and stowage plan agree.</small></span><input id="cargoDocs" type="checkbox" checked /></label>
+          <label class="switch" for="masterAuthority"><span><strong>Master authority is current</strong><small>The named human holds release authority for this voyage.</small></span><input id="masterAuthority" type="checkbox" checked /></label>
+          <label class="switch" for="portOpen"><span><strong>Destination port remains open</strong><small>Berth and handling capability are confirmed.</small></span><input id="portOpen" type="checkbox" checked /></label>
+          <label class="switch" for="routeChanged"><span><strong>Route changed after review</strong><small>The optimized route no longer matches the approved consequence.</small></span><input id="routeChanged" type="checkbox" /></label>
+          <label class="switch" for="emergencyHalt"><span><strong>Fleet safety halt is active</strong><small>Immediate threat stops all connected departures.</small></span><input id="emergencyHalt" type="checkbox" /></label>
+        </div>
+        <button id="run" class="run" type="button">Evaluate vessel release</button>
+      </aside>
+
+      <section class="panel result" aria-live="polite">
+        <div class="decision-head"><div><div class="eyebrow">REHT execution decision</div><div id="decision" class="decision allow">ALLOW</div></div><span id="badge" class="badge allow">RELEASE AUTHORIZED</span></div>
+        <p id="reason" class="reason">Qualified human judgment, current master authority and live operational context are bound to the same voyage release.</p>
+
+        <div class="signal-grid">
+          <div class="signal"><span>Delay cost</span><strong>320 000 kr / day</strong></div>
+          <div class="signal"><span>AI route saving</span><strong>185 000 kr</strong></div>
+          <div class="signal"><span>Consequence class</span><strong>Physical + financial</strong></div>
+        </div>
+
+        <div class="attention">
+          <h2>ACE priority queue</h2>
+          <p class="intro">Human judgment is not spent rereading 16,420 signals. It is invested in the four questions that can change the voyage consequence.</p>
+          <div class="item"><span class="rank">1</span><div><strong>Does the weather envelope still permit the planned route?</strong><span>Safety judgment · current context</span></div><b>7 min</b></div>
+          <div class="item"><span class="rank">2</span><div><strong>Are dangerous-goods declarations complete and consistent?</strong><span>Legal and physical consequence</span></div><b>5 min</b></div>
+          <div class="item"><span class="rank">3</span><div><strong>Does the master hold authority for this exact departure?</strong><span>Named human authority</span></div><b>3 min</b></div>
+          <div class="item"><span class="rank">4</span><div><strong>Did route or port context change after approval?</strong><span>Execution-context continuity</span></div><b>3 min</b></div>
+        </div>
+
+        <div class="flow">
+          <div class="step"><span>01 · Production</span><strong>16,420 signals screened</strong></div>
+          <div class="step"><span>02 · Allocation</span><strong id="flowAce">18 ACE minutes</strong></div>
+          <div class="step"><span>03 · Authority</span><strong>Master mandate bound</strong></div>
+          <div class="step"><span>04 · Execution</span><strong id="flowDecision">Vessel released</strong></div>
+        </div>
+
+        <div id="receipt" class="receipt">
+          <strong>illustrative_execution_receipt_v1</strong><br />
+          decision: ALLOW<br />
+          action: RELEASE_VESSEL_AND_CARGO<br />
+          cargo_value_nok: 84000000<br />
+          ace_minutes: 18<br />
+          authority_binding: CURRENT<br />
+          route_context: MATCH<br />
+          operational_evidence: CURRENT<br />
+          <span class="muted">Unsigned browser output. Not production authorization or maritime clearance.</span>
+        </div>
+      </section>
+    </section>
+
+    <section class="thesis">ACE protects scarce human judgment from machine-scale noise. REHT protects the enterprise from machine-scale execution without legitimate authority.</section>
+    <p class="disclaimer">Concept demo only. It does not release a vessel, cargo or port instruction and does not replace the master, company procedures, maritime regulation or statutory clearance. All names and economics are illustrative.</p>
+  </main>
+
+  <script>
+    const q=s=>document.querySelector(s);
+    const fmt=n=>new Intl.NumberFormat('nb-NO',{maximumFractionDigits:0}).format(n)+' kr';
+    const inputs=['#aceMinutes','#weatherRisk','#cargoDocs','#masterAuthority','#portOpen','#routeChanged','#emergencyHalt'].map(q);
+    function evaluate(){
+      const minutes=Number(q('#aceMinutes').value),risk=Number(q('#weatherRisk').value),cost=minutes*120,leverage=84000000/(minutes/60);
+      q('#aceMinutesValue').textContent=minutes+' minutes';q('#weatherRiskValue').textContent=risk+' / 100';
+      q('#aceMinutesMetric').textContent=minutes+' min';q('#aceCostMetric').textContent=fmt(cost)+' estimated';
+      q('#leverageMetric').textContent=fmt(leverage);q('#flowAce').textContent=minutes+' ACE minutes';
+
+      let decision='ALLOW',badge='RELEASE AUTHORIZED',reason='Qualified human judgment, current master authority and live operational context are bound to the same voyage release.',flow='Vessel released';
+      if(q('#emergencyHalt').checked || risk>=90){decision='HALT';badge='FLEET STOP';reason='An immediate safety condition overrides route optimization and local release authority.';flow='Departure halted'}
+      else if(!q('#cargoDocs').checked){decision='DENY';badge='DOCUMENT FAILURE';reason='The cargo consequence cannot be authorized because dangerous-goods evidence is incomplete or inconsistent.';flow='Release denied'}
+      else if(!q('#masterAuthority').checked){decision='DENY';badge='NO AUTHORITY';reason='The operational recommendation may be valid, but no current named authority is bound to the release.';flow='Release denied'}
+      else if(!q('#portOpen').checked || q('#routeChanged').checked || risk>=65){decision='STEP_UP';badge='REASSESSMENT';reason='The live route or destination context differs materially from the consequence that received human judgment.';flow='Release held'}
+      else if(minutes<12 || risk>=45){decision='STEP_UP';badge='ACE REQUIRED';reason='The consequence remains within technical limits, but qualified human evaluation is insufficient for the current risk envelope.';flow='Release held'}
+
+      const cls=decision.toLowerCase();
+      q('#decision').textContent=decision;q('#decision').className='decision '+cls;
+      q('#badge').textContent=badge;q('#badge').className='badge '+cls;
+      q('#reason').textContent=reason;q('#flowDecision').textContent=flow;
+      q('#receipt').innerHTML='<strong>illustrative_execution_receipt_v1</strong><br>decision: '+decision+'<br>action: RELEASE_VESSEL_AND_CARGO<br>cargo_value_nok: 84000000<br>ace_minutes: '+minutes+'<br>authority_binding: '+(q('#masterAuthority').checked?'CURRENT':'INVALID')+'<br>route_context: '+(q('#routeChanged').checked||!q('#portOpen').checked?'CHANGED':'MATCH')+'<br>operational_evidence: '+(q('#cargoDocs').checked?'CURRENT':'INCOMPLETE')+'<br><span class="muted">Unsigned browser output. Not production authorization or maritime clearance.</span>';
+    }
+    inputs.forEach(el=>el.addEventListener('input',evaluate));q('#run').addEventListener('click',evaluate);evaluate();
+  </script>
+</body>
+</html>
