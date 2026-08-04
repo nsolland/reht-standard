@@ -16,6 +16,7 @@ REHT defines a bounded public contract for evaluating whether a proposed AI-medi
 6. The standard defines contracts, not proprietary evaluation logic.
 7. A conforming implementation must not make the governed action dependent on one model, agent, runtime, protocol or infrastructure provider.
 8. Policies, authority definitions, evidence references, workflow state, receipts and persisted learned methods must remain portable and independently verifiable where the implementation stores or exchanges them.
+9. Probabilistic content-origin or AI-influence detection is evidence, never execution authority; accountable intent, judgment and approval must be established through governed provenance, authority and attestations.
 
 ## 3. Core objects
 
@@ -44,6 +45,10 @@ Represents who or what proposes the action, the delegation chain and the bounded
 
 References evidence used during evaluation. Evidence should be attributable, time-bounded and integrity-verifiable where possible.
 
+Where an action depends materially on authorship, disclosure, semantic integrity or accountable human control, the Evidence Package should reference available production provenance. This may include original-input digests, transformation history, model and tool identifiers, material human review, disclosure assertions, semantic-integrity checks, approval attestations and detector observations.
+
+Content-origin and AI-influence detector outputs must retain their provider, version, evaluated artifact binding, score or confidence, threshold, timestamp and known limitations where available. A detector label alone does not establish authorship, deception, intent or accountability.
+
 ### 3.4 Policy Context
 
 Identifies the policies, rules or controls applicable to the proposed action.
@@ -70,6 +75,8 @@ Reference outcomes:
 
 These outcomes are semantic results, not execution commands.
 
+When provenance required by applicable policy is materially missing, disputed or inconsistent, an implementation should return `REQUIRES_STEP_UP` when a legitimate principal can resolve the uncertainty, or `INDETERMINATE` when the evidence remains insufficient. A detector result must not by itself produce `INADMISSIBLE` unless an applicable policy independently makes that evidence dispositive and its evidence threshold is satisfied.
+
 ### 3.7 Continuous Integrity Event
 
 Records a material event that may affect the continuing validity of an admissibility result.
@@ -77,6 +84,8 @@ Records a material event that may affect the continuing validity of an admissibi
 ### 3.8 Execution Receipt
 
 Records the evaluated action, result, relevant evidence references, time, state and integrity data.
+
+Where production provenance or semantic representation integrity materially affected admissibility, the receipt should bind the relevant provenance references, approval attestations and detector observations used in the result.
 
 ## 4. Portability and anti-lock-in
 
@@ -128,6 +137,8 @@ A conforming implementation:
 - returns one defined admissibility outcome;
 - does not represent an indeterminate result as admissible;
 - creates a receipt for terminal decisions;
+- treats content-origin and AI-influence detection as evidence rather than authorization authority;
+- preserves production provenance and semantic-integrity references when they materially affect admissibility;
 - supports documented export of governed contracts and receipt chains in a provider-independent representation;
 - preserves governed meaning when models, agents, protocols or infrastructure are substituted;
 - does not technically or contractually block migration of portable governed records;
@@ -139,6 +150,7 @@ This specification does not define:
 
 - model architecture;
 - agent reasoning;
+- a universal AI-content detector;
 - moral truth;
 - organizational legitimacy;
 - domain policy content;

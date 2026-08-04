@@ -9,7 +9,10 @@ Added:
 - explicit anti-lock-in and neutral-infrastructure principle;
 - normative portability requirements for authority, policy, evidence, workflow state, receipts and persisted learned methods;
 - independent-verification requirements across model, agent, protocol and infrastructure substitution;
-- clarification that A2A, MCP and provider-specific objects cannot replace REHT authority, evidence, policy or admissibility contracts.
+- clarification that A2A, MCP and provider-specific objects cannot replace REHT authority, evidence, policy or admissibility contracts;
+- provider-neutral guidance for Claudefishing, production provenance and expectation integrity;
+- normative separation between probabilistic AI-content detection and execution authority;
+- conformance requirements for preserving material production provenance, semantic-integrity references and accountable human approval attestations.
 
 Regulatory context:
 
