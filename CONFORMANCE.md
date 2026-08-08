@@ -1,6 +1,6 @@
 # REHT Conformance
 
-Version: 0.1.0-draft
+Version: 0.2.0-draft
 
 A conforming implementation MUST:
 
@@ -16,6 +16,14 @@ A conforming implementation MUST:
 10. Treat content-origin and AI-influence detector outputs as evidence rather than authorization authority.
 11. Preserve available production-provenance and semantic-integrity references when they materially affect admissibility.
 12. Bind material human approval attestations and accountable-principal references when policy requires human control over meaning or consequence.
+13. Treat prior authorization or admissibility as non-durable and re-establish execution validity immediately before consequence.
+14. Bind an evaluated action to a deterministic execution envelope or equivalent interoperable binding when evaluation and execution are separated.
+15. Independently re-derive the execution-relevant action, authority and governed state at the execution boundary.
+16. Fail closed when required causal continuity cannot be proven.
+17. Reject material state drift, stale authority and replay according to the applicable execution-continuity profile.
+18. Treat broken required receipt continuity as non-executable; missing continuity MUST NOT be inferred as continuity.
+19. Keep explicit scope constraints independently enforceable, including temporal scope constraints where policy requires them.
+20. Treat wall-clock timestamps as audit, forensic, correlation or policy inputs; wall-clock validity alone MUST NOT establish that a prior result remains executable across independently owned systems.
 
 A conforming producer MUST NOT:
 
@@ -23,9 +31,24 @@ A conforming producer MUST NOT:
 - convert uncertainty into admissibility;
 - infer authorship, deception, intent or accountability solely from a detector label;
 - produce `INADMISSIBLE` solely from a detector result unless an applicable policy independently makes that evidence dispositive and its evidence threshold is satisfied;
-- reuse an expired or invalidated result as current;
+- reuse an invalidated result as current;
+- represent an unexpired timestamp as sufficient proof of execution validity;
 - alter evidence references after receipt creation without creating a new receipt;
-- claim REHT compatibility while using incompatible outcome semantics.
+- claim REHT compatibility while using incompatible outcome semantics;
+- claim conformance when negative refusal cases are not enforced at the execution boundary.
+
+## Causal execution conformance vector
+
+The first required interoperability vector consists of one positive control and five negative cases:
+
+1. Positive control — matching independently re-derived envelope and valid continuity permits REHT evaluation to continue; it does not force `ADMISSIBLE`.
+2. Drift — material execution-state mismatch is non-executable.
+3. Expired scope — invalid authority/delegation/purpose/scope is non-executable.
+4. Broken receipt continuity — unproven required lineage is non-executable.
+5. Stale authority — causally intervening revocation or authority mutation is non-executable.
+6. Replay — previously consumed single-use binding or causal position is non-executable.
+
+See [`docs/CAUSAL_EXECUTION_CONTINUITY.md`](docs/CAUSAL_EXECUTION_CONTINUITY.md).
 
 ## Conformance levels
 
@@ -35,14 +58,14 @@ Objects validate against the published schemas.
 
 ### Level 2 — Semantic
 
-Outcome and state semantics match the specification.
+Outcome, state and execution-validity semantics match the specification.
 
 ### Level 3 — Integrity
 
-Receipts, hashes, timestamps, provenance references and continuous-integrity transitions are preserved and testable.
+Receipts, hashes, timestamps, provenance references, causal-binding references and continuous-integrity transitions are preserved and testable.
 
 ### Level 4 — Operational
 
-The implementation demonstrates end-to-end enforcement at an execution boundary.
+The implementation demonstrates end-to-end enforcement at an execution boundary, including the required negative causal-continuity cases.
 
-Only Levels 1–3 are defined by this repository. Level 4 depends on an implementation and is not certified here.
+Only Levels 1–3 are defined as static public conformance surfaces by this repository. Level 4 depends on an implementation and is not certified here.
