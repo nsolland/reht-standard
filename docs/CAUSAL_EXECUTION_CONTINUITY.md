@@ -1,0 +1,146 @@
+# Causal Execution Continuity
+
+Status: normative draft for REHT Standard v0.2
+
+## 1. Canonical invariant
+
+Authorization is not a durable truth about an action.
+
+A prior admissibility or authorization result MUST NOT remain executable merely because a wall-clock validity interval has not elapsed.
+
+At the execution boundary, the executing side MUST independently re-establish that the action, authority and execution-relevant governed state are causally continuous with the state that was evaluated.
+
+The operative question is:
+
+> Is this still the thing that was approved?
+
+If continuity cannot be proven, execution MUST fail closed.
+
+## 2. Causal ordering, not shared-clock validity
+
+Independently owned systems MUST NOT require synchronized wall-clock time as the authoritative primitive for execution validity.
+
+A timestamp such as `valid_until` MAY express policy scope, forensic context, retention, operator expectations or external legal/contractual time constraints. It MUST NOT by itself establish that a prior admissibility remains executable.
+
+Execution continuity is determined from causal ordering: what can be proven to have preceded, followed or intervened between evaluation and execution.
+
+Wall-clock timestamps MAY remain in receipts and evidence for correlation, audit and forensics.
+
+## 3. Execution binding
+
+A conforming implementation MUST bind an admissibility result to a deterministic execution envelope.
+
+The binding identifier is referred to by this profile as `execution_envelope_hash`.
+
+The execution envelope MUST be sufficient to bind, where relevant:
+
+- the normalized action and material parameters;
+- actor or principal identity;
+- target or resource identity;
+- authority and delegation references;
+- scope and purpose constraints;
+- evidence and governed-state references material to the result;
+- causal position or lineage anchor;
+- replay or idempotency semantics;
+- canonicalization and profile version.
+
+The runtime wire representation and canonical digest semantics remain owned by the canonical RACS contracts where an equivalent runtime contract exists. REHT defines the clearance and conformance semantics, not a duplicate wire protocol.
+
+## 4. Execution-time re-derivation
+
+Immediately before a consequence-bearing action crosses the execution boundary, the executing side MUST independently re-derive the execution-relevant envelope and compare it with the bound envelope.
+
+A matching binding is necessary but not sufficient for execution. It permits REHT evaluation to continue; it does not force an `ADMISSIBLE` result.
+
+Any material mismatch MUST result in a non-executable state.
+
+## 5. First conformance vector
+
+The first interoperability profile defines one positive control and five required negative cases.
+
+### Positive control
+
+The independently re-derived execution envelope matches the authorized binding; required causal lineage is continuous; no disqualifying event intervened; scope is valid; receipt continuity is intact; replay constraints are satisfied.
+
+Expected result: REHT may continue evaluation.
+
+### Drift
+
+The execution-relevant state differs from the state bound to the prior result.
+
+Expected result: hard deny / non-executable.
+
+### Expired scope
+
+The authority, delegation, purpose or other explicit scope constraint is no longer valid for the proposed execution.
+
+Expected result: hard deny / non-executable.
+
+Scope expiry remains an explicit check. A wall-clock constraint may be one input to scope policy, but the existence of an unexpired timestamp does not establish execution continuity.
+
+### Broken receipt continuity
+
+Required receipt or evidence lineage contains an unproven gap.
+
+Expected result: `INDETERMINATE`, `NO_LONGER_ADMISSIBLE` or equivalent fail-closed result. Missing continuity MUST NOT be inferred as continuity.
+
+### Stale authority
+
+A relevant revocation, delegation mutation, authority replacement or other authority event causally intervened after the prior result was established.
+
+Expected result: hard deny / non-executable.
+
+### Replay
+
+A single-use or otherwise consumption-bound causal position/action has already been consumed.
+
+Expected result: hard deny / non-executable.
+
+## 6. Common continuity failures
+
+Where implementation semantics permit, drift, stale authority and replay SHOULD be represented as variants of one underlying failure class: the execution state is not causally continuous with the state that was authorized.
+
+Expired scope and broken receipt continuity remain explicit independent checks in this version of the profile.
+
+## 7. Bidirectional interoperability
+
+A conformance profile MUST specify both sides of the boundary:
+
+- what the producer guarantees when presenting an external binding;
+- what the consumer is entitled to rely on;
+- what the consumer MUST independently re-derive;
+- which conditions invalidate reliance;
+- required refusal behavior.
+
+A profile that proves only that one producer can emit an accepted object is not sufficient. Negative refusal behavior is part of conformance.
+
+External systems MAY map their own capability or grant identifiers into this binding contract without becoming required REHT dependencies.
+
+## 8. Independence rule
+
+REHT does not require any specific identity, authority, evidence, runtime, capability, receipt or causal-time implementation.
+
+External systems remain independently owned. They may supply evidence or binding references into the REHT execution boundary, but REHT retains the final clearance semantics.
+
+A conforming integration MUST NOT invert this ownership boundary.
+
+## 9. Research basis
+
+This profile is informed by the causal-ordering approach described in:
+
+- RS-2026-001, *Causal Substrate Audit: Lamport-Anchored Evidence Under Time-Source Asymmetry*, Jasper van de Meent / Humotica and Richard Barron / Red Specter Security Research, published 22 May 2026, DOI `10.5281/zenodo.20338260`.
+- the related TIBET Causal Time Internet-Draft as technical background.
+
+REHT adopts no dependency on TIBET through this reference. The Internet-Draft is treated as technical background, not as an adopted IETF standard.
+
+## 10. Migration note for v0.1 fields
+
+Existing v0.1 objects contain fields such as `timestamp`, `observed_at`, `evaluated_at`, `valid_from`, `valid_until` and `expires_at`.
+
+These fields are not removed by this document. Their execution-validity semantics are narrowed:
+
+- they MAY remain policy, scope, forensic, audit or correlation inputs;
+- they MUST NOT be treated as sufficient proof that a prior result remains executable;
+- execution validity MUST be re-established at the execution boundary through the applicable causal-continuity profile.
+
+Any schema change to canonical RACS-owned runtime objects MUST be made in RACS/spec and referenced from reht-standard rather than duplicated here.
