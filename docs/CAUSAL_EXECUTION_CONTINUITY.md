@@ -54,13 +54,34 @@ A matching binding is necessary but not sufficient for execution. It permits REH
 
 Any material mismatch MUST result in a non-executable state.
 
-## 5. First conformance vector
+## 5. Independent reconstructability
+
+A hash match alone is not sufficient evidence of causal continuity across independently owned systems.
+
+A conforming interoperability profile MUST expose enough integrity-protected causal evidence for an independent verifier to reconstruct the execution-relevant lineage and verify why the presented binding corresponds to the authorized state.
+
+The verifier MUST be able to establish, without trusting the producer's wall clock or private runtime state:
+
+- the ordered causal position of the authorization and proposed execution;
+- the identity binding of the relevant producer or signer where identity is material;
+- integrity of the lineage used for the comparison;
+- whether a material state or authority transition intervened;
+- whether required lineage contains an unproven gap;
+- whether a consumption-bound position or action has already been used.
+
+The profile MUST fail closed when required reconstruction cannot be completed from the presented and independently resolvable evidence.
+
+REHT does not require a particular signature algorithm, block format, archive format, Lamport implementation, TIBET token, mirror topology or storage substrate. Ed25519-per-block signing, byte-identical mirrored bundles and similar mechanisms MAY satisfy parts of these properties, but they are external implementation choices rather than REHT dependencies.
+
+Where reproducible evidence bundles are used, a conforming profile SHOULD permit an independent verifier to reproduce the canonical evidence representation and obtain the same integrity result from the same source material. Byte-for-byte reproducibility is a strong implementation property but is not mandated where an equivalent canonical, independently verifiable representation is used.
+
+## 6. First conformance vector
 
 The first interoperability profile defines one positive control and five required negative cases.
 
 ### Positive control
 
-The independently re-derived execution envelope matches the authorized binding; required causal lineage is continuous; no disqualifying event intervened; scope is valid; receipt continuity is intact; replay constraints are satisfied.
+The independently re-derived execution envelope matches the authorized binding; required causal lineage is independently reconstructable and continuous; no disqualifying event intervened; scope is valid; receipt continuity is intact; replay constraints are satisfied.
 
 Expected result: REHT may continue evaluation.
 
@@ -80,7 +101,7 @@ Scope expiry remains an explicit check. A wall-clock constraint may be one input
 
 ### Broken receipt continuity
 
-Required receipt or evidence lineage contains an unproven gap.
+Required receipt or evidence lineage contains an unproven gap or cannot be independently reconstructed.
 
 Expected result: `INDETERMINATE`, `NO_LONGER_ADMISSIBLE` or equivalent fail-closed result. Missing continuity MUST NOT be inferred as continuity.
 
@@ -96,27 +117,28 @@ A single-use or otherwise consumption-bound causal position/action has already b
 
 Expected result: hard deny / non-executable.
 
-## 6. Common continuity failures
+## 7. Common continuity failures
 
 Where implementation semantics permit, drift, stale authority and replay SHOULD be represented as variants of one underlying failure class: the execution state is not causally continuous with the state that was authorized.
 
 Expired scope and broken receipt continuity remain explicit independent checks in this version of the profile.
 
-## 7. Bidirectional interoperability
+## 8. Bidirectional interoperability
 
 A conformance profile MUST specify both sides of the boundary:
 
 - what the producer guarantees when presenting an external binding;
+- what causal and integrity evidence the producer makes available for independent reconstruction;
 - what the consumer is entitled to rely on;
-- what the consumer MUST independently re-derive;
+- what the consumer MUST independently re-derive or reconstruct;
 - which conditions invalidate reliance;
 - required refusal behavior.
 
-A profile that proves only that one producer can emit an accepted object is not sufficient. Negative refusal behavior is part of conformance.
+A profile that proves only that one producer can emit an accepted object is not sufficient. Negative refusal behavior and independent reconstruction are part of conformance.
 
 External systems MAY map their own capability or grant identifiers into this binding contract without becoming required REHT dependencies.
 
-## 8. Independence rule
+## 9. Independence rule
 
 REHT does not require any specific identity, authority, evidence, runtime, capability, receipt or causal-time implementation.
 
@@ -124,16 +146,17 @@ External systems remain independently owned. They may supply evidence or binding
 
 A conforming integration MUST NOT invert this ownership boundary.
 
-## 9. Research basis
+## 10. Research basis
 
-This profile is informed by the causal-ordering approach described in:
+This profile is informed by the causal-ordering and reconstructability approach described in:
 
 - RS-2026-001, *Causal Substrate Audit: Lamport-Anchored Evidence Under Time-Source Asymmetry*, Jasper van de Meent / Humotica and Richard Barron / Red Specter Security Research, published 22 May 2026, DOI `10.5281/zenodo.20338260`.
+- the signed reproducible source-bundle material associated with RS-2026-001, including its block-level integrity and mirrored reproducibility properties, as research evidence for independent reconstruction.
 - the related TIBET Causal Time Internet-Draft as technical background.
 
-REHT adopts no dependency on TIBET through this reference. The Internet-Draft is treated as technical background, not as an adopted IETF standard.
+REHT adopts no dependency on TIBET, the RS-2026-001 bundle format, Ed25519 or any particular causal substrate through these references. They are technical and research background for the required properties.
 
-## 10. Migration note for v0.1 fields
+## 11. Migration note for v0.1 fields
 
 Existing v0.1 objects contain fields such as `timestamp`, `observed_at`, `evaluated_at`, `valid_from`, `valid_until` and `expires_at`.
 
@@ -141,6 +164,7 @@ These fields are not removed by this document. Their execution-validity semantic
 
 - they MAY remain policy, scope, forensic, audit or correlation inputs;
 - they MUST NOT be treated as sufficient proof that a prior result remains executable;
-- execution validity MUST be re-established at the execution boundary through the applicable causal-continuity profile.
+- execution validity MUST be re-established at the execution boundary through the applicable causal-continuity profile;
+- evidence used to establish continuity MUST be independently reconstructable where the profile crosses independently owned systems.
 
 Any schema change to canonical RACS-owned runtime objects MUST be made in RACS/spec and referenced from reht-standard rather than duplicated here.
