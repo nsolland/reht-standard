@@ -4,12 +4,12 @@
 
 # reht standard
 
-**Public-release candidate for governed AI-mediated actions before execution.**
+**A public standard for governed AI-mediated actions before execution.**
 
-> **Hosting status — 2026-08-14:** this GitHub repository is currently **private**. The specification is intended for public release under Apache License 2.0, but it MUST NOT be described as publicly accessible until repository visibility is actually changed. See [PUBLICATION_STATUS.md](PUBLICATION_STATUS.md).
+> **Hosting status — 2026-08-14:** this repository is public. It contains the vendor-neutral REHT standards and conformance surface under Apache License 2.0. See [PUBLICATION_STATUS.md](PUBLICATION_STATUS.md).
 
 [![status](https://img.shields.io/badge/status-draft%20v0.2-8a6d3b)](CHANGELOG.md)
-[![publication](https://img.shields.io/badge/publication-candidate-8a6d3b)](PUBLICATION_STATUS.md)
+[![publication](https://img.shields.io/badge/repository-public-1f2937)](PUBLICATION_STATUS.md)
 [![license](https://img.shields.io/badge/license-Apache%202.0-1f2937)](LICENSE)
 [![schema](https://img.shields.io/badge/schema-JSON%20Schema%202020--12-1f2937)](schemas/)
 [![validation](https://img.shields.io/badge/validation-GitHub%20Actions-1f2937)](.github/workflows/)
@@ -31,11 +31,11 @@
 **reht-standard is canonical ONLY for REHT-specific clearance and authorization standards.**
 Runtime execution-governance contracts are defined by **RACS/spec** and MUST be referenced, not duplicated. See [CANONICAL.md](CANONICAL.md).
 
-REHT-specific standard semantics live here. The canonical VALO runtime authorization implementation is owned separately and publication of this repository does not transfer runtime ownership.
+REHT-specific standard semantics live here. The canonical VALO runtime authorization implementation is owned separately; public availability of this repository does not transfer runtime ownership.
 
 ## 1. Overview
 
-reht is intended as a public, model-agnostic standard for deciding whether a specific action is admissible at the execution boundary under current authority, evidence, policy and governed state. The current repository hosting remains private until the public-release gate in `PUBLICATION_STATUS.md` is completed.
+reht is a public, model-agnostic standard for deciding whether a specific action is admissible at the execution boundary under current authority, evidence, policy and governed state.
 
 It is not a model, agent or policy engine. It is an interoperable standards/conformance layer between reasoning and consequence.
 
@@ -106,9 +106,9 @@ The first conformance vector covers:
 
 See [`docs/CAUSAL_EXECUTION_CONTINUITY.md`](docs/CAUSAL_EXECUTION_CONTINUITY.md) and [`conformance/causal-execution-v0.2.json`](conformance/causal-execution-v0.2.json).
 
-## 4. Release-candidate contracts
+## 4. Public contracts
 
-The standard defines contracts and conformance semantics intended for public release for:
+The standard defines public contracts and conformance semantics for:
 
 - Action Envelope;
 - Authority Context;
@@ -154,12 +154,12 @@ They are not sufficient proof that a prior admissibility remains executable acro
 
 ## 8. Start here
 
-- [`PUBLICATION_STATUS.md`](PUBLICATION_STATUS.md) — actual hosting/publication state and release gate
+- [`PUBLICATION_STATUS.md`](PUBLICATION_STATUS.md) — actual repository/release state
 - [`SPECIFICATION.md`](SPECIFICATION.md) — normative specification
 - [`CONFORMANCE.md`](CONFORMANCE.md) — conformance requirements
 - [`docs/CAUSAL_EXECUTION_CONTINUITY.md`](docs/CAUSAL_EXECUTION_CONTINUITY.md) — causal execution profile
 - [`conformance/causal-execution-v0.2.json`](conformance/causal-execution-v0.2.json) — machine-readable first vector
-- [`docs/BOUNDARIES.md`](docs/BOUNDARIES.md) — publication boundary
+- [`docs/BOUNDARIES.md`](docs/BOUNDARIES.md) — public boundary
 - [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md) — threat model
 - [`CANONICAL.md`](CANONICAL.md) — REHT/RACS standards ownership
 
@@ -177,15 +177,17 @@ A third-party system may map its own binding reference into the REHT execution b
 
 ## 11. What this repository does not contain
 
-This repository is a public-release candidate specification and conformance surface. It does not contain VALO production runtime code, proprietary evaluation logic, customer integrations, internal thresholds, deployment configuration or a certification program.
+This repository is the public specification and conformance surface. It does not contain VALO production runtime code, proprietary evaluation logic, customer integrations, internal thresholds, deployment configuration or a certification program.
 
-Private hosting does not change the intended licensing of the content, and licensing does not make the repository publicly accessible by itself.
+Public repository visibility does not imply that every VALO implementation detail or internal research artifact is public.
 
 ## 12. Versioning
 
-Current status: **draft v0.2 / public-release candidate**.
+Current status: **draft v0.2 / public repository**.
 
 The v0.2 draft introduces causal execution-validity semantics while retaining existing v0.1 time fields for compatibility. Canonical RACS-owned runtime schema changes must be made in RACS/spec and referenced here rather than duplicated.
+
+An exact version/tag/hash must be selected before a snapshot is described as a formally published release artifact.
 
 ## 13. Security
 
@@ -195,10 +197,8 @@ See [`SECURITY.md`](SECURITY.md) and [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md). Normative changes require rationale, compatibility impact, security impact and migration notes where applicable.
 
-External contribution is practically available only after the repository is made public or contributors are explicitly granted repository access.
+The repository is public and external contributors can inspect and propose changes subject to repository governance.
 
 ## 15. License
 
 The repository content is licensed under the Apache License 2.0. See [`LICENSE`](LICENSE), [`NOTICE`](NOTICE) and [`TRADEMARKS.md`](TRADEMARKS.md).
-
-License terms and repository visibility are independent: as of 2026-08-14 the GitHub repository remains private.
