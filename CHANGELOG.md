@@ -2,7 +2,7 @@
 
 All notable specification changes are recorded here.
 
-## Unreleased
+## 0.2.0-draft.1 — 2026-08-14
 
 Added:
 
@@ -18,14 +18,16 @@ Added:
 - execution-time independent re-derivation requirement;
 - wall-clock demotion from execution-validity authority to policy, scope, audit, correlation and forensic context;
 - bidirectional interoperability requirements and a machine-readable first conformance vector;
-- required negative cases for drift, expired scope, broken receipt continuity, stale authority and replay.
+- required negative cases for drift, expired scope, broken receipt continuity, stale authority and replay;
+- public GitHub Actions validation for JSON artifacts, schemas and required release files.
 
 Changed:
 
-- specification status advances to `0.2.0-draft` for the causal execution semantics proposal;
+- specification status advances to `0.2.0-draft.1` for the causal execution semantics proposal;
 - prior authorization/admissibility is no longer treated as a durable bearer verdict;
 - existing `timestamp`, `observed_at`, `evaluated_at`, `valid_from`, `valid_until` and `expires_at` fields are retained for compatibility but are not sufficient proof that a prior result remains executable;
-- continuous-integrity semantics now distinguish causal ordering from wall-clock observation time.
+- continuous-integrity semantics now distinguish causal ordering from wall-clock observation time;
+- public release metadata now follows immutable historical tags plus forward corrective releases.
 
 Research context:
 

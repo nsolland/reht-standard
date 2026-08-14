@@ -9,10 +9,10 @@
 > **Hosting status — 2026-08-14:** this repository is public. It contains the vendor-neutral REHT standards and conformance surface under Apache License 2.0. See [PUBLICATION_STATUS.md](PUBLICATION_STATUS.md).
 
 [![status](https://img.shields.io/badge/status-draft%20v0.2-8a6d3b)](CHANGELOG.md)
+[![validation](https://github.com/nsolland/reht-standard/actions/workflows/validate.yml/badge.svg)](https://github.com/nsolland/reht-standard/actions/workflows/validate.yml)
 [![publication](https://img.shields.io/badge/repository-public-1f2937)](PUBLICATION_STATUS.md)
 [![license](https://img.shields.io/badge/license-Apache%202.0-1f2937)](LICENSE)
 [![schema](https://img.shields.io/badge/schema-JSON%20Schema%202020--12-1f2937)](schemas/)
-[![validation](https://img.shields.io/badge/validation-GitHub%20Actions-1f2937)](.github/workflows/)
 [![governance](https://img.shields.io/badge/governance-execution%20boundary-8a6d3b)](docs/BOUNDARIES.md)
 [![implementation](https://img.shields.io/badge/implementation-model%20agnostic-1f2937)](SPECIFICATION.md)
 
@@ -187,7 +187,7 @@ Current status: **draft v0.2 / public repository**.
 
 The v0.2 draft introduces causal execution-validity semantics while retaining existing v0.1 time fields for compatibility. Canonical RACS-owned runtime schema changes must be made in RACS/spec and referenced here rather than duplicated.
 
-An exact version/tag/hash must be selected before a snapshot is described as a formally published release artifact.
+The next corrective prerelease is `v0.2.0-draft.1` on an exact green release head. Historical tags are never moved, deleted or retargeted.
 
 ## 13. Security
 
