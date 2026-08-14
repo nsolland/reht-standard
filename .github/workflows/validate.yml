@@ -1,0 +1,50 @@
+name: Validate standard
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install validator
+        run: python -m pip install "jsonschema>=4.23,<5"
+      - name: Validate JSON and schemas
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from jsonschema.validators import validator_for
+
+          roots = [Path("schemas"), Path("contracts"), Path("conformance"), Path("examples")]
+          files = sorted(p for root in roots if root.exists() for p in root.rglob("*.json"))
+          if not files:
+              raise SystemExit("No JSON artifacts found")
+
+          for path in files:
+              with path.open(encoding="utf-8") as fh:
+                  data = json.load(fh)
+              if path.parts[0] == "schemas" and isinstance(data, dict) and "$schema" in data:
+                  validator_for(data).check_schema(data)
+              print(f"validated {path}")
+          PY
+      - name: Verify required public files
+        run: |
+          test -f README.md
+          test -f SPECIFICATION.md
+          test -f CONFORMANCE.md
+          test -f SECURITY.md
+          test -f CONTRIBUTING.md
+          test -f LICENSE
+          test -f NOTICE
+          test -f TRADEMARKS.md
+          test -f PUBLICATION_STATUS.md
