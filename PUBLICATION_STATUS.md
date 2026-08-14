@@ -4,15 +4,13 @@ Status date: 2026-08-14
 
 ## Current fact
 
-`nsolland/reht-standard` is currently hosted as a **private GitHub repository**.
+`nsolland/reht-standard` is a **public GitHub repository**.
 
-The repository content is being prepared as a public, vendor-neutral REHT standard and conformance surface under Apache License 2.0, but public-release intent and actual repository visibility are separate facts.
+The repository is the public, vendor-neutral REHT standards and conformance surface under Apache License 2.0. Repository visibility does not change ownership boundaries: this repository does not become the canonical VALO production runtime implementation by being public.
 
-Until GitHub visibility is changed to public, this repository MUST NOT be described as publicly accessible.
+## Public repository contents
 
-## Intended public release
-
-The intended public release includes:
+The public repository includes:
 
 - normative REHT-specific specification material;
 - conformance requirements and machine-readable vectors;
@@ -22,9 +20,9 @@ The intended public release includes:
 
 It does not include VALO production runtime code, proprietary evaluation logic, customer integrations, internal thresholds, deployment secrets or private collaboration material.
 
-## Public-release gate
+## Versioned-release gate
 
-Before changing repository visibility to public, verify:
+Before describing an exact snapshot as a published release, verify:
 
 1. no credentials, tokens, private keys or customer data are tracked;
 2. no private partner correspondence or unpublished third-party material is present;
@@ -34,8 +32,7 @@ Before changing repository visibility to public, verify:
 6. current execution-architecture references do not restore historical V5-Core/RACS ownership errors;
 7. CI/conformance checks are green on the exact release head;
 8. license/NOTICE/TRADEMARKS files are present and internally consistent;
-9. a release tag/version is selected;
-10. GitHub repository visibility is explicitly changed to `public` by an authorized repository administrator.
+9. an exact release tag/version/hash is selected.
 
 ## Release-state vocabulary
 
@@ -48,4 +45,4 @@ Use these terms precisely:
 
 ## Current blocker
 
-The remaining publication blocker recorded here is repository visibility. The connected automation used for this update does not expose a repository-visibility mutation, so the private→public switch requires a separate authorized GitHub administration action.
+There is no repository-visibility blocker. The repository is public. The remaining step for a formally published release is to select and validate an exact version/tag/hash on a green release head.
