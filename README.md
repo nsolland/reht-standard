@@ -8,7 +8,7 @@
 
 > **Hosting status — 2026-08-14:** this repository is public. It contains the vendor-neutral REHT standards and conformance surface under Apache License 2.0. See [PUBLICATION_STATUS.md](PUBLICATION_STATUS.md).
 
-[![status](https://img.shields.io/badge/status-draft%20v0.3-8a6d3b)](CHANGELOG.md)
+[![status](https://img.shields.io/badge/status-draft%20v0.4-8a6d3b)](CHANGELOG.md)
 [![validation](https://github.com/nsolland/reht-standard/actions/workflows/validate.yml/badge.svg)](https://github.com/nsolland/reht-standard/actions/workflows/validate.yml)
 [![publication](https://img.shields.io/badge/repository-public-1f2937)](PUBLICATION_STATUS.md)
 [![license](https://img.shields.io/badge/license-Apache%202.0-1f2937)](LICENSE)
@@ -43,12 +43,14 @@ The central execution invariant is:
 
 > **Authorization is not a durable truth. At execution, the system must prove that this is still the thing that was approved.**
 
-v0.3 makes two additional implications explicit:
+v0.4 makes two further implications explicit:
 
-- **Persistence does not confer standing.** A file, memory entry, configuration, instruction, handoff or cached artifact does not become authoritative merely because it survived into the next worker/session/context.
-- **Governing contracts cannot drift silently.** If a material contract, policy set or mandate changes after evaluation, the old continuation is invalid and fresh evaluation is required.
+- **Known material constraint gaps fail closed.** If an execution-relevant constraint is known to be required but remains unresolved or unavailable, the action cannot be `ADMISSIBLE`.
+- **A rewritten action is a new action.** Deterministic clamping, rewritten tool arguments, substituted targets or other material post-evaluation transformations require fresh REHT evaluation before consequence.
 
-A prior admissibility result does not remain executable merely because a wall-clock interval has not expired. Where evaluation and execution are separated, the executor must independently re-establish the execution-relevant action, authority, governed state and applicable governing basis and fail closed if continuity cannot be proven.
+These extend the v0.3 continuity rules: persistence does not confer standing, and material governing contracts cannot drift silently between evaluation and consequence.
+
+A prior admissibility result does not remain executable merely because a wall-clock interval has not expired. Where evaluation and execution are separated, the executor must independently re-establish the execution-relevant action, authority, governed state, material constraints and applicable governing basis and fail closed if continuity cannot be proven.
 
 The standard is vendor neutral, implementation independent and explicitly anti-lock-in.
 
@@ -61,9 +63,9 @@ Modern systems already answer two questions well:
 
 REHT asks the operational question that matters at consequence:
 
-- **Is this exact action still admissible to execute now, under the state, authority and governing basis that actually exist at execution?**
+- **Is this exact action still admissible to execute now, under the state, authority, constraints and governing basis that actually exist at execution?**
 
-That distinction prevents a prior verdict, batch approval, grant, capability, persisted instruction or stale contract from becoming a bearer token whose meaning silently survives drift.
+That distinction prevents a prior verdict, batch approval, grant, capability, persisted instruction, stale contract or post-check rewrite from becoming a bearer token whose meaning silently survives drift.
 
 ## 3. Architecture
 
@@ -72,11 +74,13 @@ Reality
    ↓
 Observation / admitted governed inputs
    ↓
-Evaluation
+Candidate action
    ↓
-REHT admissibility
+REHT evaluation
    ↓
-State + contract continuity
+Bound admissibility result
+   ↓
+State + contract + constraint continuity
    ↓
 Causal execution continuity
    ↓
@@ -105,12 +109,23 @@ REHT instead requires causal continuity: the executor must be able to show that 
 
 ### 3.4 State and contract continuity
 
-v0.3 adds two negative refusal classes to the causal profile:
+v0.3 added two negative refusal classes to the causal profile:
 
 - persistent-state self-promotion;
 - governing-contract drift.
 
-See [`docs/STATE_AND_CONTRACT_CONTINUITY.md`](docs/STATE_AND_CONTRACT_CONTINUITY.md) and [`conformance/causal-execution-v0.3.json`](conformance/causal-execution-v0.3.json).
+See [`docs/STATE_AND_CONTRACT_CONTINUITY.md`](docs/STATE_AND_CONTRACT_CONTINUITY.md).
+
+### 3.5 Constraint observability and action transformation
+
+v0.4 adds two more refusal classes:
+
+- a material execution constraint known to be required but unresolved;
+- a materially transformed action presented under the source action's prior result.
+
+A safety or control layer may propose a replacement action. It cannot self-authorize that replacement by rewriting an already evaluated action. The replacement returns as a new candidate for fresh REHT evaluation.
+
+See [`docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md`](docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md) and [`conformance/causal-execution-v0.4.json`](conformance/causal-execution-v0.4.json).
 
 ## 4. Public contracts
 
@@ -127,7 +142,8 @@ The standard defines public contracts and conformance semantics for:
 - Execution Receipt;
 - Causal Execution Continuity;
 - Persistent State Continuity;
-- Governing Contract Continuity.
+- Governing Contract Continuity;
+- Constraint Observability and Action Transformation.
 
 ## 5. Admissibility outcomes
 
@@ -143,17 +159,21 @@ These are semantic outcomes, not execution commands.
 
 A successful continuity comparison does not force `ADMISSIBLE`. It only establishes that the executor is still evaluating the action and governed basis that were bound to the prior result.
 
+A known unresolved required material constraint must yield `REQUIRES_STEP_UP` when an authorized process can resolve it, or `INDETERMINATE` while sufficient governed evidence remains unavailable.
+
 ## 6. How it works
 
 1. An actor proposes an action as an Action Envelope.
-2. Authority, evidence, policy, governing-contract references and governed-state context are assembled.
+2. Authority, evidence, policy, governing-contract references, required material constraints and governed-state context are assembled.
 3. Consequence-relevant persisted material must have current governed standing; persistence alone is insufficient.
-4. An evaluator computes an Admissibility Result.
-5. If evaluation and execution are separated, the result is bound to a deterministic execution envelope.
-6. Immediately before consequence, the executor independently re-derives the execution-relevant envelope and causal lineage.
-7. Any material state mismatch, stale authority, persistent-state standing failure, governing-contract drift, replay, broken required continuity or invalid scope is non-executable.
-8. A matching binding permits REHT evaluation to continue; REHT retains final clearance semantics.
-9. Execution produces a receipt bound to the governed decision and relevant continuity evidence.
+4. Known unresolved required material constraints fail closed before `ADMISSIBLE` can be returned.
+5. An evaluator computes an Admissibility Result bound to the exact candidate action.
+6. If any control or orchestration layer materially rewrites the action, that replacement becomes a new candidate and returns to step 2 for fresh evaluation.
+7. If evaluation and execution are separated, the result is bound to a deterministic execution envelope.
+8. Immediately before consequence, the executor independently re-derives the execution-relevant envelope and causal lineage.
+9. Any material state mismatch, stale authority, persistent-state standing failure, governing-contract drift, unresolved required constraint, replay, broken required continuity, invalid scope or action transformation is non-executable under the prior result.
+10. A matching binding permits REHT evaluation to continue; REHT retains final clearance semantics.
+11. Execution produces a receipt bound to the governed decision and relevant continuity evidence.
 
 ## 7. Time semantics
 
@@ -169,7 +189,8 @@ They are not sufficient proof that a prior admissibility remains executable acro
 - [`GOVERNANCE.md`](GOVERNANCE.md) — how normative changes are proposed, accepted and transferred
 - [`docs/CAUSAL_EXECUTION_CONTINUITY.md`](docs/CAUSAL_EXECUTION_CONTINUITY.md) — causal execution profile
 - [`docs/STATE_AND_CONTRACT_CONTINUITY.md`](docs/STATE_AND_CONTRACT_CONTINUITY.md) — v0.3 persistence/contract profile
-- [`conformance/causal-execution-v0.3.json`](conformance/causal-execution-v0.3.json) — machine-readable v0.3 vector
+- [`docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md`](docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md) — v0.4 constraint/transformation profile
+- [`conformance/causal-execution-v0.4.json`](conformance/causal-execution-v0.4.json) — machine-readable v0.4 vector
 - [`docs/BOUNDARIES.md`](docs/BOUNDARIES.md) — public boundary
 - [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md) — threat model
 - [`CANONICAL.md`](CANONICAL.md) — REHT/RACS standards ownership
@@ -178,7 +199,7 @@ They are not sufficient proof that a prior admissibility remains executable acro
 
 Schema validation is necessary but not sufficient. REHT conformance includes semantic refusal behavior at the execution boundary.
 
-The v0.3 causal execution vector requires one positive control and seven negative cases. An implementation that accepts the happy path but fails to reject state drift, invalid scope, broken required continuity, stale authority, replay, persistent-state self-promotion or governing-contract drift is not conformant to that profile.
+The v0.4 causal execution vector requires one positive control and nine negative cases. An implementation that accepts the happy path but fails to reject state drift, invalid scope, broken required continuity, stale authority, replay, persistent-state self-promotion, governing-contract drift, unresolved required material constraints or post-evaluation action transformation is not conformant to that profile.
 
 ## 10. Independence
 
@@ -194,15 +215,15 @@ Public repository visibility does not imply that every VALO implementation detai
 
 ## 12. Versioning
 
-Current status: **`0.3.0-draft.1` prerelease candidate / public repository**.
+Current status: **`0.4.0-draft.1` prerelease candidate / public repository**.
 
-This is a minor-version increase because it adds substantive normative behavior and negative conformance cases while preserving the v0.2 causal-continuity model.
+This is a minor-version increase because it adds substantive normative behavior and negative conformance cases while preserving the v0.3 continuity model.
 
 Specification versions, public-package versions and private runtime versions are independent compatibility surfaces. They do not need to match numerically.
 
 Historical tags are immutable. Changes move forward through new version/prerelease identifiers; they do not rewrite prior releases.
 
-The next published prerelease, if accepted, is `v0.3.0-draft.1` on an exact green release head.
+The next published prerelease, if accepted, is `v0.4.0-draft.1` on an exact green release head.
 
 See [`GOVERNANCE.md`](GOVERNANCE.md) for version classes and proposal/acceptance rules.
 

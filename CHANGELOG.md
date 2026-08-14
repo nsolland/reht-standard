@@ -2,6 +2,28 @@
 
 All notable specification changes are recorded here.
 
+## 0.4.0-draft.1 — 2026-08-14
+
+Added:
+
+- normative constraint-observability rule distinguishing established material constraints from known required constraints that remain unresolved or unavailable;
+- fail-closed semantics: known unresolved required material constraints cannot yield `ADMISSIBLE`;
+- fresh-evaluation rule for any material post-evaluation action transformation, including deterministic clamping, rewritten tool arguments, substituted targets and equivalent changes;
+- prohibition on allowing a transformed action to inherit the source action's admissibility result or receipt;
+- `CEC-NEG-CONSTRAINT-001` and `CEC-NEG-TRANSFORM-001` negative conformance cases;
+- `docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md`;
+- proposal record #13.
+
+Changed:
+
+- specification advances from `0.3.0-draft.1` to `0.4.0-draft.1` because the required conformance surface expands materially while retaining compatibility with the v0.3 continuity model;
+- causal execution continuity now makes material constraint completeness explicit and treats post-evaluation action transformation as a continuity break requiring fresh evaluation;
+- conformance vector advances to `conformance/causal-execution-v0.4.json`; prior vectors remain historical draft evidence.
+
+Research context:
+
+- Shi et al., *Organizational Control Layer: Governance Infrastructure at the Execution Boundary of LLM Agent Systems*, arXiv:2606.04306 (2026), informs the observable/unresolved constraint distinction and proposal-to-execution separation. REHT adopts those lessons but intentionally requires fresh evaluation after material action revision rather than allowing a control-layer rewrite to inherit the prior decision.
+
 ## 0.3.0-draft.1 — 2026-08-14
 
 Added:

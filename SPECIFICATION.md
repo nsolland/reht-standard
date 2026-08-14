@@ -1,6 +1,6 @@
 # REHT Standard Specification
 
-Version: 0.3.0-draft.1
+Version: 0.4.0-draft.1
 
 ## 1. Purpose
 
@@ -22,6 +22,8 @@ REHT defines a bounded public contract for evaluating whether a proposed AI-medi
 12. A conforming execution boundary must fail closed when causal continuity with the evaluated action, authority or governed state cannot be proven.
 13. Persistence does not confer standing. Material that survives a worker, session or context boundary must not become governing state solely because it persisted.
 14. A governing contract, policy basis or equivalent execution-relevant rule set must not drift during a governed continuation without invalidating reliance on the prior result.
+15. A known unresolved material execution constraint must not be normalized into admissibility.
+16. A material transformation of an evaluated action creates a new candidate action; the transformed action must not inherit the source action's admissibility result.
 
 ## 3. Core objects
 
@@ -44,6 +46,8 @@ Minimum fields:
 
 Where an admissibility result may be presented later to an independently owned executor, the evaluated action must also be bound through a deterministic execution-envelope digest or equivalent external binding reference.
 
+Where material execution constraints determine admissibility, the envelope or its referenced evidence/policy context must make it possible to distinguish constraints established for the evaluation from material constraints known to remain unresolved.
+
 ### 3.2 Authority Context
 
 Represents who or what proposes the action, the delegation chain and the bounded scope of authority.
@@ -60,6 +64,8 @@ Content-origin and AI-influence detector outputs must retain their provider, ver
 
 Persisted files, memory, configuration, instructions, handoffs and cached artifacts may be referenced as evidence or context only when their integrity, provenance, standing and applicable freshness are established by the governing system. Persistence alone is not evidence of current authority, truth or policy standing.
 
+Where a material execution constraint is required but cannot be established, the Evidence Package or equivalent governed context must preserve that unresolved status rather than silently omitting the constraint and allowing absence to be interpreted as satisfaction.
+
 ### 3.4 Policy Context
 
 Identifies the policies, rules, contracts or controls applicable to the proposed action.
@@ -67,6 +73,8 @@ Identifies the policies, rules, contracts or controls applicable to the proposed
 Policy may include explicit temporal constraints. Such constraints remain enforceable as scope or policy conditions, but they do not replace execution-time continuity proof.
 
 Where a contract or equivalent rule set materially governs the action, the evaluator should bind the exact governing version or digest used for evaluation so that later amendment, termination or replacement can be detected before execution.
+
+Policy may also identify material constraints that must be established before an action can be admissible. A required constraint that remains unresolved is an explicit governance state, not a permissive default.
 
 ### 3.5 Governance State
 
@@ -96,11 +104,13 @@ These outcomes are semantic results, not execution commands.
 
 When provenance required by applicable policy is materially missing, disputed or inconsistent, an implementation should return `REQUIRES_STEP_UP` when a legitimate principal can resolve the uncertainty, or `INDETERMINATE` when the evidence remains insufficient. A detector result must not by itself produce `INADMISSIBLE` unless an applicable policy independently makes that evidence dispositive and its evidence threshold is satisfied.
 
+When a material execution constraint is known to be required but remains unresolved or unavailable, the result must not be `ADMISSIBLE`. Use `REQUIRES_STEP_UP` where an authorized process can resolve the gap; otherwise use `INDETERMINATE` until sufficient governed evidence or constraint state exists.
+
 ### 3.7 Continuous Integrity Event
 
 Records a material event that may affect reliance on an earlier admissibility result.
 
-For execution-boundary conformance, relevant state, authority, governing-contract, policy or consumption events are evaluated by causal order where the applicable profile provides causal lineage. Wall-clock observation time remains useful for audit and forensics but is not sufficient to establish ordering across independent systems.
+For execution-boundary conformance, relevant state, authority, governing-contract, policy, constraint or consumption events are evaluated by causal order where the applicable profile provides causal lineage. Wall-clock observation time remains useful for audit and forensics but is not sufficient to establish ordering across independent systems.
 
 ### 3.8 Execution Receipt
 
@@ -108,7 +118,9 @@ Records the evaluated action, result, relevant evidence references, time, state 
 
 Where production provenance or semantic representation integrity materially affected admissibility, the receipt should bind the relevant provenance references, approval attestations and detector observations used in the result.
 
-Where causal-continuity conformance applies, the receipt should preserve the binding, causal-position or lineage references needed to verify the relationship between evaluation and execution. Where governing contract continuity is material, the receipt should preserve the governing contract reference/version/digest used by the evaluation. Wall-clock timestamps remain forensic metadata, not proof of continuity.
+Where causal-continuity conformance applies, the receipt should preserve the binding, causal-position or lineage references needed to verify the relationship between evaluation and execution. Where governing contract continuity is material, the receipt should preserve the governing contract reference/version/digest used by the evaluation. Where material constraint completeness affected the result, the receipt should preserve the relevant established/unresolved constraint references or equivalent governed evidence. Wall-clock timestamps remain forensic metadata, not proof of continuity.
+
+A receipt for one evaluated action must not be reused as the execution receipt for a materially transformed replacement action unless the replacement has itself received fresh evaluation and a new binding/result.
 
 ### 3.9 Causal Execution Continuity
 
@@ -119,6 +131,8 @@ The canonical invariant is:
 > Authorization is not a durable truth. At execution, the system must prove that this is still the thing that was approved.
 
 A conforming implementation must bind the evaluated action to a deterministic execution envelope, re-derive the execution-relevant envelope immediately before consequence, and fail closed on any material mismatch or unproven continuity.
+
+A material post-evaluation action transformation is a mismatch, not a harmless continuation. The transformed action becomes a new candidate and requires fresh evaluation before consequence.
 
 The profile, negative cases and migration semantics are defined in [`docs/CAUSAL_EXECUTION_CONTINUITY.md`](docs/CAUSAL_EXECUTION_CONTINUITY.md).
 
@@ -140,6 +154,20 @@ The standard does not require the full governing contract to be disclosed to eve
 
 See [`docs/STATE_AND_CONTRACT_CONTINUITY.md`](docs/STATE_AND_CONTRACT_CONTINUITY.md).
 
+### 3.12 Constraint Observability and Action Transformation
+
+A conforming implementation must distinguish material execution constraints established for evaluation from material constraints that are known to be required but remain unresolved or unavailable. Known constraint gaps fail closed; they are not silently treated as permissive defaults.
+
+The consequence-bearing path is conceptually:
+
+```text
+candidate action -> REHT evaluation -> bound admissibility result -> execution continuity -> consequence -> receipt
+```
+
+Only the action bound to the current admissibility result may proceed under that result. A control, policy, orchestration or safety layer may reject an action or propose a modified replacement, but any material revision creates a new candidate that must receive fresh REHT evaluation.
+
+See [`docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md`](docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md) and proposal #13.
+
 ## 4. Portability and anti-lock-in
 
 ### 4.1 Neutrality requirement
@@ -158,6 +186,7 @@ A conforming implementation must provide documented, versioned and independently
 - evidence references and provenance;
 - workflow and checkpoint state required to resume governed work;
 - persisted material that can influence later consequence-bearing work;
+- material constraint requirements and established/unresolved constraint state when relevant to admissibility;
 - admissibility results and their input bindings;
 - execution-envelope bindings and causal-lineage references where required;
 - execution receipts and integrity data;
@@ -179,9 +208,11 @@ An external verifier must be able to determine, from the exported contracts and 
 - under which authority and policy;
 - which governing contract state applied where material;
 - which evidence and governed state were used;
+- which material execution constraints were established and which known required constraints remained unresolved where relevant;
 - whether persisted material influencing the action retained current standing;
 - which admissibility result was produced;
 - whether material state, authority or governing-contract changes occurred;
+- whether the action presented for execution materially differed from the evaluated action and, if so, whether fresh evaluation occurred;
 - whether required causal continuity between evaluation and execution was established;
 - whether the bound action was replayed or consumed where applicable;
 - which execution receipt, if any, was bound to the decision.
@@ -202,6 +233,10 @@ A conforming implementation:
 - does not treat persisted material as authoritative solely because it survived a worker/session/context boundary;
 - binds consequence-relevant persisted material to current governed context with integrity/standing semantics appropriate to the implementation;
 - identifies the governing contract/policy state used for evaluation where material and detects subsequent drift;
+- distinguishes established material execution constraints from known required constraints that remain unresolved;
+- never returns `ADMISSIBLE` while a known required material execution constraint remains unresolved;
+- treats a materially transformed post-evaluation action as a new candidate requiring fresh evaluation;
+- does not allow a rewritten, clamped or substituted action to inherit the source action's admissibility result or receipt;
 - does not treat wall-clock expiry alone as proof that a prior admissibility remains executable;
 - re-establishes required execution-relevant state at the execution boundary;
 - fails closed when causal continuity or required receipt continuity cannot be proven;
@@ -235,7 +270,7 @@ Breaking contract changes require a new major specification version. Substantive
 
 Prerelease drafts use forward-only immutable identifiers such as `MAJOR.MINOR.PATCH-draft.N`. Historical tags are never moved, deleted or retargeted.
 
-This `0.3.0-draft.1` prerelease adds persistent-state continuity and governing-contract continuity to the `0.2.0-draft.1` causal execution profile. It preserves the existing rule that authorization is non-durable and retains existing time fields for compatibility.
+This `0.4.0-draft.1` prerelease adds constraint-observability refusal semantics and the rule that materially transformed actions require fresh evaluation. It preserves the v0.3 persistent-state and governing-contract continuity requirements and the existing rule that authorization is non-durable.
 
 Specification versions, reference-package versions and private runtime versions are independent compatibility surfaces and do not need to match numerically.
 
