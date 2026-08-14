@@ -2,6 +2,31 @@
 
 All notable specification changes are recorded here.
 
+## 0.3.0-draft.1 — 2026-08-14
+
+Added:
+
+- normative rule that persistence does not confer standing, trust, authority or clearance;
+- persistent-state continuity requirements for files, memory, configuration, instructions, handoffs, checkpoints and cached artifacts that cross worker/session/context boundaries;
+- prohibition on silent self-promotion of worker-produced artifacts into later authoritative context;
+- governing-contract continuity: material contracts, policy sets or mandates must be identifiable/bound and drift must invalidate reliance on prior evaluation;
+- `CEC-NEG-PERSIST-001` and `CEC-NEG-CONTRACT-001` negative conformance cases;
+- `docs/STATE_AND_CONTRACT_CONTINUITY.md`;
+- `GOVERNANCE.md` defining normative proposal records, semantic version classes, acceptance gates, publisher/review handling and transfer of canonical authority;
+- normative-change issue template;
+- version-consistency checks in the public validation workflow.
+
+Changed:
+
+- specification advances from `0.2.0-draft.1` to `0.3.0-draft.1` because the required conformance surface expands materially while retaining compatibility with the v0.2 causal-continuity model;
+- causal execution continuity now covers consequence-relevant persistent inputs and material governing contract state in addition to action, authority and governed state;
+- conformance vector advances to `conformance/causal-execution-v0.3.json`; v0.2 remains preserved as historical draft evidence;
+- version governance follows immutable historical tags and forward-only prerelease identifiers.
+
+Research context:
+
+- Papadopoulos, Shah, Zimmerman and Lindsey, *Mind Viruses: Self-Propagating Ideas in Multi-Agent LLM Systems*, arXiv:2608.10218 (2026), informs the persistent-state threat class. REHT adopts the architectural lesson, not paper-specific terminology or prompt-only mitigations.
+
 ## 0.2.0-draft.1 — 2026-08-14
 
 Added:
