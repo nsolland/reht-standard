@@ -1,6 +1,6 @@
 # REHT Conformance
 
-Version: 0.2.0-draft
+Version: 0.3.0-draft.1
 
 A conforming implementation MUST:
 
@@ -24,6 +24,10 @@ A conforming implementation MUST:
 18. Treat broken required receipt continuity as non-executable; missing continuity MUST NOT be inferred as continuity.
 19. Keep explicit scope constraints independently enforceable, including temporal scope constraints where policy requires them.
 20. Treat wall-clock timestamps as audit, forensic, correlation or policy inputs; wall-clock validity alone MUST NOT establish that a prior result remains executable across independently owned systems.
+21. Treat persisted files, memory, configuration, instructions, handoffs and cached artifacts as non-authoritative unless their current integrity and standing are established under the governed context.
+22. Prevent worker-produced or externally supplied persistent material from silently self-promoting into authoritative policy, instruction, evidence or state for later consequence-bearing work.
+23. Bind material governing contract/policy state to the evaluation by deterministic reference, version, digest or equivalent continuity mechanism.
+24. Treat amendment, termination, replacement or material drift of an applicable governing contract/policy as invalidating reliance on the prior result.
 
 A conforming producer MUST NOT:
 
@@ -32,6 +36,8 @@ A conforming producer MUST NOT:
 - infer authorship, deception, intent or accountability solely from a detector label;
 - produce `INADMISSIBLE` solely from a detector result unless an applicable policy independently makes that evidence dispositive and its evidence threshold is satisfied;
 - reuse an invalidated result as current;
+- treat persistence alone as standing, trust, authority or clearance;
+- reuse a prior conformance/admissibility result after material governing-contract drift without fresh evaluation;
 - represent an unexpired timestamp as sufficient proof of execution validity;
 - alter evidence references after receipt creation without creating a new receipt;
 - claim REHT compatibility while using incompatible outcome semantics;
@@ -39,7 +45,7 @@ A conforming producer MUST NOT:
 
 ## Causal execution conformance vector
 
-The first required interoperability vector consists of one positive control and five negative cases:
+The v0.3 required interoperability vector consists of one positive control and seven negative cases:
 
 1. Positive control — matching independently re-derived envelope and valid continuity permits REHT evaluation to continue; it does not force `ADMISSIBLE`.
 2. Drift — material execution-state mismatch is non-executable.
@@ -47,8 +53,10 @@ The first required interoperability vector consists of one positive control and 
 4. Broken receipt continuity — unproven required lineage is non-executable.
 5. Stale authority — causally intervening revocation or authority mutation is non-executable.
 6. Replay — previously consumed single-use binding or causal position is non-executable.
+7. Persistent-state self-promotion — persisted material with no current governed standing cannot become operative solely by surviving a worker/session/context boundary.
+8. Governing-contract drift — amendment, termination or replacement of a material governing contract invalidates the prior continuation.
 
-See [`docs/CAUSAL_EXECUTION_CONTINUITY.md`](docs/CAUSAL_EXECUTION_CONTINUITY.md).
+See [`docs/CAUSAL_EXECUTION_CONTINUITY.md`](docs/CAUSAL_EXECUTION_CONTINUITY.md), [`docs/STATE_AND_CONTRACT_CONTINUITY.md`](docs/STATE_AND_CONTRACT_CONTINUITY.md) and [`conformance/causal-execution-v0.3.json`](conformance/causal-execution-v0.3.json).
 
 ## Conformance levels
 
@@ -62,7 +70,7 @@ Outcome, state and execution-validity semantics match the specification.
 
 ### Level 3 — Integrity
 
-Receipts, hashes, timestamps, provenance references, causal-binding references and continuous-integrity transitions are preserved and testable.
+Receipts, hashes, timestamps, provenance references, governing-contract bindings, persistent-state standing references, causal-binding references and continuous-integrity transitions are preserved and testable.
 
 ### Level 4 — Operational
 
