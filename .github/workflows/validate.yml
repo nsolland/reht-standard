@@ -2,7 +2,7 @@ name: Validate standard
 
 on:
   push:
-    branches: [main]
+    branches: [main, "feat/**", "fix/**"]
   pull_request:
 
 permissions:
@@ -44,7 +44,27 @@ jobs:
           test -f CONFORMANCE.md
           test -f SECURITY.md
           test -f CONTRIBUTING.md
+          test -f GOVERNANCE.md
           test -f LICENSE
           test -f NOTICE
           test -f TRADEMARKS.md
           test -f PUBLICATION_STATUS.md
+          test -f docs/STATE_AND_CONTRACT_CONTINUITY.md
+          test -f conformance/causal-execution-v0.3.json
+      - name: Verify v0.3 version surface
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          expected = "0.3.0-draft.1"
+          spec = Path("SPECIFICATION.md").read_text(encoding="utf-8")
+          conformance = Path("CONFORMANCE.md").read_text(encoding="utf-8")
+          vector = json.loads(Path("conformance/causal-execution-v0.3.json").read_text(encoding="utf-8"))
+          if f"Version: {expected}" not in spec:
+              raise SystemExit("SPECIFICATION.md version mismatch")
+          if f"Version: {expected}" not in conformance:
+              raise SystemExit("CONFORMANCE.md version mismatch")
+          if vector.get("version") != expected:
+              raise SystemExit("v0.3 conformance vector version mismatch")
+          PY

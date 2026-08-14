@@ -1,0 +1,56 @@
+{
+  "profile": "reht.causal-execution-continuity",
+  "version": "0.3.0-draft.1",
+  "invariant": "Execution must prove continuity of the evaluated action, authority, governed state, consequence-relevant persistent inputs and material governing contract state.",
+  "wall_clock_role": "forensic_policy_context_not_execution_validity",
+  "cases": [
+    {
+      "id": "CEC-POS-001",
+      "type": "positive_control",
+      "condition": "execution envelope matches; causal lineage continuous; scope valid; receipt continuity intact; persistent inputs retain current standing; governing contract binding unchanged; replay constraints satisfied",
+      "expected": "MAY_CONTINUE_REHT_EVALUATION"
+    },
+    {
+      "id": "CEC-NEG-DRIFT-001",
+      "type": "drift",
+      "condition": "execution-relevant state differs from bound state",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-SCOPE-001",
+      "type": "expired_scope",
+      "condition": "authority, delegation, purpose or explicit scope is invalid at execution",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-RECEIPT-001",
+      "type": "broken_receipt_continuity",
+      "condition": "required receipt or evidence lineage contains an unproven gap",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-AUTH-001",
+      "type": "stale_authority",
+      "condition": "relevant authority mutation or revocation causally intervened after evaluation",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-REPLAY-001",
+      "type": "replay",
+      "condition": "single-use or consumption-bound action/binding has already been consumed",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-PERSIST-001",
+      "type": "persistent_state_self_promotion",
+      "condition": "material persisted input is exposed to a later worker/session as operative context without current governed standing for the exact material",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-CONTRACT-001",
+      "type": "governing_contract_drift",
+      "condition": "a material governing contract, policy set or mandate has been amended, terminated, replaced or otherwise changed since evaluation",
+      "expected": "NON_EXECUTABLE"
+    }
+  ]
+}
