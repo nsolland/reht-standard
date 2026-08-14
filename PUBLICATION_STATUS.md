@@ -15,34 +15,37 @@ The public repository includes:
 - normative REHT-specific specification material;
 - conformance requirements and machine-readable vectors;
 - threat/boundary documentation;
+- public GitHub Actions validation;
 - Apache-2.0 license, notice and trademark terms;
 - contribution and security guidance.
 
 It does not include VALO production runtime code, proprietary evaluation logic, customer integrations, internal thresholds, deployment secrets or private collaboration material.
 
+## Release state
+
+The current specification line is `0.2.0-draft.1`. The canonical next prerelease is `v0.2.0-draft.1` on an exact green release head.
+
+An existing historical `v0.1.0` tag predates the current release discipline and MUST NOT be moved, deleted or retargeted. Corrective versioning is forward-only.
+
+A release is considered published only when the specification version, tag and exact commit are aligned and the validation workflow is green on that commit.
+
 ## Versioned-release gate
 
-Before describing an exact snapshot as a published release, verify:
+Before publishing an exact snapshot, verify:
 
 1. no credentials, tokens, private keys or customer data are tracked;
 2. no private partner correspondence or unpublished third-party material is present;
 3. every external citation may be redistributed or is referenced rather than copied improperly;
 4. README, specification and conformance documents agree on scope and ownership;
 5. `reht-standard` is presented as a standards/conformance source, not the canonical VALO runtime implementation;
-6. current execution-architecture references do not restore historical V5-Core/RACS ownership errors;
-7. CI/conformance checks are green on the exact release head;
+6. current execution-architecture references do not restore historical ownership errors;
+7. validation/conformance checks are green on the exact release head;
 8. license/NOTICE/TRADEMARKS files are present and internally consistent;
-9. an exact release tag/version/hash is selected.
+9. the exact release tag/version/hash is recorded.
 
 ## Release-state vocabulary
 
-Use these terms precisely:
-
-- **public-release candidate** — content intended for public release but repository may still be private;
 - **public repository** — GitHub metadata reports visibility `public`;
-- **published release** — a public repository has an identified tagged/versioned release artifact;
+- **prerelease candidate** — repository content is prepared for an identified draft version but the exact release artifact has not yet been published;
+- **published prerelease** — public repository plus an identified prerelease tag/version/hash on a validated release head;
 - **conformant implementation** — a separate implementation has passed the applicable conformance requirements; repository publication alone does not establish this.
-
-## Current blocker
-
-There is no repository-visibility blocker. The repository is public. The remaining step for a formally published release is to select and validate an exact version/tag/hash on a green release head.
