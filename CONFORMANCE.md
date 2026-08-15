@@ -30,6 +30,8 @@ A conforming implementation MUST:
 24. Treat amendment, termination, replacement or material drift of an applicable governing contract/policy as invalidating reliance on the prior result.
 25. Distinguish material execution constraints established for the current evaluation from material constraints known to be required but unresolved or unavailable; a known unresolved required constraint MUST NOT yield `ADMISSIBLE`.
 26. Treat any material post-evaluation action transformation as a new candidate action requiring fresh evaluation before consequence.
+27. When confidential or hardware-attested execution is a material requirement, bind the normalized execution-substrate evidence by deterministic digest or equivalent integrity-verifiable reference.
+28. Re-establish any required confidential-execution substrate immediately before consequence and fail closed when the required substrate evidence is missing, unresolved, invalid, revoked, stale, expired or materially mismatched.
 
 A conforming producer MUST NOT:
 
@@ -43,15 +45,17 @@ A conforming producer MUST NOT:
 - reuse a prior conformance/admissibility result after material governing-contract drift without fresh evaluation;
 - let a materially rewritten, clamped, substituted or otherwise transformed action inherit the source action's admissibility result or receipt;
 - represent an unexpired timestamp as sufficient proof of execution validity;
+- treat TEE, confidential-compute attestation, hardware identity, measurement or verifier output as execution authority, approval or clearance;
+- allow required confidential-execution evidence to bypass the same execution-continuity and governed-effect boundary as the evaluated action;
 - alter evidence references after receipt creation without creating a new receipt;
 - claim REHT compatibility while using incompatible outcome semantics;
 - claim conformance when negative refusal cases are not enforced at the execution boundary.
 
 ## Causal execution conformance vector
 
-The v0.4 required interoperability vector consists of one positive control and nine negative cases:
+The v0.4 required interoperability vector consists of one positive control and ten negative cases:
 
-1. Positive control — matching independently re-derived envelope, established required constraints and valid continuity permit REHT evaluation to continue; this does not force `ADMISSIBLE`.
+1. Positive control — matching independently re-derived envelope, established required constraints, matching required confidential-execution binding and valid continuity permit REHT evaluation to continue; this does not force `ADMISSIBLE`.
 2. Drift — material execution-state mismatch is non-executable.
 3. Expired scope — invalid authority/delegation/purpose/scope is non-executable.
 4. Broken receipt continuity — unproven required lineage is non-executable.
@@ -61,8 +65,9 @@ The v0.4 required interoperability vector consists of one positive control and n
 8. Governing-contract drift — amendment, termination or replacement of a material governing contract invalidates the prior continuation.
 9. Required constraint unresolved — a material execution constraint known to be required but not established is non-executable.
 10. Post-evaluation action transformation — a materially revised/clamped/rewritten/substituted action cannot inherit the source result; fresh evaluation is required.
+11. Confidential-execution continuity failure — when confidential execution is required, missing, unresolved, stale, revoked, expired or mismatched substrate evidence is non-executable.
 
-See [`docs/CAUSAL_EXECUTION_CONTINUITY.md`](docs/CAUSAL_EXECUTION_CONTINUITY.md), [`docs/STATE_AND_CONTRACT_CONTINUITY.md`](docs/STATE_AND_CONTRACT_CONTINUITY.md), [`docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md`](docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md) and [`conformance/causal-execution-v0.4.json`](conformance/causal-execution-v0.4.json).
+See [`docs/CAUSAL_EXECUTION_CONTINUITY.md`](docs/CAUSAL_EXECUTION_CONTINUITY.md), [`docs/STATE_AND_CONTRACT_CONTINUITY.md`](docs/STATE_AND_CONTRACT_CONTINUITY.md), [`docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md`](docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md), [`docs/CONFIDENTIAL_EXECUTION_CONTINUITY.md`](docs/CONFIDENTIAL_EXECUTION_CONTINUITY.md) and [`conformance/causal-execution-v0.4.json`](conformance/causal-execution-v0.4.json).
 
 ## Conformance levels
 
@@ -76,7 +81,7 @@ Outcome, state, constraint-completeness and execution-validity semantics match t
 
 ### Level 3 — Integrity
 
-Receipts, hashes, timestamps, provenance references, governing-contract bindings, persistent-state standing references, constraint-resolution references, causal-binding references and continuous-integrity transitions are preserved and testable.
+Receipts, hashes, timestamps, provenance references, governing-contract bindings, persistent-state standing references, constraint-resolution references, confidential-execution substrate bindings, causal-binding references and continuous-integrity transitions are preserved and testable.
 
 ### Level 4 — Operational
 
