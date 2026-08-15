@@ -32,9 +32,18 @@
     "purpose_ref": {"type": "string", "minLength": 1},
     "policy_version": {"type": "string"},
     "authority_snapshot_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "execution_substrate_binding_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "execution_substrate_evidence_ref": {"type": "string", "minLength": 1},
     "issued_at": {"type": "string", "format": "date-time"},
     "expires_at": {"type": "string", "format": "date-time"},
     "nonce": {"type": "string", "minLength": 16},
     "constraints": {"type": "object", "additionalProperties": true}
+  },
+  "dependentRequired": {
+    "execution_substrate_binding_digest": ["execution_substrate_evidence_ref"],
+    "execution_substrate_evidence_ref": ["execution_substrate_binding_digest"]
   }
 }
