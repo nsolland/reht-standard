@@ -1,13 +1,13 @@
 {
   "profile": "reht.causal-execution-continuity",
   "version": "0.4.0-draft.1",
-  "invariant": "Execution must prove continuity of the evaluated action, authority, governed state, consequence-relevant persistent inputs, material governing contract state and required material execution constraints; transformed actions require fresh evaluation.",
+  "invariant": "Execution must prove continuity of the evaluated action, authority, governed state, consequence-relevant persistent inputs, material governing contract state, required material execution constraints and any required confidential-execution substrate binding; transformed actions require fresh evaluation.",
   "wall_clock_role": "forensic_policy_context_not_execution_validity",
   "cases": [
     {
       "id": "CEC-POS-001",
       "type": "positive_control",
-      "condition": "execution envelope matches; causal lineage continuous; scope valid; receipt continuity intact; persistent inputs retain current standing; governing contract binding unchanged; all required material constraints established; replay constraints satisfied",
+      "condition": "execution envelope matches; causal lineage continuous; scope valid; receipt continuity intact; persistent inputs retain current standing; governing contract binding unchanged; all required material constraints established; any required confidential-execution substrate binding is current and exact; replay constraints satisfied",
       "expected": "MAY_CONTINUE_REHT_EVALUATION"
     },
     {
@@ -63,6 +63,12 @@
       "type": "post_evaluation_action_transformation",
       "condition": "the action presented for consequence is materially transformed, clamped, rewritten or substituted after the current admissibility result was produced",
       "expected": "FRESH_EVALUATION_REQUIRED"
+    },
+    {
+      "id": "CEC-NEG-SUBSTRATE-001",
+      "type": "confidential_execution_continuity_failure",
+      "condition": "confidential execution is a material requirement and the execution-boundary substrate evidence is missing, unresolved, invalid, revoked, stale, expired or materially mismatched with the evaluated substrate binding",
+      "expected": "NON_EXECUTABLE"
     }
   ]
 }
