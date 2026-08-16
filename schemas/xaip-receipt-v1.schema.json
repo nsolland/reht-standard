@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reht.dev/schemas/interop/xaip-receipt-v1.schema.json",
+  "title": "XAIP Receipt v1 Interoperability Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "formatVersion",
+    "agentDid",
+    "callerDid",
+    "toolName",
+    "taskHash",
+    "resultHash",
+    "success",
+    "latencyMs",
+    "failureType",
+    "timestamp",
+    "signature"
+  ],
+  "properties": {
+    "formatVersion": {
+      "type": "string",
+      "const": "1"
+    },
+    "agentDid": {
+      "type": "string",
+      "pattern": "^did:[a-z0-9]+:.+$"
+    },
+    "callerDid": {
+      "type": "string",
+      "pattern": "^did:[a-z0-9]+:.+$"
+    },
+    "toolName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "taskHash": {
+      "$ref": "#/$defs/sha256_hex"
+    },
+    "resultHash": {
+      "$ref": "#/$defs/sha256_hex"
+    },
+    "success": {
+      "type": "boolean"
+    },
+    "latencyMs": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "failureType": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "signature": {
+      "$ref": "#/$defs/ed25519_hex"
+    },
+    "callerSignature": {
+      "$ref": "#/$defs/ed25519_hex"
+    },
+    "toolMetadata": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "success": {
+            "const": true
+          }
+        },
+        "required": ["success"]
+      },
+      "then": {
+        "properties": {
+          "failureType": {
+            "const": ""
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "success": {
+            "const": false
+          }
+        },
+        "required": ["success"]
+      },
+      "then": {
+        "properties": {
+          "failureType": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256_hex": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "ed25519_hex": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{128}$"
+    }
+  },
+  "x-reht-profile-note": "Strict structural profile for draft-xkumakichi-xaip-receipts-03 formatVersion 1. Cryptographic signature verification, DID resolution, JCS canonicalization and hash-preimage verification remain required implementation checks beyond JSON Schema."
+}
