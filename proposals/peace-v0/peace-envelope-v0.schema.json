@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/peace/v0/peace-envelope-v0.schema.json",
+  "title": "PEACE Protocol Envelope v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "kind", "actor", "state_root", "payload"],
+  "properties": {
+    "protocol": {"const": "PEACE/0"},
+    "kind": {
+      "enum": [
+        "STANDING_STATE",
+        "AUTHORITY_STATE",
+        "DELEGATION",
+        "GOVERNED_PROJECTION",
+        "DISCLOSURE_AUTHORIZATION",
+        "ROUTE_PROPOSAL",
+        "CANDIDATE_COMMITMENT",
+        "CONSEQUENCE_ACTION",
+        "AUTHORIZATION_DECISION",
+        "SETTLEMENT_INTENT",
+        "EFFECT_RECEIPT",
+        "EVIDENCE_EVENT",
+        "STATE_TRANSITION",
+        "REPLICA_MANIFEST",
+        "RECOVERY_MANIFEST"
+      ]
+    },
+    "actor": {"type": "string", "minLength": 1},
+    "state_root": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "event_position": {"type": "integer", "minimum": 0},
+    "purpose": {"type": "string", "minLength": 1},
+    "destination": {"type": "string", "minLength": 1},
+    "authority_state_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "standing_state_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "object_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "lineage_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "valid_from": {"type": "string"},
+    "valid_until": {"type": "string"},
+    "payload": {
+      "type": "object",
+      "description": "Kind-specific logical fields. Floating-point numbers are forbidden in canonical digest objects."
+    }
+  }
+}
