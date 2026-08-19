@@ -26,7 +26,7 @@ jobs:
         run: python -m pip install "pytest>=8,<9" xml2rfc
       - name: Run REHT conformance tests
         working-directory: ietf
-        run: python -m pytest test_reht_conformance.py -q
+        run: python -m pytest -q
       - name: Validate and render RFCXML v3
         working-directory: ietf
         run: |
