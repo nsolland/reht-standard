@@ -1,0 +1,136 @@
+{
+  "protocol": "PEACE/0",
+  "profile": "core-v0",
+  "semantic_vectors": [
+    {
+      "id": "effect-valid-001",
+      "given": {
+        "actor_is_authority_root": true,
+        "standing_current": true,
+        "delegation_active": true,
+        "purpose_matches": true,
+        "scope_matches": true,
+        "state_current": true,
+        "authority_current": true,
+        "exact_action_matches": true,
+        "fresh_effect_authorized": true
+      },
+      "expected": {"authorization": "PASS", "effect_allowed": true}
+    },
+    {
+      "id": "effect-revoked-001",
+      "given": {
+        "delegation_active": false,
+        "authority_current": false,
+        "fresh_effect_authorized": false
+      },
+      "expected": {"authorization": "DENY", "effect_allowed": false, "state_mutation": "NONE"}
+    },
+    {
+      "id": "effect-stale-state-001",
+      "given": {
+        "state_current": false,
+        "authority_current": true,
+        "exact_action_matches": true
+      },
+      "expected": {"authorization": "DENY", "effect_allowed": false, "state_mutation": "NONE"}
+    },
+    {
+      "id": "effect-action-drift-001",
+      "given": {
+        "fresh_effect_authorized": true,
+        "authorized_action_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "effect_action_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+      },
+      "expected": {"effect_allowed": false, "reason": "EXACT_ACTION_MISMATCH"}
+    },
+    {
+      "id": "worker-bypass-001",
+      "given": {
+        "worker_has_candidate": true,
+        "worker_attempts_direct_effect": true,
+        "fresh_effect_authorized": false
+      },
+      "expected": {"effect_allowed": false, "reason": "NO_DIRECT_EFFECT_PATH"}
+    },
+    {
+      "id": "candidate-not-decision-001",
+      "given": {
+        "worker_output_exists": true,
+        "worker_output_type": "candidate",
+        "fresh_effect_authorized": false
+      },
+      "expected": {"decision_created": false, "effect_allowed": false, "reason": "CANDIDATE_NE_DECISION"}
+    },
+    {
+      "id": "routing-not-authority-001",
+      "given": {
+        "router_selected_provider": "provider:fast",
+        "provider_meets_capability": true,
+        "provider_claims_authority": true
+      },
+      "expected": {"authority_created": false, "reason": "ROUTING_NE_AUTHORITY"}
+    },
+    {
+      "id": "settlement-bypass-001",
+      "given": {
+        "payment_rail_available": true,
+        "payment_credentials_valid": true,
+        "fresh_economic_action_authorized": false
+      },
+      "expected": {"settlement_allowed": false, "reason": "FRESH_AUTHORITY_AT_EFFECT"}
+    },
+    {
+      "id": "evidence-not-state-001",
+      "given": {
+        "evidence_valid": true,
+        "evidence_tamper_evident": true,
+        "admission_decision": "NONE"
+      },
+      "expected": {"authoritative_state_mutation": "NONE", "reason": "EVIDENCE_NE_STATE"}
+    },
+    {
+      "id": "replica-self-promotion-001",
+      "given": {
+        "replica_has_newest_bytes": true,
+        "lineage_admitted": false,
+        "replica_claims_authority": true
+      },
+      "expected": {"replica_becomes_sovereign": false, "reason": "REPLICA_NE_SOVEREIGN"}
+    },
+    {
+      "id": "replica-conflict-001",
+      "given": {
+        "lineage_a": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lineage_b": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "common_admitted_parent": true,
+        "both_claim_current": true
+      },
+      "expected": {"silent_merge": false, "resolution_required": true}
+    },
+    {
+      "id": "recovery-provider-transfer-001",
+      "given": {
+        "access_lost": true,
+        "single_recovery_provider_claims_actor": true,
+        "independent_quorum_established": false
+      },
+      "expected": {"recovery_allowed": false, "authority_transferred": false, "reason": "RECOVERY_NE_TRANSFER"}
+    },
+    {
+      "id": "recovery-valid-001",
+      "given": {
+        "same_logical_actor": true,
+        "old_credentials_revoked": true,
+        "independent_recovery_quorum_valid": true,
+        "same_admitted_history": true,
+        "replacement_infrastructure_used": true
+      },
+      "expected": {
+        "actor_replaced": false,
+        "authority_source_changed": false,
+        "continuity_preserved": true
+      }
+    }
+  ]
+}
