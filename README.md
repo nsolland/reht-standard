@@ -6,9 +6,9 @@
 
 **A public standard for governed AI-mediated actions before execution.**
 
-> **Hosting status — 2026-08-14:** this repository is public. It contains the vendor-neutral REHT standards and conformance surface under Apache License 2.0. See [PUBLICATION_STATUS.md](PUBLICATION_STATUS.md).
+> **Hosting status — 2026-08-20:** this repository is public. It contains the vendor-neutral REHT standards and conformance surface under Apache License 2.0. See [PUBLICATION_STATUS.md](PUBLICATION_STATUS.md).
 
-[![status](https://img.shields.io/badge/status-draft%20v0.4-8a6d3b)](CHANGELOG.md)
+[![status](https://img.shields.io/badge/status-draft%20v0.5-8a6d3b)](CHANGELOG.md)
 [![validation](https://github.com/nsolland/reht-standard/actions/workflows/validate.yml/badge.svg)](https://github.com/nsolland/reht-standard/actions/workflows/validate.yml)
 [![publication](https://img.shields.io/badge/repository-public-1f2937)](PUBLICATION_STATUS.md)
 [![license](https://img.shields.io/badge/license-Apache%202.0-1f2937)](LICENSE)
@@ -43,12 +43,11 @@ The central execution invariant is:
 
 > **Authorization is not a durable truth. At execution, the system must prove that this is still the thing that was approved.**
 
-v0.4 makes two further implications explicit:
+v0.5 makes one further boundary explicit:
 
-- **Known material constraint gaps fail closed.** If an execution-relevant constraint is known to be required but remains unresolved or unavailable, the action cannot be `ADMISSIBLE`.
-- **A rewritten action is a new action.** Deterministic clamping, rewritten tool arguments, substituted targets or other material post-evaluation transformations require fresh REHT evaluation before consequence.
+- **Cryptographic receipt validity is not execution authority.** External verifier/runtime/policy receipts materially relied upon for consequence must retain their verifier/issuer, intended audience/executor, exact action/request/material-parameter, policy/configuration, integrity/trust, freshness and replay/consumption bindings. Even a valid receipt cannot override stale authority or changed governed state.
 
-These extend the v0.3 continuity rules: persistence does not confer standing, and material governing contracts cannot drift silently between evaluation and consequence.
+This extends the v0.4 rules: known material constraint gaps fail closed and a materially rewritten action is a new candidate requiring fresh evaluation. The v0.3 continuity rules also remain: persistence does not confer standing, and material governing contracts cannot drift silently between evaluation and consequence.
 
 A prior admissibility result does not remain executable merely because a wall-clock interval has not expired. Where evaluation and execution are separated, the executor must independently re-establish the execution-relevant action, authority, governed state, material constraints and applicable governing basis and fail closed if continuity cannot be proven.
 
@@ -65,7 +64,7 @@ REHT asks the operational question that matters at consequence:
 
 - **Is this exact action still admissible to execute now, under the state, authority, constraints and governing basis that actually exist at execution?**
 
-That distinction prevents a prior verdict, batch approval, grant, capability, persisted instruction, stale contract or post-check rewrite from becoming a bearer token whose meaning silently survives drift.
+That distinction prevents a prior verdict, batch approval, grant, capability, persisted instruction, stale contract, external verification receipt or post-check rewrite from becoming a bearer token whose meaning silently survives drift.
 
 ## 3. Architecture
 
@@ -80,7 +79,7 @@ REHT evaluation
    ↓
 Bound admissibility result
    ↓
-State + contract + constraint continuity
+State + contract + constraint + evidence continuity
    ↓
 Causal execution continuity
    ↓
@@ -118,14 +117,22 @@ See [`docs/STATE_AND_CONTRACT_CONTINUITY.md`](docs/STATE_AND_CONTRACT_CONTINUITY
 
 ### 3.5 Constraint observability and action transformation
 
-v0.4 adds two more refusal classes:
+v0.4 added two more refusal classes:
 
 - a material execution constraint known to be required but unresolved;
 - a materially transformed action presented under the source action's prior result.
 
 A safety or control layer may propose a replacement action. It cannot self-authorize that replacement by rewriting an already evaluated action. The replacement returns as a new candidate for fresh REHT evaluation.
 
-See [`docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md`](docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md) and [`conformance/causal-execution-v0.4.json`](conformance/causal-execution-v0.4.json).
+See [`docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md`](docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md).
+
+### 3.6 Verification evidence binding
+
+v0.5 makes external verification receipts a first-class governed evidence surface without making any external receipt format a dependency.
+
+When such evidence is materially relied upon, REHT requires the relevant verifier/issuer, audience/executor, action/request/material-parameter, policy/configuration, trust/integrity, freshness and replay/consumption bindings to hold. A matching receipt permits the evidence to remain an input; it does not itself authorize execution.
+
+See [`docs/VERIFICATION_EVIDENCE_BINDING.md`](docs/VERIFICATION_EVIDENCE_BINDING.md), [`docs/CCS_RECEIPT_BINDING_CONVERGENCE.md`](docs/CCS_RECEIPT_BINDING_CONVERGENCE.md) and [`conformance/causal-execution-v0.5.json`](conformance/causal-execution-v0.5.json).
 
 ## 4. Public contracts
 
@@ -143,7 +150,8 @@ The standard defines public contracts and conformance semantics for:
 - Causal Execution Continuity;
 - Persistent State Continuity;
 - Governing Contract Continuity;
-- Constraint Observability and Action Transformation.
+- Constraint Observability and Action Transformation;
+- Verification Evidence Binding.
 
 ## 5. Admissibility outcomes
 
@@ -166,20 +174,21 @@ A known unresolved required material constraint must yield `REQUIRES_STEP_UP` wh
 1. An actor proposes an action as an Action Envelope.
 2. Authority, evidence, policy, governing-contract references, required material constraints and governed-state context are assembled.
 3. Consequence-relevant persisted material must have current governed standing; persistence alone is insufficient.
-4. Known unresolved required material constraints fail closed before `ADMISSIBLE` can be returned.
-5. An evaluator computes an Admissibility Result bound to the exact candidate action.
-6. If any control or orchestration layer materially rewrites the action, that replacement becomes a new candidate and returns to step 2 for fresh evaluation.
-7. If evaluation and execution are separated, the result is bound to a deterministic execution envelope.
-8. Immediately before consequence, the executor independently re-derives the execution-relevant envelope and causal lineage.
-9. Any material state mismatch, stale authority, persistent-state standing failure, governing-contract drift, unresolved required constraint, replay, broken required continuity, invalid scope or action transformation is non-executable under the prior result.
-10. A matching binding permits REHT evaluation to continue; REHT retains final clearance semantics.
-11. Execution produces a receipt bound to the governed decision and relevant continuity evidence.
+4. Materially relied-upon external verification evidence must retain the required verifier/issuer, audience/executor, action/request/material-parameter, policy/configuration, trust/integrity, freshness and replay/consumption bindings.
+5. Known unresolved required material constraints fail closed before `ADMISSIBLE` can be returned.
+6. An evaluator computes an Admissibility Result bound to the exact candidate action.
+7. If any control or orchestration layer materially rewrites the action, that replacement becomes a new candidate and returns to step 2 for fresh evaluation.
+8. If evaluation and execution are separated, the result is bound to a deterministic execution envelope.
+9. Immediately before consequence, the executor independently re-derives the execution-relevant envelope and causal lineage.
+10. Any material state mismatch, stale authority, persistent-state standing failure, governing-contract drift, unresolved required constraint, external-evidence binding failure, replay, broken required continuity, invalid scope or action transformation is non-executable under the prior result.
+11. A matching binding permits REHT evaluation to continue; REHT retains final clearance semantics.
+12. Execution produces a receipt bound to the governed decision and relevant continuity evidence.
 
 ## 7. Time semantics
 
 Existing time fields such as `timestamp`, `observed_at`, `evaluated_at`, `valid_from`, `valid_until` and `expires_at` remain useful for policy, scope, audit, correlation and forensics.
 
-They are not sufficient proof that a prior admissibility remains executable across independently owned systems.
+They are not sufficient proof that a prior admissibility remains executable across independently owned systems. An unexpired external receipt freshness window likewise cannot override an intervening authority or governed-state invalidation.
 
 ## 8. Start here
 
@@ -190,7 +199,8 @@ They are not sufficient proof that a prior admissibility remains executable acro
 - [`docs/CAUSAL_EXECUTION_CONTINUITY.md`](docs/CAUSAL_EXECUTION_CONTINUITY.md) — causal execution profile
 - [`docs/STATE_AND_CONTRACT_CONTINUITY.md`](docs/STATE_AND_CONTRACT_CONTINUITY.md) — v0.3 persistence/contract profile
 - [`docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md`](docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md) — v0.4 constraint/transformation profile
-- [`conformance/causal-execution-v0.4.json`](conformance/causal-execution-v0.4.json) — machine-readable v0.4 vector
+- [`docs/VERIFICATION_EVIDENCE_BINDING.md`](docs/VERIFICATION_EVIDENCE_BINDING.md) — v0.5 external verification-evidence profile
+- [`conformance/causal-execution-v0.5.json`](conformance/causal-execution-v0.5.json) — machine-readable v0.5 vector
 - [`docs/BOUNDARIES.md`](docs/BOUNDARIES.md) — public boundary
 - [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md) — threat model
 - [`CANONICAL.md`](CANONICAL.md) — REHT/RACS standards ownership
@@ -199,11 +209,11 @@ They are not sufficient proof that a prior admissibility remains executable acro
 
 Schema validation is necessary but not sufficient. REHT conformance includes semantic refusal behavior at the execution boundary.
 
-The v0.4 causal execution vector requires one positive control and nine negative cases. An implementation that accepts the happy path but fails to reject state drift, invalid scope, broken required continuity, stale authority, replay, persistent-state self-promotion, governing-contract drift, unresolved required material constraints or post-evaluation action transformation is not conformant to that profile.
+The v0.5 causal execution vector requires one positive control and sixteen negative cases. An implementation that accepts the happy path but fails to reject state drift, invalid scope, broken required continuity, stale authority, replay, persistent-state self-promotion, governing-contract drift, unresolved required material constraints, post-evaluation action transformation, confidential-execution continuity failure or the required external verification-evidence binding failures is not conformant to that profile.
 
 ## 10. Independence
 
-REHT does not require any specific identity, authority, evidence, runtime, capability, receipt, memory, contract store or causal-time implementation.
+REHT does not require any specific identity, authority, evidence, runtime, capability, receipt, memory, contract store, cryptographic receipt format or causal-time implementation.
 
 A third-party system may map its own binding reference into the REHT execution boundary while retaining independent ownership of its architecture, release cycle and IP.
 
@@ -215,15 +225,15 @@ Public repository visibility does not imply that every VALO implementation detai
 
 ## 12. Versioning
 
-Current status: **`0.4.0-draft.1` prerelease candidate / public repository**.
+Current status: **`0.5.0-draft.1` prerelease candidate / public repository**.
 
-This is a minor-version increase because it adds substantive normative behavior and negative conformance cases while preserving the v0.3 continuity model.
+This is a minor-version increase because it adds substantive normative external-evidence binding behavior and negative conformance cases while preserving the existing REHT authority and causal-continuity model.
 
 Specification versions, public-package versions and private runtime versions are independent compatibility surfaces. They do not need to match numerically.
 
 Historical tags are immutable. Changes move forward through new version/prerelease identifiers; they do not rewrite prior releases.
 
-The next published prerelease, if accepted, is `v0.4.0-draft.1` on an exact green release head.
+The next published prerelease, if accepted, is `v0.5.0-draft.1` on an exact green release head.
 
 See [`GOVERNANCE.md`](GOVERNANCE.md) for version classes and proposal/acceptance rules.
 
