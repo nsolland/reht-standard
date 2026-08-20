@@ -2,6 +2,29 @@
 
 All notable specification changes are recorded here.
 
+## 0.5.0-draft.1 — 2026-08-20
+
+Added:
+
+- normative Verification Evidence Binding profile for external verifier/runtime/policy receipts materially relied upon before consequence;
+- explicit verifier/issuer and intended audience/executor binding semantics;
+- exact action/request/material-parameter binding and deterministic policy/configuration binding requirements;
+- trust-basis, freshness and replay/consumption requirements for materially relied-upon external verification evidence;
+- explicit rule that cryptographic receipt validity is evidence integrity, not current authority, admissibility or execution permission;
+- six negative conformance cases covering audience mismatch, issuer/key mismatch, configuration mismatch, action/request mismatch, freshness failure and verification-evidence replay;
+- `docs/VERIFICATION_EVIDENCE_BINDING.md` and `docs/CCS_RECEIPT_BINDING_CONVERGENCE.md`;
+- proposal record #24.
+
+Changed:
+
+- specification advances from `0.4.0-draft.1` to `0.5.0-draft.1` because the required external-evidence binding and refusal surface expands materially while preserving existing REHT authority and continuity semantics;
+- causal execution continuity now treats materially relied-upon external verification evidence as governed evidence whose bindings must remain valid at execution;
+- conformance vector advances to `conformance/causal-execution-v0.5.json`; prior vectors remain historical draft evidence.
+
+Research/standards context:
+
+- IETF Internet-Draft `draft-correctover-ccs-01`, *Correctover Conformance Shape (CCS): A Receipt and Binding Specification for Agent Runtime Verification* (2026-08-05), informs the explicit issuer, audience, action/request, configuration, freshness and anti-replay binding surface. REHT adopts those interoperability semantics without adopting CCS as an authorization framework or dependency.
+
 ## 0.4.0-draft.1 — 2026-08-14
 
 Added:
