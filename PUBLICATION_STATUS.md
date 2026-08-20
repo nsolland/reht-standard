@@ -1,6 +1,6 @@
 # Publication Status
 
-Status date: 2026-08-14
+Status date: 2026-08-20
 
 ## Current fact
 
@@ -24,11 +24,11 @@ It does not include VALO production runtime code, proprietary evaluation logic, 
 
 ## Release state
 
-The current specification line is `0.4.0-draft.1`. The canonical next prerelease is `v0.4.0-draft.1` on an exact green release head.
+The current specification line is `0.5.0-draft.1`. The canonical next prerelease is `v0.5.0-draft.1` on an exact green release head.
 
-The prior `0.3.0-draft.1` and `0.2.0-draft.1` lines remain historical provenance. An existing historical `v0.1.0` tag predates the current release discipline and MUST NOT be moved, deleted or retargeted. Corrective versioning is forward-only.
+The prior `0.4.0-draft.1`, `0.3.0-draft.1` and `0.2.0-draft.1` lines remain historical provenance. An existing historical `v0.1.0` tag predates the current release discipline and MUST NOT be moved, deleted or retargeted. Corrective versioning is forward-only.
 
-The v0.4 prerelease adds explicit constraint-observability refusal semantics and requires fresh evaluation after any material transformation of an already evaluated action. Proposal #13 is the normative change record for this delta.
+The v0.5 prerelease adds explicit Verification Evidence Binding semantics for materially relied-upon external verifier/runtime/policy receipts: verifier/issuer, intended audience/executor, exact action/request/material-parameter binding, deterministic policy/configuration binding, integrity/trust basis, freshness and replay/consumption state. Cryptographic validity remains evidence integrity only and does not create current authority or execution permission. Proposal #24 is the normative change record for this delta.
 
 A release is considered published only when the specification version, tag and exact commit are aligned and the validation workflow is green on that commit.
 
