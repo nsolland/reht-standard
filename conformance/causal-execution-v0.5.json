@@ -1,0 +1,110 @@
+{
+  "profile": "reht.causal-execution-continuity",
+  "version": "0.5.0-draft.1",
+  "invariant": "Execution must prove continuity of the evaluated action, authority, governed state, consequence-relevant persistent inputs, material governing contract state, required material execution constraints, any required confidential-execution substrate binding, and any materially relied-upon external verification evidence binding; transformed actions require fresh evaluation.",
+  "wall_clock_role": "forensic_policy_context_not_execution_validity",
+  "cases": [
+    {
+      "id": "CEC-POS-001",
+      "type": "positive_control",
+      "condition": "execution envelope matches; causal lineage continuous; scope valid; receipt continuity intact; persistent inputs retain current standing; governing contract binding unchanged; all required material constraints established; any required confidential-execution substrate binding is current and exact; materially relied-upon external verification evidence has trusted issuer, matching intended audience/executor, matching action/request/parameter and policy/configuration bindings, required freshness, valid integrity and unused replay/consumption state; replay constraints satisfied",
+      "expected": "MAY_CONTINUE_REHT_EVALUATION"
+    },
+    {
+      "id": "CEC-NEG-DRIFT-001",
+      "type": "drift",
+      "condition": "execution-relevant state differs from bound state",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-SCOPE-001",
+      "type": "expired_scope",
+      "condition": "authority, delegation, purpose or explicit scope is invalid at execution",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-RECEIPT-001",
+      "type": "broken_receipt_continuity",
+      "condition": "required receipt or evidence lineage contains an unproven gap",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-AUTH-001",
+      "type": "stale_authority",
+      "condition": "relevant authority mutation or revocation causally intervened after evaluation",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-REPLAY-001",
+      "type": "replay",
+      "condition": "single-use or consumption-bound action/binding has already been consumed",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-PERSIST-001",
+      "type": "persistent_state_self_promotion",
+      "condition": "material persisted input is exposed to a later worker/session as operative context without current governed standing for the exact material",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-CONTRACT-001",
+      "type": "governing_contract_drift",
+      "condition": "a material governing contract, policy set or mandate has been amended, terminated, replaced or otherwise changed since evaluation",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-CONSTRAINT-001",
+      "type": "required_constraint_unresolved",
+      "condition": "a material execution constraint known to be required is unresolved, unavailable or not established at evaluation/execution",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-TRANSFORM-001",
+      "type": "post_evaluation_action_transformation",
+      "condition": "the action presented for consequence is materially transformed, clamped, rewritten or substituted after the current admissibility result was produced",
+      "expected": "FRESH_EVALUATION_REQUIRED"
+    },
+    {
+      "id": "CEC-NEG-SUBSTRATE-001",
+      "type": "confidential_execution_continuity_failure",
+      "condition": "confidential execution is a material requirement and the execution-boundary substrate evidence is missing, unresolved, invalid, revoked, stale, expired or materially mismatched with the evaluated substrate binding",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EVIDENCE-AUDIENCE-001",
+      "type": "verification_evidence_audience_mismatch",
+      "condition": "materially relied-upon external verification evidence is scoped to a different intended audience or executor",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EVIDENCE-ISSUER-001",
+      "type": "verification_evidence_issuer_or_key_mismatch",
+      "condition": "materially relied-upon external verification evidence has an unexpected issuer/verifier or an untrusted, substituted or no-longer-accepted signing/verification key",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EVIDENCE-CONFIG-001",
+      "type": "verification_evidence_configuration_mismatch",
+      "condition": "the policy/configuration identity, version or digest bound to materially relied-upon external verification evidence does not match the verification state required by the current governed context",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EVIDENCE-ACTION-001",
+      "type": "verification_evidence_action_binding_mismatch",
+      "condition": "the action, request or material parameters presented for execution do not match the corresponding bindings in materially relied-upon external verification evidence",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EVIDENCE-FRESHNESS-001",
+      "type": "verification_evidence_freshness_failure",
+      "condition": "applicable policy requires external verification evidence freshness and the evidence is stale or expired, or an intervening authority/state change invalidates reliance despite an unexpired freshness window",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EVIDENCE-REPLAY-001",
+      "type": "verification_evidence_replay",
+      "condition": "single-use external verification evidence presents a previously seen nonce/sequence or previously consumed evidence binding",
+      "expected": "NON_EXECUTABLE"
+    }
+  ]
+}
