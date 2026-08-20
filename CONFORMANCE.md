@@ -1,6 +1,6 @@
 # REHT Conformance
 
-Version: 0.4.0-draft.1
+Version: 0.5.0-draft.1
 
 A conforming implementation MUST:
 
@@ -32,6 +32,9 @@ A conforming implementation MUST:
 26. Treat any material post-evaluation action transformation as a new candidate action requiring fresh evaluation before consequence.
 27. When confidential or hardware-attested execution is a material requirement, bind the normalized execution-substrate evidence by deterministic digest or equivalent integrity-verifiable reference.
 28. Re-establish any required confidential-execution substrate immediately before consequence and fail closed when the required substrate evidence is missing, unresolved, invalid, revoked, stale, expired or materially mismatched.
+29. When materially relying on an external verification receipt or equivalent evidence, establish the verifier/issuer identity, intended executor/audience where scoped, exact action/request and material-parameter binding, deterministic governing policy/configuration binding, integrity/trust basis, applicable freshness and replay/consumption state.
+30. Treat cryptographic validity of external verification evidence as evidence integrity only; it MUST NOT by itself establish current authority, admissibility or execution permission.
+31. Fail closed when a required external verification-evidence binding is missing, untrusted, stale, replayed, consumed or materially mismatched with the current governed execution context.
 
 A conforming producer MUST NOT:
 
@@ -46,16 +49,19 @@ A conforming producer MUST NOT:
 - let a materially rewritten, clamped, substituted or otherwise transformed action inherit the source action's admissibility result or receipt;
 - represent an unexpired timestamp as sufficient proof of execution validity;
 - treat TEE, confidential-compute attestation, hardware identity, measurement or verifier output as execution authority, approval or clearance;
+- treat a cryptographically valid external verification receipt as proof that current authority or governed state remains valid;
+- accept materially relied-upon external verification evidence for the wrong audience/executor, from an untrusted issuer/key, under a mismatched policy/configuration binding, for a mismatched action/request/parameter set, or after required freshness/replay constraints fail;
 - allow required confidential-execution evidence to bypass the same execution-continuity and governed-effect boundary as the evaluated action;
+- allow required external verification evidence to bypass the same execution-continuity and governed-effect boundary as the evaluated action;
 - alter evidence references after receipt creation without creating a new receipt;
 - claim REHT compatibility while using incompatible outcome semantics;
 - claim conformance when negative refusal cases are not enforced at the execution boundary.
 
 ## Causal execution conformance vector
 
-The v0.4 required interoperability vector consists of one positive control and ten negative cases:
+The v0.5 required interoperability vector consists of one positive control and sixteen negative cases:
 
-1. Positive control — matching independently re-derived envelope, established required constraints, matching required confidential-execution binding and valid continuity permit REHT evaluation to continue; this does not force `ADMISSIBLE`.
+1. Positive control — matching independently re-derived envelope, established required constraints, matching required confidential-execution binding, valid materially relied-upon external verification-evidence bindings and valid continuity permit REHT evaluation to continue; this does not force `ADMISSIBLE`.
 2. Drift — material execution-state mismatch is non-executable.
 3. Expired scope — invalid authority/delegation/purpose/scope is non-executable.
 4. Broken receipt continuity — unproven required lineage is non-executable.
@@ -66,8 +72,14 @@ The v0.4 required interoperability vector consists of one positive control and t
 9. Required constraint unresolved — a material execution constraint known to be required but not established is non-executable.
 10. Post-evaluation action transformation — a materially revised/clamped/rewritten/substituted action cannot inherit the source result; fresh evaluation is required.
 11. Confidential-execution continuity failure — when confidential execution is required, missing, unresolved, stale, revoked, expired or mismatched substrate evidence is non-executable.
+12. Verification-evidence audience mismatch — evidence scoped to another audience/executor is non-executable.
+13. Verification-evidence issuer/key mismatch — evidence from an unexpected verifier or untrusted/substituted key is non-executable.
+14. Verification-evidence configuration mismatch — evidence bound to a materially different policy/configuration state is non-executable.
+15. Verification-evidence action mismatch — evidence whose action/request/material-parameter binding differs from the action presented for consequence is non-executable.
+16. Verification-evidence freshness failure — stale/expired evidence is non-executable where freshness is required, and an unexpired window cannot override intervening authority/state invalidation.
+17. Verification-evidence replay — reused single-use evidence, nonce/sequence or consumed evidence binding is non-executable.
 
-See [`docs/CAUSAL_EXECUTION_CONTINUITY.md`](docs/CAUSAL_EXECUTION_CONTINUITY.md), [`docs/STATE_AND_CONTRACT_CONTINUITY.md`](docs/STATE_AND_CONTRACT_CONTINUITY.md), [`docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md`](docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md), [`docs/CONFIDENTIAL_EXECUTION_CONTINUITY.md`](docs/CONFIDENTIAL_EXECUTION_CONTINUITY.md) and [`conformance/causal-execution-v0.4.json`](conformance/causal-execution-v0.4.json).
+See [`docs/CAUSAL_EXECUTION_CONTINUITY.md`](docs/CAUSAL_EXECUTION_CONTINUITY.md), [`docs/STATE_AND_CONTRACT_CONTINUITY.md`](docs/STATE_AND_CONTRACT_CONTINUITY.md), [`docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md`](docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md), [`docs/CONFIDENTIAL_EXECUTION_CONTINUITY.md`](docs/CONFIDENTIAL_EXECUTION_CONTINUITY.md), [`docs/VERIFICATION_EVIDENCE_BINDING.md`](docs/VERIFICATION_EVIDENCE_BINDING.md) and [`conformance/causal-execution-v0.5.json`](conformance/causal-execution-v0.5.json).
 
 ## Conformance levels
 
@@ -77,11 +89,11 @@ Objects validate against the published schemas.
 
 ### Level 2 — Semantic
 
-Outcome, state, constraint-completeness and execution-validity semantics match the specification.
+Outcome, state, constraint-completeness, verification-evidence reliance and execution-validity semantics match the specification.
 
 ### Level 3 — Integrity
 
-Receipts, hashes, timestamps, provenance references, governing-contract bindings, persistent-state standing references, constraint-resolution references, confidential-execution substrate bindings, causal-binding references and continuous-integrity transitions are preserved and testable.
+Receipts, hashes, timestamps, provenance references, governing-contract bindings, persistent-state standing references, constraint-resolution references, confidential-execution substrate bindings, external verification-evidence issuer/audience/action/configuration/freshness/replay bindings, causal-binding references and continuous-integrity transitions are preserved and testable.
 
 ### Level 4 — Operational
 
