@@ -51,19 +51,21 @@ jobs:
           test -f PUBLICATION_STATUS.md
           test -f docs/STATE_AND_CONTRACT_CONTINUITY.md
           test -f docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md
-          test -f conformance/causal-execution-v0.4.json
-      - name: Verify v0.4 version surface
+          test -f docs/VERIFICATION_EVIDENCE_BINDING.md
+          test -f docs/CCS_RECEIPT_BINDING_CONVERGENCE.md
+          test -f conformance/causal-execution-v0.5.json
+      - name: Verify v0.5 version surface
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
 
-          expected = "0.4.0-draft.1"
+          expected = "0.5.0-draft.1"
           spec = Path("SPECIFICATION.md").read_text(encoding="utf-8")
           conformance = Path("CONFORMANCE.md").read_text(encoding="utf-8")
           publication = Path("PUBLICATION_STATUS.md").read_text(encoding="utf-8")
           readme = Path("README.md").read_text(encoding="utf-8")
-          vector = json.loads(Path("conformance/causal-execution-v0.4.json").read_text(encoding="utf-8"))
+          vector = json.loads(Path("conformance/causal-execution-v0.5.json").read_text(encoding="utf-8"))
           if f"Version: {expected}" not in spec:
               raise SystemExit("SPECIFICATION.md version mismatch")
           if f"Version: {expected}" not in conformance:
@@ -73,5 +75,5 @@ jobs:
           if expected not in readme:
               raise SystemExit("README.md version mismatch")
           if vector.get("version") != expected:
-              raise SystemExit("v0.4 conformance vector version mismatch")
+              raise SystemExit("v0.5 conformance vector version mismatch")
           PY
