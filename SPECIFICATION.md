@@ -1,6 +1,6 @@
 # REHT Standard Specification
 
-Version: 0.4.0-draft.1
+Version: 0.5.0-draft.1
 
 ## 1. Purpose
 
@@ -24,6 +24,7 @@ REHT defines a bounded public contract for evaluating whether a proposed AI-medi
 14. A governing contract, policy basis or equivalent execution-relevant rule set must not drift during a governed continuation without invalidating reliance on the prior result.
 15. A known unresolved material execution constraint must not be normalized into admissibility.
 16. A material transformation of an evaluated action creates a new candidate action; the transformed action must not inherit the source action's admissibility result.
+17. Cryptographic validity of an external verification receipt establishes evidence integrity only; it does not create current authority, admissibility or execution permission.
 
 ## 3. Core objects
 
@@ -66,6 +67,8 @@ Persisted files, memory, configuration, instructions, handoffs and cached artifa
 
 Where a material execution constraint is required but cannot be established, the Evidence Package or equivalent governed context must preserve that unresolved status rather than silently omitting the constraint and allowing absence to be interpreted as satisfaction.
 
+Where an external verifier, runtime, policy layer or independently owned component produces evidence that is materially relied upon for consequence-bearing execution, the evidence context must preserve the material bindings required by the applicable Verification Evidence Binding profile. These may include verifier/issuer identity, intended executor/audience, exact action/request and parameter bindings, policy/configuration identity, integrity/trust basis, freshness and replay/consumption state.
+
 ### 3.4 Policy Context
 
 Identifies the policies, rules, contracts or controls applicable to the proposed action.
@@ -75,6 +78,8 @@ Policy may include explicit temporal constraints. Such constraints remain enforc
 Where a contract or equivalent rule set materially governs the action, the evaluator should bind the exact governing version or digest used for evaluation so that later amendment, termination or replacement can be detected before execution.
 
 Policy may also identify material constraints that must be established before an action can be admissible. A required constraint that remains unresolved is an explicit governance state, not a permissive default.
+
+Where external verification evidence is relied upon, policy may define accepted verifier identities, trust anchors/keys, intended audiences, configuration bindings, freshness limits and replay/consumption semantics. Satisfying those evidence conditions does not replace current authority or execution-continuity evaluation.
 
 ### 3.5 Governance State
 
@@ -110,7 +115,7 @@ When a material execution constraint is known to be required but remains unresol
 
 Records a material event that may affect reliance on an earlier admissibility result.
 
-For execution-boundary conformance, relevant state, authority, governing-contract, policy, constraint or consumption events are evaluated by causal order where the applicable profile provides causal lineage. Wall-clock observation time remains useful for audit and forensics but is not sufficient to establish ordering across independent systems.
+For execution-boundary conformance, relevant state, authority, governing-contract, policy, constraint, external-evidence trust/binding or consumption events are evaluated by causal order where the applicable profile provides causal lineage. Wall-clock observation time remains useful for audit and forensics but is not sufficient to establish ordering across independent systems.
 
 ### 3.8 Execution Receipt
 
@@ -119,6 +124,8 @@ Records the evaluated action, result, relevant evidence references, time, state 
 Where production provenance or semantic representation integrity materially affected admissibility, the receipt should bind the relevant provenance references, approval attestations and detector observations used in the result.
 
 Where causal-continuity conformance applies, the receipt should preserve the binding, causal-position or lineage references needed to verify the relationship between evaluation and execution. Where governing contract continuity is material, the receipt should preserve the governing contract reference/version/digest used by the evaluation. Where material constraint completeness affected the result, the receipt should preserve the relevant established/unresolved constraint references or equivalent governed evidence. Wall-clock timestamps remain forensic metadata, not proof of continuity.
+
+Where external verification evidence materially affected admissibility or execution continuity, the receipt or referenced evidence chain should preserve the verifier/issuer identity and the material audience/executor, action/request/parameter, policy/configuration, integrity/trust, freshness and replay/consumption bindings used by the decision.
 
 A receipt for one evaluated action must not be reused as the execution receipt for a materially transformed replacement action unless the replacement has itself received fresh evaluation and a new binding/result.
 
@@ -168,6 +175,16 @@ Only the action bound to the current admissibility result may proceed under that
 
 See [`docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md`](docs/CONSTRAINT_OBSERVABILITY_AND_ACTION_TRANSFORMATION.md) and proposal #13.
 
+### 3.13 Verification Evidence Binding
+
+External verification receipts and equivalent artifacts are evidence inputs, not bearer authorization.
+
+When such evidence is materially relied upon, a conforming implementation must be able to establish the exact evidence-producing verifier/issuer, intended audience/executor where scoped, exact action/request and material-parameter binding, deterministic policy/configuration binding, integrity/trust basis, applicable freshness and replay/consumption state.
+
+Required evidence fails closed on material mismatch or unproven trust. A cryptographically valid receipt whose authority, delegation, governed state or governing basis has become stale remains non-executable.
+
+See [`docs/VERIFICATION_EVIDENCE_BINDING.md`](docs/VERIFICATION_EVIDENCE_BINDING.md). IETF Internet-Draft `draft-correctover-ccs-01` is an external interoperability reference, not a REHT dependency or authorization authority.
+
 ## 4. Portability and anti-lock-in
 
 ### 4.1 Neutrality requirement
@@ -189,6 +206,7 @@ A conforming implementation must provide documented, versioned and independently
 - material constraint requirements and established/unresolved constraint state when relevant to admissibility;
 - admissibility results and their input bindings;
 - execution-envelope bindings and causal-lineage references where required;
+- external verification-evidence issuer/audience/action/configuration/freshness/replay bindings where materially relied upon;
 - execution receipts and integrity data;
 - persisted learned methods, procedures or workflow adaptations.
 
@@ -196,7 +214,7 @@ The implementation may protect proprietary evaluation logic. It must not use tha
 
 ### 4.3 Protocol and infrastructure substitution
 
-Interoperability protocols such as A2A, MCP or future equivalents may transport tasks, tools, messages, artifacts, grants, capabilities or context references. No protocol declaration, agent capability claim, external authorization object or provider-specific object may replace the standard authority, evidence, policy, admissibility or execution-continuity semantics.
+Interoperability protocols such as A2A, MCP or future equivalents may transport tasks, tools, messages, artifacts, grants, capabilities or context references. No protocol declaration, agent capability claim, external authorization object, verification receipt or provider-specific object may replace the standard authority, evidence, policy, admissibility or execution-continuity semantics.
 
 Migration or fallback between local, edge, sovereign and cloud infrastructure must preserve the same governed meaning and must not broaden authority, context scope or execution permission.
 
@@ -214,7 +232,8 @@ An external verifier must be able to determine, from the exported contracts and 
 - whether material state, authority or governing-contract changes occurred;
 - whether the action presented for execution materially differed from the evaluated action and, if so, whether fresh evaluation occurred;
 - whether required causal continuity between evaluation and execution was established;
-- whether the bound action was replayed or consumed where applicable;
+- whether materially relied-upon external verification evidence matched the required verifier/issuer, audience/executor, action/request/parameter, policy/configuration, integrity/trust, freshness and replay/consumption conditions;
+- whether the bound action or evidence was replayed or consumed where applicable;
 - which execution receipt, if any, was bound to the decision.
 
 Independent verification does not require disclosure of proprietary scoring algorithms unless a separate conformance profile requires it.
@@ -241,6 +260,8 @@ A conforming implementation:
 - re-establishes required execution-relevant state at the execution boundary;
 - fails closed when causal continuity or required receipt continuity cannot be proven;
 - rejects stale authority, material state drift, governing-contract drift and replay according to the applicable profile;
+- when materially relying on external verification evidence, establishes its required issuer/audience/action/configuration/integrity/freshness/replay bindings and fails closed on material mismatch;
+- does not treat cryptographic receipt validity as current authority or execution permission;
 - supports documented export of governed contracts and receipt chains in a provider-independent representation;
 - preserves governed meaning when models, agents, protocols or infrastructure are substituted;
 - does not technically or contractually block migration of portable governed records;
@@ -261,6 +282,7 @@ This specification does not define:
 - global distributed consensus;
 - a mandatory time-synchronization service;
 - a mandatory causal-time implementation;
+- a mandatory external verification-receipt format;
 - a mandatory workspace, memory or contract storage format;
 - certification or legal compliance.
 
@@ -270,7 +292,7 @@ Breaking contract changes require a new major specification version. Substantive
 
 Prerelease drafts use forward-only immutable identifiers such as `MAJOR.MINOR.PATCH-draft.N`. Historical tags are never moved, deleted or retargeted.
 
-This `0.4.0-draft.1` prerelease adds constraint-observability refusal semantics and the rule that materially transformed actions require fresh evaluation. It preserves the v0.3 persistent-state and governing-contract continuity requirements and the existing rule that authorization is non-durable.
+This `0.5.0-draft.1` prerelease adds the Verification Evidence Binding profile: materially relied-upon external verification receipts must retain verifier/issuer, audience/executor, exact action/request/material-parameter, policy/configuration, integrity/trust, freshness and replay/consumption bindings, while cryptographic validity remains evidence rather than execution authority. It preserves the v0.4 constraint-observability/action-transformation requirements, the v0.3 persistent-state and governing-contract continuity requirements, and the rule that authorization is non-durable.
 
 Specification versions, reference-package versions and private runtime versions are independent compatibility surfaces and do not need to match numerically.
 
