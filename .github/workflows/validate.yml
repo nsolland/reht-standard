@@ -37,6 +37,9 @@ jobs:
                   validator_for(data).check_schema(data)
               print(f"validated {path}")
           PY
+      - name: Validate credential-delivery interop profile (#5)
+        run: |
+          python tests/validate_credential_delivery.py
       - name: Verify required public files
         run: |
           test -f README.md
