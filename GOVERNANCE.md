@@ -6,7 +6,7 @@ This file defines how normative REHT changes move from idea to versioned specifi
 
 ## 1. Current editorial authority
 
-Until an explicit transfer is recorded, this repository is the canonical public REHT specification/conformance surface and VALO Research acts as the specification editor/maintainer.
+Until an explicit transfer is recorded, this repository is the canonical public REHT specification/conformance surface and Njål Gaute Solland acts as the specification editor/maintainer.
 
 The editor may merge changes only through the process below. Repository ownership is not permission to silently change normative meaning.
 
