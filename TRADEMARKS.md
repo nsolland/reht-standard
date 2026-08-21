@@ -4,7 +4,7 @@ This policy governs use of the names, marks and compatibility claims associated 
 
 ## 1. Ownership
 
-The names `reht`, `VALO`, associated logos, visual marks and certification marks are trademarks or claimed marks of VALO Research Group AS.
+The names `reht`, `VALO`, associated logos, visual marks and certification marks are trademarks or claimed marks of Njål Gaute Solland.
 
 The Apache License 2.0 applies to code, schemas, examples and repository automation. It does not grant trademark rights.
 
@@ -17,11 +17,11 @@ You may use the word `reht` only for accurate descriptive reference, including:
 - describing compatibility testing performed against a specific published version;
 - identifying modifications derived from this repository, provided the modified work is not presented as official.
 
-Descriptive use must not imply sponsorship, certification, endorsement, partnership or approval by VALO Research Group AS.
+Descriptive use must not imply sponsorship, certification, endorsement, partnership or approval by Njål Gaute Solland.
 
 ## 3. Restricted terms
 
-The following claims may not be used without written authorization from VALO Research Group AS:
+The following claims may not be used without written authorization from Njål Gaute Solland:
 
 - `official reht`
 - `reht certified`
@@ -45,7 +45,7 @@ May be used only when an implementation:
 
 Recommended form:
 
-> Compatible with reht Standard v0.1.0-draft at the schema level. Not certified or endorsed by VALO Research Group AS.
+> Compatible with reht Standard v0.1.0-draft at the schema level. Not certified or endorsed by Njål Gaute Solland.
 
 ### `reht-conformant`
 
@@ -57,7 +57,7 @@ Recommended form:
 
 ### `reht-certified`
 
-Reserved exclusively for a certification programme formally operated or authorized by VALO Research Group AS. No self-certification claim may use this term.
+Reserved exclusively for a certification programme formally operated or authorized by Njål Gaute Solland. No self-certification claim may use this term.
 
 ## 5. Forks and derivative standards
 
@@ -68,7 +68,7 @@ Forks and derivative works are permitted under the applicable repository licence
 - identify material changes;
 - avoid using reht logos or visual identity;
 - avoid presenting the derivative as the official reht standard;
-- state clearly that the work is independent and not endorsed by VALO Research Group AS.
+- state clearly that the work is independent and not endorsed by Njål Gaute Solland.
 
 ## 6. Logos and visual identity
 
@@ -76,8 +76,8 @@ No licence is granted to use reht or VALO logos, icons, badges, certification ma
 
 ## 7. Enforcement and permission requests
 
-Potential misuse should be reported privately through the contact method in `SECURITY.md` or another official VALO Research Group AS channel.
+Potential misuse should be reported privately through the contact method in `SECURITY.md` or another official Njål Gaute Solland channel.
 
-Requests for permission, certification or authorized compatibility branding must be approved in writing by VALO Research Group AS.
+Requests for permission, certification or authorized compatibility branding must be approved in writing by Njål Gaute Solland.
 
-Copyright © 2026 VALO Research Group AS.
+Copyright © 2026 Njål Gaute Solland.
