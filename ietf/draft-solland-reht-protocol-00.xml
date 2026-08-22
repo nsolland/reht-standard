@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude"
+     category="info"
+     docName="draft-solland-reht-protocol-00"
+     ipr="trust200902"
+     submissionType="IETF"
+     version="3">
+  <front>
+    <title abbrev="REHT">Right Before Action (REHT): Execution-Time Authorization for AI-Mediated Actions</title>
+    <seriesInfo name="Internet-Draft" value="draft-solland-reht-protocol-00"/>
+    <author fullname="Njål Gaute Solland" initials="N. G." surname="Solland">
+      <organization>VALO Research</organization>
+      <address>
+        <email>njaal.solland@gmail.com</email>
+      </address>
+    </author>
+    <date year="2026" month="August" day="18"/>
+    <area>General</area>
+    <keyword>authorization</keyword>
+    <keyword>agents</keyword>
+    <keyword>execution governance</keyword>
+    <keyword>AI</keyword>
+    <abstract>
+      <t>
+        This document defines REHT, a protocol pattern for making fresh
+        organizational authority an executable precondition for a
+        consequence-bearing action.  REHT is evaluated at the execution
+        boundary, binds the exact candidate action to current authority and
+        governed state, fails closed on revocation, replay, drift, or
+        unresolved required authority state, and produces integrity-bindable
+        evidence of the verification.  REHT does not define an agent runtime,
+        policy engine, identity system, payment rail, or global ordering
+        service.
+      </t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section>
+      <name>Introduction</name>
+      <t>
+        AI-mediated systems increasingly separate reasoning from consequence.
+        An agent may prepare an action substantially earlier than the point at
+        which a payment is committed, a production configuration is changed,
+        a record is disclosed, or another irreversible or material effect is
+        created.  A prior approval, credential, capability, or successful
+        evaluation is therefore insufficient if authority, scope, state, or
+        revocation status can change before consequence.
+      </t>
+      <t>
+        REHT places a fresh authorization verification in the consequence
+        path.  The central invariant is that the exact candidate action MUST
+        still be within current organizational authority immediately before
+        consequence.  Authorization is not treated as a durable bearer fact.
+      </t>
+      <t>
+        REHT makes fresh organizational authority an executable precondition
+        for irreversible or otherwise consequence-bearing action.  It does
+        not claim to be the only protocol capable of enforcing such a
+        property.
+      </t>
+    </section>
+
+    <section>
+      <name>Requirements Language</name>
+      <t>
+        The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+        "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY",
+        and "OPTIONAL" in this document are to be interpreted as described in
+        BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and
+        only when, they appear in all capitals, as shown here.
+      </t>
+    </section>
+
+    <section>
+      <name>Terminology</name>
+      <dl>
+        <dt>Candidate Action</dt>
+        <dd>The exact consequence-bearing action proposed for execution.</dd>
+        <dt>Authoritative State</dt>
+        <dd>
+          State whose current standing is established by the governing
+          organization or an independently trusted source for the relevant
+          authority decision.
+        </dd>
+        <dt>REHT Verification</dt>
+        <dd>
+          The fresh execution-boundary evaluation that determines whether the
+          exact Candidate Action remains within current authority.
+        </dd>
+        <dt>PEP</dt>
+        <dd>
+          Policy Enforcement Point.  The component that prevents an effect
+          unless the required REHT verification and any bound deterministic
+          execution decision permit progression.  The PEP does not originate
+          organizational authority.
+        </dd>
+        <dt>RACS</dt>
+        <dd>
+          A deterministic decision and action-binding contract used by the
+          VALO reference profile.  RACS does not evaluate or originate
+          authority.
+        </dd>
+      </dl>
+    </section>
+
+    <section>
+      <name>Protocol Invariants</name>
+      <t>A conforming implementation MUST preserve all of the following:</t>
+      <ol>
+        <li>
+          REHT MUST verify current authority for the exact Candidate Action at
+          the execution boundary.
+        </li>
+        <li>
+          A prior approval, clearance, capability, credential, or unexpired
+          validity interval MUST NOT by itself establish current execution
+          authority.
+        </li>
+        <li>
+          Revocation or material authority drift that is causally prior to the
+          consequence MUST invalidate reliance on an earlier authorization.
+        </li>
+        <li>
+          Delegated authority MUST NOT widen the capability, scope, purpose,
+          constraints, or validity of its parent authority.
+        </li>
+        <li>
+          A materially changed action MUST be treated as a new Candidate
+          Action and MUST receive fresh REHT verification.
+        </li>
+        <li>
+          Single-use execution identities, nonces, permits, or equivalent
+          bindings MUST be replay-resistant.
+        </li>
+        <li>
+          Missing or unresolved required authority state MUST fail closed.
+        </li>
+        <li>
+          The effect path MUST NOT permit a worker, agent, orchestrator, or
+          connector to bypass the required execution-boundary verification.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <name>Trust Boundary</name>
+      <t>
+        Agent-produced plans, action traces, memories, tool histories, and
+        self-attestations are inputs.  They are not authoritative state merely
+        because an agent signed or produced them.
+      </t>
+      <t>
+        A trace signature may establish integrity and attribution of the
+        agent's claim.  It MUST NOT be interpreted as proof that the claimed
+        authority, organizational mandate, external state, or effect is true.
+      </t>
+      <t>
+        A REHT verifier SHOULD obtain execution-relevant authority and
+        revocation state independently of worker-controlled assertions where
+        practical.  Where a governed context materializes that state on the
+        verifier's behalf, provenance, freshness, and continuity MUST remain
+        independently verifiable.
+      </t>
+    </section>
+
+    <section>
+      <name>Commit Request</name>
+      <t>
+        A Commit Request asks REHT to determine whether one exact Candidate
+        Action is currently authorized.  Implementations MAY encode the
+        request differently, but an interoperable representation MUST bind at
+        least the following semantics.
+      </t>
+      <sourcecode type="json"><![CDATA[
+{
+  "protocol_version": "reht-00",
+  "request_id": "req-123",
+  "action_id": "action-456",
+  "action_digest": "sha256:<digest>",
+  "actor_ref": "principal-17",
+  "authority_ref": "authority-22",
+  "authority_context_digest": "sha256:<digest>",
+  "governed_state_ref": "state-811",
+  "purpose_ref": "purpose-3",
+  "evidence_refs": ["evidence-9"],
+  "nonce": "single-use-random-value",
+  "requested_at": "2026-08-18T12:00:00Z"
+}
+      ]]></sourcecode>
+      <t>
+        The <tt>action_digest</tt> MUST deterministically bind all
+        consequence-bearing fields whose change could alter the meaning or
+        effect of the Candidate Action.  A verifier MUST NOT authorize a
+        materially different action under the same digest binding.
+      </t>
+    </section>
+
+    <section>
+      <name>Commit-Time Verification</name>
+      <t>
+        Upon receiving a Commit Request, the REHT verifier MUST perform the
+        execution-boundary verification using current authoritative state.
+        At minimum, where applicable, the verifier MUST establish:
+      </t>
+      <ol>
+        <li>the execution identity and actor binding;</li>
+        <li>the current authority grant and required capability;</li>
+        <li>resource and target scope;</li>
+        <li>all material authority constraints;</li>
+        <li>narrowing-only delegation continuity;</li>
+        <li>the current purpose binding when purpose is required;</li>
+        <li>current revocation status;</li>
+        <li>the exact Candidate Action binding;</li>
+        <li>required governed-state continuity;</li>
+        <li>single-use or replay constraints; and</li>
+        <li>required evidence whose absence is material to authorization.</li>
+      </ol>
+      <t>
+        If a relevant revocation is current or causally prior to consequence,
+        REHT MUST refuse execution under the earlier authority.  The PEP MUST
+        enforce that result, but the PEP does not become the source or
+        evaluator of organizational authority merely by enforcing it.
+      </t>
+      <t>
+        A conforming deployment MUST position REHT verification in the actual
+        commit path.  If a relevant authority mutation can intervene between
+        verification and effect, the deployment MUST re-establish current
+        authorization before the effect or provide an equivalent atomic or
+        causally bound mechanism.  It MUST NOT rely on a stale cached result.
+      </t>
+    </section>
+
+    <section>
+      <name>Commit Result</name>
+      <t>
+        The protocol-level Commit Result expresses whether the exact Candidate
+        Action passed the current REHT verification.  It does not redefine a
+        downstream decision vocabulary such as RACS.
+      </t>
+      <sourcecode type="json"><![CDATA[
+{
+  "protocol_version": "reht-00",
+  "request_id": "req-123",
+  "verification_id": "verify-902",
+  "action_digest": "sha256:<digest>",
+  "authorized": true,
+  "reason_codes": [],
+  "authority_state_ref": "authority-state-991",
+  "authority_state_digest": "sha256:<digest>",
+  "verified_at": "2026-08-18T12:00:00.104Z",
+  "commit_nonce": "single-use-random-value",
+  "issuer_sequence": 481,
+  "parent_hash": "sha256:<previous-issuer-record>",
+  "signature": "<implementation-defined-signature>"
+}
+      ]]></sourcecode>
+      <t>
+        An <tt>authorized</tt> value of <tt>true</tt> is scoped only to the
+        exact bound action and current verification context.  It MUST NOT be
+        treated as durable authority for a later materially changed action or
+        after a causally prior revocation or authority mutation.
+      </t>
+      <t>
+        When authorization cannot be established, <tt>authorized</tt> MUST be
+        <tt>false</tt> and the implementation SHOULD return stable reason
+        codes suitable for deterministic downstream handling.  A missing or
+        malformed result MUST fail closed.
+      </t>
+    </section>
+
+    <section>
+      <name>RACS Composition Profile</name>
+      <t>
+        RACS is not the protocol-level authorization vocabulary defined by
+        this document.  When a deployment composes REHT with the canonical
+        RACS v0.2 decision contract, the RACS decision value MUST be exactly
+        one of:
+      </t>
+      <ul>
+        <li><tt>ALLOW</tt></li>
+        <li><tt>MODIFY</tt></li>
+        <li><tt>DEFER</tt></li>
+        <li><tt>DENY</tt></li>
+        <li><tt>STEP_UP</tt></li>
+        <li><tt>HALT</tt></li>
+      </ul>
+      <t>
+        RACS MAY preserve or narrow a verified REHT result according to its
+        deterministic contract.  RACS MUST NOT expand authority.  In
+        particular, a failed REHT verification MUST NOT be transformed into
+        <tt>ALLOW</tt> or otherwise made executable by RACS.
+      </t>
+      <t>
+        A <tt>MODIFY</tt> result denotes a constrained or replacement
+        candidate according to the applicable RACS contract; any material
+        change to the consequence-bearing action MUST return to fresh REHT
+        verification before consequence.
+      </t>
+    </section>
+
+    <section>
+      <name>PEP Enforcement</name>
+      <t>
+        The PEP is the governed effect boundary.  It MUST prevent consequence
+        unless the exact action presented for execution is bound to a current
+        successful REHT verification and all required deterministic execution
+        bindings permit progression.
+      </t>
+      <t>
+        The PEP MUST reject replay, action-digest mismatch, missing required
+        bindings, malformed verification evidence, and any result that is not
+        executable under the deployed profile.  It MUST NOT infer authority
+        from tool possession, credentials, agent claims, schema validity, or
+        execution success.
+      </t>
+    </section>
+
+    <section>
+      <name>Evidence and Ordering</name>
+      <t>
+        REHT evidence MUST preserve enough information to reconstruct the
+        Candidate Action, the verification result, the relevant authority
+        state reference, and the consequence or refusal that followed.
+      </t>
+      <t>
+        This document does not require or claim a global total order across
+        independently owned systems.  A conforming evidence record MAY use an
+        issuer-local monotonic sequence together with a parent hash or other
+        causal linkage.
+      </t>
+      <sourcecode type="json"><![CDATA[
+{
+  "record_id": "evidence-1002",
+  "issuer": "reht-node.example",
+  "issuer_sequence": 482,
+  "parent_hash": "sha256:<previous-issuer-record>",
+  "verification_id": "verify-902",
+  "action_digest": "sha256:<digest>",
+  "effect_ref": "effect-77",
+  "signature": "<implementation-defined-signature>"
+}
+      ]]></sourcecode>
+      <t>
+        Wall-clock timestamps MAY be retained for policy, correlation,
+        operations, audit, and forensics.  They MUST NOT be treated as a
+        substitute for current authority or causal continuity where either is
+        required.
+      </t>
+    </section>
+
+    <section>
+      <name>Credential and Identity Composition</name>
+      <t>
+        REHT does not define a mandatory identity or credential format.
+        Deployments MAY compose REHT with W3C Verifiable Credentials or other
+        identity and authority representations.  Possession or validation of
+        a credential does not by itself establish that the exact action
+        remains authorized at consequence time; current scope, revocation,
+        constraints, and applicable governed state still require verification.
+      </t>
+    </section>
+
+    <section>
+      <name>Failure Behavior</name>
+      <t>
+        A conforming implementation MUST fail closed when a required input is
+        missing, malformed, stale, unverifiable, revoked, materially
+        mismatched, replayed, or known to be unresolved.
+      </t>
+      <t>
+        Transport failure, verifier unavailability, evidence-store failure,
+        revocation-registry failure, or inability to prove required current
+        authority MUST NOT silently degrade into authorization.
+      </t>
+    </section>
+
+    <section>
+      <name>Security Considerations</name>
+      <t>
+        The principal security objective is to prevent stale, replayed,
+        widened, or self-asserted authority from crossing the consequence
+        boundary.  Implementations therefore need integrity protection for
+        action bindings and verification records, replay protection, current
+        revocation handling, strict separation between agent claims and
+        authoritative state, and a governed effect path that cannot be
+        bypassed by the worker that proposed the action.
+      </t>
+      <t>
+        Cryptographic integrity and signer identity are separate from signer
+        authority and external truth.  A valid signature MUST NOT be treated
+        as proof that the signer had organizational authority, that a claimed
+        state was current, or that an external consequence occurred correctly.
+      </t>
+      <t>
+        Implementations SHOULD minimize sensitive authority-state disclosure.
+        A verifier can expose stable references and digests needed for
+        conformance and audit without disclosing the complete underlying
+        organizational policy or state to the worker.
+      </t>
+    </section>
+
+    <section>
+      <name>Privacy Considerations</name>
+      <t>
+        Execution-authorization evidence can reveal organizational structure,
+        identities, targets, purposes, and sensitive action details.
+        Implementations SHOULD minimize exported fields, use opaque references
+        where sufficient, restrict evidence access, and avoid retaining agent
+        traces or personal data that are not required for authorization,
+        dispute resolution, audit, or applicable legal obligations.
+      </t>
+    </section>
+
+    <section>
+      <name>IANA Considerations</name>
+      <t>This document has no IANA actions.</t>
+    </section>
+  </middle>
+
+  <back>
+    <references>
+      <name>Normative References</name>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+    </references>
+    <references>
+      <name>Informative References</name>
+      <reference anchor="VC-DATA-MODEL" target="https://www.w3.org/TR/vc-data-model-2.0/">
+        <front>
+          <title>Verifiable Credentials Data Model v2.0</title>
+          <author fullname="World Wide Web Consortium"/>
+          <date year="2025" month="May"/>
+        </front>
+      </reference>
+    </references>
+  </back>
+</rfc>
