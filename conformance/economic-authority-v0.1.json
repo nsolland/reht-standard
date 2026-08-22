@@ -1,0 +1,80 @@
+{
+  "profile": "reht.economic-authority.v0.1",
+  "profile_version": "0.1",
+  "target_specification": "0.5.0-draft.1",
+  "status": "proposal",
+  "invariant": "An economic consequence may proceed only when the exact action remains within current organizational authority at the execution boundary; delegation may only narrow authority, revocation dominates non-terminal approval, and all execution bindings are replay-resistant and fail closed.",
+  "canonical_dependencies": {
+    "authority_semantics": "VALO Kernel Authority / Delegation / Purpose or equivalent independently verifiable semantics",
+    "runtime_wire": "RACS v0.2 canonical artifacts and bindings",
+    "execution_continuity": "REHT causal execution continuity"
+  },
+  "cases": [
+    {
+      "id": "EA-POS-001",
+      "type": "positive_control",
+      "condition": "verified actor; active authority; narrowing-only delegation; target, purpose and economic constraints satisfied; exact action binding matches; replay identity unused; no causally prior revocation or HALT; bounded execution path intact",
+      "expected": "MAY_PROGRESS_TO_CURRENT_REHT_RACS_EXECUTION_CHAIN"
+    },
+    {
+      "id": "EA-NEG-DELEGATION-001",
+      "type": "delegation_expansion",
+      "condition": "a delegation adds capability, widens scope, relaxes a constraint or outlives its parent authority",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "EA-NEG-AUTH-001",
+      "type": "stale_or_revoked_authority",
+      "condition": "authority is expired, revoked, materially drifted or cannot be proven current at the execution boundary",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "EA-NEG-PURPOSE-001",
+      "type": "purpose_mismatch",
+      "condition": "required purpose is absent, inactive, outside scope, lacks basis, does not permit the action type or is incompatible with the authority grant",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "EA-NEG-ACTION-001",
+      "type": "exact_action_mismatch",
+      "condition": "amount, currency, counterparty, target, account, purpose, connector request, payload or other consequence-bearing field differs materially from the currently authorized action",
+      "expected": "FRESH_EVALUATION_REQUIRED"
+    },
+    {
+      "id": "EA-NEG-REPLAY-001",
+      "type": "replay",
+      "condition": "the permit, commit token, nonce, reservation or other single-use execution identity has already been consumed",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "EA-NEG-SELFREPORT-001",
+      "type": "agent_self_report_as_authority",
+      "condition": "agent-produced trace, plan, memory, tool history or self-attestation is the sole basis used to establish organizational authority",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "EA-NEG-RACS-001",
+      "type": "evaluation_treated_as_authorization",
+      "condition": "a favorable GovernanceEvaluation, schema-valid RACS artifact, capability registration or upstream policy result is treated as execution authorization without current REHT clearance semantics",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "EA-NEG-REVOCATION-001",
+      "type": "revocation_before_consequence",
+      "condition": "a relevant revocation or HALT causally intervenes after evaluation but before terminal consequence while a prior clearance, permit or token remains inside its wall-clock validity interval",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "EA-NEG-BYPASS-001",
+      "type": "execution_path_bypass",
+      "condition": "an execution rail or connector can create the economic consequence without validating the governed authorization/binding required by the declared profile",
+      "expected": "NON_CONFORMANT_AND_NON_EXECUTABLE"
+    },
+    {
+      "id": "EA-NEG-LIMIT-001",
+      "type": "economic_constraint_expansion",
+      "condition": "requested amount, quantity, currency, counterparty, jurisdiction, resource consumption or equivalent economic bound exceeds or relaxes the currently established authority constraint",
+      "expected": "NON_EXECUTABLE"
+    }
+  ]
+}
