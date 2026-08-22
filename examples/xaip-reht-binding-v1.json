@@ -1,0 +1,21 @@
+{
+  "binding_version": "reht-xaip-binding-1",
+  "reht_receipt_ref": "receipt-2026-0001",
+  "reht_receipt_hash": "sha256:4e1f57f9c4e0f486f4f2e42265b586ea14df66213172fa14715a4d4998ff7831",
+  "xaip_receipt_hash": "sha256:7c000a8676567d6f7bb3f248b3668c4261f580fafb3ffb10e5e13c0f41f458c1",
+  "action_ref": "act-2026-0001",
+  "decision_ref": "clearance-2026-0001",
+  "authority_state_ref": "authority-state-2026-0001",
+  "delegation_ref": "delegation-2026-0001",
+  "purpose_ref": "purpose-procurement-001",
+  "resource_ref": "purchase-order-001",
+  "governing_contract_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+  "workspace_state_ref": "workspace-state-2026-0001",
+  "tool_manifest_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+  "effect_ref": "effect-2026-0001",
+  "outcome_evidence_ref": "evidence-package-0001",
+  "binding_signer_did": "did:web:veritas.example",
+  "binding_key_id": "did:web:veritas.example#receipt-binding-2026-08",
+  "binding_timestamp": "2026-08-16T10:52:00.100Z",
+  "binding_signature": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+}

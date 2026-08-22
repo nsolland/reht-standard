@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reht.dev/schemas/interop/xaip-reht-binding-v1.schema.json",
+  "title": "REHT-XAIP Receipt Binding v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "binding_version",
+    "reht_receipt_ref",
+    "reht_receipt_hash",
+    "xaip_receipt_hash",
+    "binding_signer_did",
+    "binding_key_id",
+    "binding_timestamp",
+    "binding_signature"
+  ],
+  "properties": {
+    "binding_version": {
+      "type": "string",
+      "const": "reht-xaip-binding-1"
+    },
+    "reht_receipt_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reht_receipt_hash": {
+      "$ref": "#/$defs/digest"
+    },
+    "xaip_receipt_hash": {
+      "$ref": "#/$defs/digest"
+    },
+    "action_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decision_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_state_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "delegation_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "purpose_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resource_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "governing_contract_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "workspace_state_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tool_manifest_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "effect_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "outcome_evidence_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "binding_signer_did": {
+      "type": "string",
+      "pattern": "^did:[a-z0-9]+:.+$"
+    },
+    "binding_key_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "binding_timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "binding_signature": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{128}$"
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "x-canonicalization": "JCS RFC 8785 over all top-level members except binding_signature; UTF-8 bytes are signed with Ed25519.",
+  "x-verification-note": "The binding signature proves integrity and signer attribution for the REHT-to-XAIP correlation. It does not by itself prove signer authority, external truth, effect occurrence, policy satisfaction or receipt freshness. Those dimensions remain separately verified."
+}

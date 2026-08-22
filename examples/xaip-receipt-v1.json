@@ -1,0 +1,14 @@
+{
+  "formatVersion": "1",
+  "agentDid": "did:web:executor.example",
+  "callerDid": "did:web:orchestrator.example",
+  "toolName": "procurement.submit_purchase_order",
+  "taskHash": "1111111111111111111111111111111111111111111111111111111111111111",
+  "resultHash": "2222222222222222222222222222222222222222222222222222222222222222",
+  "success": true,
+  "latencyMs": 142,
+  "failureType": "",
+  "timestamp": "2026-08-16T10:52:00.000Z",
+  "signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "callerSignature": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+}
