@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "reht Paired Benchmark Trial Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["study_id","scenario_id","trial_id","condition","correct_completion","effect_occurred","authority_valid_at_effect","direct_effect_bypass","action_substitution_accepted","false_block","evidence_closed","decision_replay_agrees"],
+  "properties": {
+    "study_id": {"type":"string","minLength":1},
+    "scenario_id": {"type":"string","minLength":1},
+    "trial_id": {"type":"string","minLength":1},
+    "condition": {"enum":["WITHOUT_REHT","WITH_REHT"]},
+    "model_id": {"type":"string"},
+    "config_digest": {"type":"string"},
+    "correct_completion": {"type":"boolean"},
+    "effect_occurred": {"type":"boolean"},
+    "authority_valid_at_effect": {"type":"boolean"},
+    "relevant_state_fresh_at_effect": {"type":"boolean"},
+    "direct_effect_bypass": {"type":"boolean"},
+    "action_substitution_accepted": {"type":"boolean"},
+    "false_block": {"type":"boolean"},
+    "evidence_closed": {"type":"boolean"},
+    "decision_replay_agrees": {"type":"boolean"},
+    "gate_latency_ms": {"type":["number","null"],"minimum":0},
+    "decision": {"type":["string","null"]},
+    "notes": {"type":"string"}
+  }
+}
