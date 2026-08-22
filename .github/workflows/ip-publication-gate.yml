@@ -1,0 +1,46 @@
+name: IP publication gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  ip-publication-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Secondary human IP-review gate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            if (context.eventName === 'pull_request') {
+              const labels = (context.payload.pull_request.labels || []).map(l => l.name);
+              if (!labels.includes('ip-reviewed')) {
+                core.setFailed('Public repository: merge requires explicit human IP review and ip-reviewed label. Pre-push review remains mandatory because the branch is already public.');
+                return;
+              }
+            }
+            if (context.eventName === 'push') {
+              const prs = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                owner, repo, commit_sha: context.sha,
+              });
+              const reviewed = prs.data.some(pr =>
+                pr.merged_at && (pr.labels || []).some(l => l.name === 'ip-reviewed')
+              );
+              if (!reviewed) {
+                core.setFailed('Direct push to public main is not publication-approved. Changes must arrive through an ip-reviewed PR.');
+                return;
+              }
+            }
+            core.info('secondary_ip_review_gate=pass');
+
+      - name: Scan public tree for non-public research markers
+        run: python3 scripts/ip_public_surface_gate.py
