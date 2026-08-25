@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Fail closed when non-public research markers enter the public REHT standards tree."""
+"""Fail closed on obvious secret material in the public REHT standards tree.
+
+Protected research-vocabulary and derivation policy are intentionally enforced
+outside this public repository. A public checker must not enumerate private
+research terms, project names, architecture candidates, or other pointers that
+would themselves reduce the search space for protected work.
+"""
 from __future__ import annotations
 
 import pathlib
@@ -9,17 +15,6 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 TEXT_SUFFIXES = {".md", ".txt", ".json", ".yaml", ".yml", ".py", ".toml", ".tex", ".xml"}
 EXCLUDE = {"scripts/ip_public_surface_gate.py"}
-
-FORBIDDEN = [
-    re.compile(r"\bFRAMLEIS\b", re.I),
-    re.compile(r"\bMCIP\b", re.I),
-    re.compile(r"\bPeace Mesh\b", re.I),
-    re.compile(r"\bNeuro Mesh\b", re.I),
-    re.compile(r"derivation challenge", re.I),
-    re.compile(r"cross-model KV", re.I),
-    re.compile(r"latent-state bridge", re.I),
-    re.compile(r"network is the intelligence", re.I),
-]
 
 SECRETS = [
     re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
@@ -38,17 +33,14 @@ for path in ROOT.rglob("*"):
         text = path.read_text(encoding="utf-8")
     except UnicodeDecodeError:
         continue
-    for pattern in FORBIDDEN:
-        if pattern.search(text):
-            violations.append(f"non-public research marker: {rel}: {pattern.pattern}")
     for pattern in SECRETS:
         if pattern.search(text):
             violations.append(f"possible secret material: {rel}: {pattern.pattern}")
 
 if violations:
-    print("Public-surface gate failed:", file=sys.stderr)
+    print("Public-surface hygiene failed:", file=sys.stderr)
     for violation in violations:
         print(f"- {violation}", file=sys.stderr)
     raise SystemExit(1)
 
-print("ip_public_surface_gate=pass")
+print("public_surface_hygiene=pass")
