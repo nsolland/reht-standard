@@ -14,7 +14,7 @@
         <email>njaal.solland@gmail.com</email>
       </address>
     </author>
-    <date year="2026" month="August" day="18"/>
+    <date year="2026" month="August" day="25"/>
     <area>General</area>
     <keyword>authorization</keyword>
     <keyword>agents</keyword>
@@ -232,6 +232,44 @@
     </section>
 
     <section>
+      <name>Pre-Action Assurance Governor Composition</name>
+      <t>
+        Risk-graded pre-action assurance, such as the interface described in
+        <xref target="I-D.zagarella-autonomy-governor"/>, is complementary to
+        REHT.  An assurance governor determines the authentication, oversight,
+        verification, or resource-selection rigor that policy requires before
+        an action may progress.  REHT determines whether the exact Candidate
+        Action remains within current organizational authority at the
+        consequence boundary.
+      </t>
+      <t>
+        A conforming composition MAY bind the risk signal, required assurance,
+        assurance outcome, supporting evidence references, and applicable
+        control-law state into the governed state or evidence referenced by a
+        Commit Request.  These inputs MAY require additional assurance or
+        cause deterministic step-up, deferral, or refusal.  A satisfied
+        assurance requirement MUST NOT by itself establish organizational
+        authority or make an action executable.
+      </t>
+      <t>
+        An accountable-human or verified-human-root binding can establish the
+        identity or accountability associated with an assurance decision.  It
+        MUST NOT be interpreted as proof of current principal authority unless
+        the applicable authority grant, scope, delegation continuity, purpose,
+        constraints, and revocation status are established from current
+        authoritative state.
+      </t>
+      <t>
+        An assurance governor or its autonomy control law MUST NOT widen
+        authority, override a failed REHT verification, or substitute a prior
+        VERIFY result for fresh execution-boundary authorization.  The PEP MUST
+        enforce both the applicable assurance requirement and the current REHT
+        result.  REHT neither standardizes nor depends on a particular risk
+        scoring method or autonomy control law.
+      </t>
+    </section>
+
+    <section>
       <name>Commit Result</name>
       <t>
         The protocol-level Commit Result expresses whether the exact Candidate
@@ -432,6 +470,17 @@
           <author fullname="World Wide Web Consortium"/>
           <date year="2025" month="May"/>
         </front>
+      </reference>
+      <reference anchor="I-D.zagarella-autonomy-governor"
+                 target="https://datatracker.ietf.org/doc/draft-zagarella-autonomy-governor/">
+        <front>
+          <title>Pre-Action Risk-Graded Assurance for Agent Interactions</title>
+          <author fullname="Roberto Antonio Zagarella" initials="R. A." surname="Zagarella">
+            <organization>Violet Shores Pty Ltd</organization>
+          </author>
+          <date year="2026" month="August" day="24"/>
+        </front>
+        <seriesInfo name="Internet-Draft" value="draft-zagarella-autonomy-governor-01"/>
       </reference>
     </references>
   </back>
