@@ -27,7 +27,8 @@ It MUST reference the RACS runtime execution-governance contracts, not duplicate
    `Racs/spec/CANONICAL_CONTRACTS.md`.
 4. No new runtime execution-governance contract may be introduced in reht-standard that
    duplicates a RACS contract.
-5. ACS/VACS (VAIG) is deprecated as an execution decision layer; RACS replaces it.
+5. Superseded legacy execution-decision formats are not authoritative; RACS defines the
+   current canonical runtime contract and its explicit compatibility mappings.
 6. Single governed effect-path and effect-chain integrity semantics are owned by RACS
    `spec/EFFECT_CHAIN_INTEGRITY_V0_2.md`; reht-standard may require conformance to them
    at the REHT execution boundary but MUST NOT redefine the runtime contract.
@@ -35,4 +36,4 @@ It MUST reference the RACS runtime execution-governance contracts, not duplicate
 ## Supersession
 
 See `Racs/spec/SUPERSEDED.md` for the explicit supersession record and compatibility
-mappings (e.g. `vacs/acs_packet` → RACS `action-envelope-v0.2`).
+mappings.
