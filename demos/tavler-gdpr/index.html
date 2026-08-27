@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">\n<meta name="robots" content="noindex,nofollow">\n<meta name="description" content="Tavler × VALO browser simulation of governed GDPR/DSAR execution at consequence time.">\n<link rel="canonical" href="https://reht.valoresearch.org/apps/tavler-gdpr/">
+<title>Tavler × VALO — GDPR execution demo</title>\n<!-- Temporary public mirror. Canonical source: web-estate@780c907 -->
+<style>
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172033;background:#f6f7f9}
+*{box-sizing:border-box}body{margin:0}.wrap{max-width:1180px;margin:0 auto;padding:36px 24px 64px}
+.kicker{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#667085}.title{font-size:34px;line-height:1.15;margin:8px 0}.lead{max-width:780px;color:#475467;font-size:17px}
+.notice{margin:22px 0;padding:12px 14px;border:1px solid #d0d5dd;border-radius:10px;background:#fff;font-size:13px;color:#475467}
+.scenarios{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0}.scenarios button{border:1px solid #d0d5dd;background:#fff;padding:9px 12px;border-radius:999px;cursor:pointer}.scenarios button.active{border-color:#172033;background:#172033;color:#fff}
+.flow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}.card{background:#fff;border:1px solid #e4e7ec;border-radius:14px;padding:18px;min-height:235px}.card h2{font-size:14px;margin:0 0 15px;color:#344054}.label{font-size:12px;color:#667085;margin-top:12px}.value{font-size:15px;margin-top:3px;overflow-wrap:anywhere}.arrow{text-align:center;color:#98a2b3;margin:12px 0}
+.boundary{margin-top:14px;background:#fff;border:1px solid #e4e7ec;border-radius:14px;padding:18px}.boundary-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.decision{font-size:30px;font-weight:750}.reason{color:#475467;margin-top:5px}.checks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px}.check{border:1px solid #e4e7ec;border-radius:10px;padding:10px;font-size:13px}.check .state{font-weight:700}.effect{margin-top:16px;border-radius:10px;padding:13px 14px;background:#f2f4f7}.receipt{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:#475467;margin-top:10px;overflow-wrap:anywhere}
+.foot{margin-top:18px;font-size:13px;color:#667085}@media(max-width:800px){.flow{grid-template-columns:1fr}.checks{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="kicker">Tavler × VALO — demo</div>
+<h1 class="title">Fra compliance-plikt til kontrollert utførelse</h1>
+<div class="lead">Tavler holder oversikt over hva som må gjøres. Her vises laget rett før en AI-handling får faktisk effekt: har den handlingsrett til akkurat dette, akkurat nå?</div>
+<div class="notice">Simulering. Ingen Tavler-integrasjon og ingen persondata sendes. Bare ALLOW kan produsere en simulert effekt.</div>
+<div class="scenarios" id="buttons"></div>
+<div class="flow">
+  <section class="card"><h2>1. Tavler / compliance-state</h2><div class="label">Oppgave</div><div class="value">GDPR innsynsbegjæring</div><div class="label">Request</div><div class="value">dsar-1042 · customer-314</div><div class="label">Verifisert mottaker</div><div class="value" id="verifiedRecipient"></div><div class="label">Identitet</div><div class="value" id="identity"></div></section>
+  <section class="card"><h2>2. AI har gjort arbeidet</h2><div class="label">Foreslått handling</div><div class="value">Send ferdig innsynspakke</div><div class="label">Mottaker</div><div class="value" id="recipient"></div><div class="label">Datakategorier</div><div class="value" id="categories"></div><div class="label">Agent</div><div class="value">agent-gdpr-1</div></section>
+  <section class="card"><h2>3. Handlingsrett ved effektpunktet</h2><div class="label">Capability</div><div class="value">DISCLOSE_PERSONAL_DATA</div><div class="label">Grant</div><div class="value">grant-gdpr-77</div><div class="label">Status nå</div><div class="value" id="grant"></div><div class="label">Prinsipp</div><div class="value">Ingen direkte effektsti</div></section>
+</div>
+<section class="boundary">
+  <div class="boundary-head"><div><div class="kicker">Execution boundary</div><div class="decision" id="decision"></div><div class="reason" id="reason"></div></div><div id="effectTop"></div></div>
+  <div class="checks" id="checks"></div>
+  <div class="effect" id="effect"></div>
+  <div class="receipt" id="receipt"></div>
+</section>
+<div class="foot">Kjernepoenget i møtet: samme AI, samme oppgave, samme svar. Endres mottaker, identitet eller autorisasjon før effekt, endres beslutningen ved grensen.</div>
+</div>
+<script>
+const scenarios={
+"Normal":{"identity":true,"recipient":"kari@example.no","categories":["profile","orders","support"],"grant":true,"special":true,"decision":"ALLOW","reason":"Fresh authority and action-specific checks passed.","effect":"SIMULATED_DISCLOSURE_SENT"},
+"Mottaker endret":{"identity":true,"recipient":"wrong-recipient@example.no","categories":["profile","orders","support"],"grant":true,"special":true,"decision":"DENY","reason":"Recipient changed after verification.","effect":"NONE"},
+"Identitet usikker":{"identity":false,"recipient":"kari@example.no","categories":["profile","orders","support"],"grant":true,"special":true,"decision":"ESCALATE","reason":"Identity requires human verification before disclosure.","effect":"NONE"},
+"Helsedata":{"identity":true,"recipient":"kari@example.no","categories":["profile","health"],"grant":true,"special":false,"decision":"ESCALATE","reason":"Special-category data requires explicit clearance.","effect":"NONE"},
+"Autorisasjon trukket":{"identity":true,"recipient":"kari@example.no","categories":["profile","orders","support"],"grant":false,"special":true,"decision":"DENY","reason":"Authority is revoked, expired or not yet valid.","effect":"NONE"}
+};
+function receiptFor(name,s){const raw=name+"|"+s.decision+"|"+s.recipient+"|"+s.categories.join(",")+"|"+s.grant;let h=2166136261;for(const c of raw){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return "dec_demo_"+(h>>>0).toString(16).padStart(8,"0")}
+function render(name){const s=scenarios[name];document.querySelectorAll("button").forEach(b=>b.classList.toggle("active",b.textContent===name));document.getElementById("verifiedRecipient").textContent="kari@example.no";document.getElementById("identity").textContent=s.identity?"VERIFIED":"UNCERTAIN";document.getElementById("recipient").textContent=s.recipient;document.getElementById("categories").textContent=s.categories.join(", ");document.getElementById("grant").textContent=s.grant?"ACTIVE NOW":"REVOKED";document.getElementById("decision").textContent=s.decision;document.getElementById("reason").textContent=s.reason;document.getElementById("effectTop").textContent=s.effect==="NONE"?"Ingen effekt":"Effekt tillatt";
+const checks=[
+["Request binding",true],["Subject binding",true],["Recipient binding",s.recipient==="kari@example.no"],["Data scope",s.categories.every(x=>["profile","orders","support","health"].includes(x))],["Identity verified",s.identity],["Grant active now",s.grant],["Special-category clearance",s.special]
+];
+document.getElementById("checks").innerHTML=checks.map(([n,v])=>'<div class="check"><div>'+n+'</div><div class="state">'+(v?'PASS':'FAIL')+'</div></div>').join("");
+document.getElementById("effect").textContent=s.effect==="NONE"?"Effect: NONE — handlingen forlater ikke grensen.":"Effect: SIMULATED_DISCLOSURE_SENT — kun fordi beslutningen er ALLOW.";
+document.getElementById("receipt").textContent="receipt="+receiptFor(name,s)+" · action_ref=act-dsar-1042-send · grant_ref=grant-gdpr-77";
+}
+const buttons=document.getElementById("buttons");Object.keys(scenarios).forEach(n=>{const b=document.createElement("button");b.textContent=n;b.onclick=()=>render(n);buttons.appendChild(b)});render("Normal");
+</script>
+</body>
+</html>
