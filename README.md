@@ -26,6 +26,12 @@
 
 ---
 
+## Published research
+
+**Consequence Governance: Governing the Transition from Proposed Action to Real-World Effect** — Njål Gaute Solland, VALO Research, Version 1.0, published September 5, 2026. Zenodo record: https://zenodo.org/records/22377951
+
+Repository manuscript: [`papers/CONSEQUENCE_GOVERNANCE.md`](papers/CONSEQUENCE_GOVERNANCE.md)
+
 ## 0. Canonical contract reference
 
 **reht-standard is canonical ONLY for REHT-specific clearance and authorization standards.**
