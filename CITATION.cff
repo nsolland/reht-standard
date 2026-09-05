@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+title: "REHT Standard: Consequence-Time Authorization for Consequence Governance"
+message: "If you use the REHT standard, please cite this repository and the canonical Consequence Governance definition."
+type: software
+authors:
+  - family-names: "Solland"
+    given-names: "Njål Gaute"
+repository-code: "https://github.com/nsolland/reht-standard"
+url: "https://reht.valoresearch.org/"
+abstract: "REHT is a public, model-agnostic standard for consequence-time authorization at the execution boundary within the broader Consequence Governance category."
+keywords:
+  - Consequence Governance
+  - consequence-time authorization
+  - Governed Effect Path
+  - Execution Authorization Infrastructure
+  - NO_DIRECT_EFFECT_PATH
+  - REHT
+  - governed execution
+license: Apache-2.0

@@ -1,0 +1,45 @@
+# REHT Standard
+
+REHT is a public, model-agnostic standard for consequence-time authorization at the execution boundary.
+
+## Category
+
+REHT sits within the broader category **Consequence Governance**.
+
+Canonical definition:
+https://valoresearch.org/consequence-governance.html
+
+Consequence Governance governs whether an exact proposed consequence may legitimately become real under the authority, evidence and conditions that exist at consequence time.
+
+REHT does not govern agents as such. It evaluates whether an exact proposed action remains admissible to execute now under current authority, governed state, constraints, evidence and governing basis.
+
+## Canonical taxonomy
+
+- Consequence Governance — top-level category
+- Governed Effect Path — consequence-bearing effect architecture
+- NO_DIRECT_EFFECT_PATH — no consequence-bearing bypass path
+- Consequence-time authorization — fresh exact-action authorization immediately before effect
+- Execution Authorization Infrastructure — consequence-boundary infrastructure
+- Governed Contract — worker-neutral definition of legitimate work and completion
+- RACS — deterministic decision/action binding contract
+- Gateway / PEP — enforcement point
+- Veritas / receipts — evidence and receipt layer
+- Trusted Execution — evidenced downstream outcome
+
+## REHT standard outcomes
+
+The REHT standard uses semantic admissibility outcomes defined by its normative specification. These are not identical to RACS runtime decision commands. Do not collapse the two layers.
+
+## Canonical resources
+
+REHT standard repository: https://github.com/nsolland/reht-standard
+REHT product surface: https://reht.valoresearch.org/
+Consequence Governance: https://valoresearch.org/consequence-governance.html
+Governed Effect Path: https://valoresearch.org/governed-effect-path.html
+Consequence-time authorization: https://valoresearch.org/consequence-time-authorization.html
+Execution Authorization Infrastructure: https://valoresearch.org/execution-authorization-infrastructure.html
+Governed Contract: https://valoresearch.org/governed-contract.html
+NO_DIRECT_EFFECT_PATH: https://valoresearch.org/no-direct-effect-path.html
+Trusted Execution: https://valoresearch.org/trusted-execution.html
+
+Normative authority remains with SPECIFICATION.md, CONFORMANCE.md and accepted versioned releases in this repository.
