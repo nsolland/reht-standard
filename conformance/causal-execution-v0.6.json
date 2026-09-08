@@ -1,0 +1,178 @@
+{
+  "profile": "reht.causal-execution-continuity",
+  "version": "0.6.0-draft.1",
+  "invariant": "Execution must prove continuity of the evaluated action, authority, governed state, consequence-relevant persistent inputs, material governing contract state, required material execution constraints, any required confidential-execution substrate binding, any materially relied-upon external verification evidence binding, and the governed causal path from untrusted computation to external consequence. No externally consequential state transition or causal influence may leave an untrusted computation domain except through a known governed effect boundary; transformed actions require fresh evaluation.",
+  "wall_clock_role": "forensic_policy_context_not_execution_validity",
+  "effect_boundary_rule": {
+    "name": "NO_DIRECT_EFFECT_PATH",
+    "scope": "all_causal_trust_boundary_crossings",
+    "unknown_channel_disposition": "NON_EXECUTABLE",
+    "unknown_boundary_disposition": "NON_EXECUTABLE",
+    "payload_type_creates_exemption": false,
+    "internal_computation_requires_effect_authorization": false
+  },
+  "cases": [
+    {
+      "id": "CEC-POS-001",
+      "type": "positive_control",
+      "condition": "execution envelope matches; causal lineage continuous; scope valid; receipt continuity intact; persistent inputs retain current standing; governing contract binding unchanged; all required material constraints established; any required confidential-execution substrate binding is current and exact; materially relied-upon external verification evidence has trusted issuer, matching intended audience/executor, matching action/request/parameter and policy/configuration bindings, required freshness, valid integrity and unused replay/consumption state; every identified trust-boundary crossing terminates at a known governed effect boundary; replay constraints satisfied",
+      "expected": "MAY_CONTINUE_REHT_EVALUATION"
+    },
+    {
+      "id": "CEC-POS-INTERNAL-001",
+      "type": "internal_computation",
+      "condition": "computation, planning, simulation, model output or internal state evolution remains wholly inside the same untrusted computation domain and creates no causal influence across a trust boundary",
+      "expected": "MAY_CONTINUE_REHT_EVALUATION"
+    },
+    {
+      "id": "CEC-NEG-DRIFT-001",
+      "type": "drift",
+      "condition": "execution-relevant state differs from bound state",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-SCOPE-001",
+      "type": "expired_scope",
+      "condition": "authority, delegation, purpose or explicit scope is invalid at execution",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-RECEIPT-001",
+      "type": "broken_receipt_continuity",
+      "condition": "required receipt or evidence lineage contains an unproven gap",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-AUTH-001",
+      "type": "stale_authority",
+      "condition": "relevant authority mutation or revocation causally intervened after evaluation",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-REPLAY-001",
+      "type": "replay",
+      "condition": "single-use or consumption-bound action/binding has already been consumed",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-PERSIST-001",
+      "type": "persistent_state_self_promotion",
+      "condition": "material persisted input is exposed to a later worker/session as operative context without current governed standing for the exact material",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-CONTRACT-001",
+      "type": "governing_contract_drift",
+      "condition": "a material governing contract, policy set or mandate has been amended, terminated, replaced or otherwise changed since evaluation",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-CONSTRAINT-001",
+      "type": "required_constraint_unresolved",
+      "condition": "a material execution constraint known to be required is unresolved, unavailable or not established at evaluation/execution",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-TRANSFORM-001",
+      "type": "post_evaluation_action_transformation",
+      "condition": "the action presented for consequence is materially transformed, clamped, rewritten or substituted after the current admissibility result was produced",
+      "expected": "FRESH_EVALUATION_REQUIRED"
+    },
+    {
+      "id": "CEC-NEG-SUBSTRATE-001",
+      "type": "confidential_execution_continuity_failure",
+      "condition": "confidential execution is a material requirement and the execution-boundary substrate evidence is missing, unresolved, invalid, revoked, stale, expired or materially mismatched with the evaluated substrate binding",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EVIDENCE-AUDIENCE-001",
+      "type": "verification_evidence_audience_mismatch",
+      "condition": "materially relied-upon external verification evidence is scoped to a different intended audience or executor",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EVIDENCE-ISSUER-001",
+      "type": "verification_evidence_issuer_or_key_mismatch",
+      "condition": "materially relied-upon external verification evidence has an unexpected issuer/verifier or an untrusted, substituted or no-longer-accepted signing/verification key",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EVIDENCE-CONFIG-001",
+      "type": "verification_evidence_configuration_mismatch",
+      "condition": "the policy/configuration identity, version or digest bound to materially relied-upon external verification evidence does not match the verification state required by the current governed context",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EVIDENCE-ACTION-001",
+      "type": "verification_evidence_action_binding_mismatch",
+      "condition": "the action, request or material parameters presented for execution do not match the corresponding bindings in materially relied-upon external verification evidence",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EVIDENCE-FRESHNESS-001",
+      "type": "verification_evidence_freshness_failure",
+      "condition": "applicable policy requires external verification evidence freshness and the evidence is stale or expired, or an intervening authority/state change invalidates reliance despite an unexpired freshness window",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EVIDENCE-REPLAY-001",
+      "type": "verification_evidence_replay",
+      "condition": "single-use external verification evidence presents a previously seen nonce/sequence or previously consumed evidence binding",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EFFECT-DIRECT-001",
+      "type": "ungoverned_direct_api_effect_path",
+      "condition": "untrusted computation can call a consequence-bearing API or service directly without traversing the governed effect boundary",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EFFECT-HUMAN-001",
+      "type": "ungoverned_human_relay_effect_path",
+      "condition": "untrusted computation can emit instruction, persuasion or action-significant output to a human who can create the consequence without the resulting action traversing the governed effect boundary",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EFFECT-AGENT-001",
+      "type": "ungoverned_agent_relay_effect_path",
+      "condition": "untrusted computation can emit action-significant output to another agent, workflow or machine that can create the consequence without the resulting action traversing the governed effect boundary",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EFFECT-STATE-001",
+      "type": "ungoverned_shared_state_effect_path",
+      "condition": "untrusted computation can write shared state, queue, cache, database or other externally consumed state that can causally alter another trust domain without governed boundary enforcement",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EFFECT-MESSAGE-001",
+      "type": "ungoverned_message_or_artifact_effect_path",
+      "condition": "untrusted computation can send a message or publish a file, artifact, log or output that another trust domain can observe or consume without governed boundary enforcement",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EFFECT-CREDENTIAL-001",
+      "type": "ungoverned_credential_or_actuator_effect_path",
+      "condition": "untrusted computation can expose, transfer or exercise a credential, actuator capability or equivalent authority-bearing mechanism outside the governed effect boundary",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EFFECT-RESOURCE-001",
+      "type": "ungoverned_resource_consumption_effect_path",
+      "condition": "untrusted computation can impose externally consequential compute, storage, network, financial or availability cost, including denial-of-service capable demand, without governed boundary enforcement",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EFFECT-SIDECHANNEL-001",
+      "type": "ungoverned_side_channel_effect_path",
+      "condition": "untrusted computation can causally signal or influence another trust domain through timing or another externally observable side channel that bypasses the governed effect boundary",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "CEC-NEG-EFFECT-UNKNOWN-001",
+      "type": "unknown_or_uninventoried_effect_path",
+      "condition": "a trust-boundary crossing is known or observed but cannot be mapped to an inventoried channel and known governed effect boundary",
+      "expected": "NON_EXECUTABLE"
+    }
+  ]
+}
