@@ -1,0 +1,14 @@
+{
+  "schema_version": "reht_no_ungoverned_causal_effect_path_validation.v1",
+  "run_id": "REHT-NO-UNGOVERNED-CAUSAL-EFFECT-PATH-CONFORMANCE-01",
+  "repository": "nsolland/reht-standard",
+  "branch": "feature/no-ungoverned-causal-effect-path-v1",
+  "tested_commit": "ff0ad9b016eba7f294bf6fc9f8be6d044fd6e8e1",
+  "execution": "LOCAL_ONLY",
+  "remote_ci": "NOT_USED",
+  "timestamp": "2026-09-08",
+  "v06_validator": {"command": "python3 conformance/validate_causal_effect_paths.py", "result": "PASS", "exit_code": 0},
+  "v07_validator": {"command": "python3 conformance/validate_no_ungoverned_causal_effect_path.py", "result": "PASS", "exit_code": 0},
+  "self_tests": {"command": "python3 -m pytest -q ietf/test_reht_conformance.py tests/validate_credential_delivery.py tests/validate_examples.py", "count": "31 passed", "exit_code": 0},
+  "classification": "VALID_LOCAL_ONLY_REHT_V06_V07_CONFORMANCE"
+}
