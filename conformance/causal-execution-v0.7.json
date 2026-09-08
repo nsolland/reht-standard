@@ -1,0 +1,108 @@
+{
+  "profile": "reht.no-ungoverned-causal-effect-path",
+  "version": "0.7.0-draft.1",
+  "extends": "conformance/causal-execution-v0.6.json",
+  "formal_invariant": "NO_UNGOVERNED_CAUSAL_EFFECT_PATH",
+  "compatibility_invariant": "NO_DIRECT_EFFECT_PATH",
+  "statement": "No causal path from untrusted computation to a relevant external consequence may succeed unless it crosses an explicit governed effect boundary for the exact effect under current authority.",
+  "governed_boundary_required_properties": [
+    "explicit_declared",
+    "exact_effect_bound",
+    "authorized_now",
+    "deny_enforceable_before_commit",
+    "fail_closed",
+    "evidence_capable"
+  ],
+  "optional_recovery_properties": [
+    "isolation_capable",
+    "rollback_or_compensation_capable"
+  ],
+  "additional_channel_classes": [
+    "DYNAMIC_REFERENCE",
+    "TELEMETRY_TRIGGER",
+    "FALLBACK_ROUTE",
+    "IMPLICIT_INFLUENCE"
+  ],
+  "deployment_claim": {
+    "scope": "BOUNDED_DECLARED_REACHABILITY",
+    "requires_reachable_path_inventory": true,
+    "requires_enforcement_evidence": true,
+    "unknown_path_disposition": "NON_EXECUTABLE",
+    "reverification_on_topology_or_configuration_change": true,
+    "global_absence_inferred_from_design": false
+  },
+  "cases": [
+    {
+      "id": "NUGCEP-POS-BOUNDARY-001",
+      "type": "fully_governed_boundary",
+      "condition": "external effect crosses an explicit exact-effect-bound boundary with current authorization, enforceable deny, fail-closed behavior and evidence capability",
+      "expected": "MAY_CONTINUE_REHT_EVALUATION"
+    },
+    {
+      "id": "NUGCEP-NEG-BOUNDARY-EXPLICIT-001",
+      "type": "implicit_boundary",
+      "condition": "effect path references a boundary that is not explicitly declared",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "NUGCEP-NEG-BOUNDARY-BINDING-001",
+      "type": "missing_exact_effect_binding",
+      "condition": "boundary decision is not bound to the exact proposed consequence",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "NUGCEP-NEG-BOUNDARY-AUTH-001",
+      "type": "authority_not_current",
+      "condition": "boundary cannot establish current authority for the exact effect at consequence time",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "NUGCEP-NEG-BOUNDARY-ENFORCEMENT-001",
+      "type": "deny_not_enforceable",
+      "condition": "a DENY decision cannot mechanically prevent or constrain the effect before commitment",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "NUGCEP-NEG-BOUNDARY-FAILCLOSED-001",
+      "type": "boundary_not_fail_closed",
+      "condition": "unresolved boundary or authority state may still release effect",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "NUGCEP-NEG-BOUNDARY-EVIDENCE-001",
+      "type": "boundary_not_evidenced",
+      "condition": "decision parameters and resulting effect or refusal cannot be reconstructed",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "NUGCEP-NEG-DYNAMIC-001",
+      "type": "dynamic_reference_bypass",
+      "condition": "pointer, callback, event handler, dynamic dispatch or plugin loading can reach consequence outside a governed boundary",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "NUGCEP-NEG-TELEMETRY-001",
+      "type": "telemetry_trigger_bypass",
+      "condition": "log, telemetry or observability output can trigger a consequence outside a governed boundary",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "NUGCEP-NEG-FALLBACK-001",
+      "type": "fallback_route_bypass",
+      "condition": "failure of the governed path activates an alternate effect route that does not traverse a governed boundary",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "NUGCEP-NEG-IMPLICIT-001",
+      "type": "implicit_influence_bypass",
+      "condition": "output alters training data, ranking, feedback loops or a later actor in a way that can cause relevant external consequence without governed mediation",
+      "expected": "NON_EXECUTABLE"
+    },
+    {
+      "id": "NUGCEP-NEG-DEPLOYMENT-COVERAGE-001",
+      "type": "deployment_inventory_gap",
+      "condition": "declared reachable effect-path inventory and assessed channel inventory do not match",
+      "expected": "NON_CONFORMANT_DEPLOYMENT"
+    }
+  ]
+}
