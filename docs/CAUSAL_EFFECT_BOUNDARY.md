@@ -8,9 +8,29 @@ Status: draft interoperability extension for REHT causal execution conformance v
 
 > No externally consequential state transition or causal influence may leave an untrusted computation domain except through a known governed effect boundary.
 
+`NO_UNGOVERNED_CAUSAL_EFFECT_PATH` is descriptive shorthand for this stronger causal reading. It does not replace the canonical `NO_DIRECT_EFFECT_PATH` identifier used by the conformance profile, validator or receipts.
+
 A conforming deployment MUST treat a crossing as governed whenever information, state, capability, resource demand or another causal signal can affect a different trust domain. Payload type does not create an exemption.
 
 Purely internal computation does not require effect authorization under this invariant while it remains inside the same untrusted domain and creates no external causal influence.
+
+## Relation to Zero Trust
+
+Consequence Governance generalizes the continuous-verification discipline of Zero Trust from access to consequence.
+
+Zero Trust primarily answers whether a subject, device and context may access a resource now. REHT consequence-time authorization answers whether an exact proposed consequential state transition may become real now under current authority, state, purpose, constraints and evidence.
+
+A conforming implementation MUST NOT infer consequence authority solely from:
+
+- successful authentication;
+- network location;
+- resource access;
+- possession of a valid credential;
+- prior approval;
+- upstream workflow completion; or
+- an earlier authorization whose bound authority/state/evidence is no longer current.
+
+Zero Trust, IAM, runtime security, agent security and observability MAY supply evidence or enforce subordinate controls. They do not substitute for consequence-time authorization or the governed causal effect boundary.
 
 ## Required channel inventory
 
@@ -33,6 +53,24 @@ A human or another agent can be an actuator. If untrusted computation emits acti
 
 Human-in-the-Lead therefore means human judgment governs authority; it does not mean a human relay may bypass consequence-time authorization.
 
+## Internal freedom, external consequence control
+
+The invariant does not require REHT to govern every thought, token or internal state transition. Untrusted reasoning, planning, simulation, disagreement, hallucination and model-state evolution MAY remain outside consequence authorization while fully contained within the same bounded trust domain.
+
+The security-critical transition is the moment a causal signal can alter another trust domain.
+
+This yields the architectural separation:
+
+```text
+untrusted internal computation
+        -> proposed consequential crossing
+        -> fresh REHT authorization
+        -> governed enforcement
+        -> external consequence
+```
+
+Any parallel causal route to the external consequence invalidates the `NO_DIRECT_EFFECT_PATH` claim for that route.
+
 ## Standing low-risk policy
 
 This invariant does not require bespoke human approval for every byte or every low-risk output. A governed boundary MAY apply standing policy, deterministic classification, bounded authority or other defined rules to permit low-risk crossings. The boundary itself MUST NOT be bypassed by labelling a channel harmless upstream.
@@ -42,6 +80,8 @@ This invariant does not require bespoke human approval for every byte or every l
 REHT evaluates fresh exact-action authority at a consequence boundary. REHT alone cannot physically eliminate network, process, credential, human or side-channel bypasses. A production `NO_DIRECT_EFFECT_PATH` claim is therefore bounded to the channels and trust boundaries that are actually inventoried and enforced by the surrounding Gateway/PEP, runtime and infrastructure.
 
 Conformance proves that bypass conditions are rejected. Deployment evidence must prove that the claimed inventory corresponds to real reachable effect paths.
+
+Architecture defines the invariant. Deployment evidence establishes where the invariant actually holds.
 
 ## Required negative cases
 
