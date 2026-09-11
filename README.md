@@ -1,10 +1,12 @@
 <div align="center">
 
-<img src="docs/assets/brand.png" alt="reht brand profile" width="880" />
+<img src="docs/assets/brand.png" alt="REHT brand profile" width="880" />
 
-# reht standard
+# REHT Standard
 
-**A public standard for governed AI-mediated actions before execution.**
+**Fresh authority at the moment of consequence.**
+
+An open, vendor-neutral standard for determining whether an intent still has authority to become real.
 
 > **Hosting status — 2026-08-20:** this repository is public. It contains the vendor-neutral REHT standards and conformance surface under Apache License 2.0. See [PUBLICATION_STATUS.md](PUBLICATION_STATUS.md).
 
@@ -18,9 +20,9 @@
 
 ---
 
-**Reasoning may be probabilistic. Execution authority must be governed.**
+**Does this exact action still have authority to happen now?**
 
-> Is this still the thing that was approved?
+[Run the live Executable Authority demo →](https://reht.valoresearch.org/demos/executable-authority/)
 
 </div>
 
@@ -41,7 +43,7 @@ REHT-specific standard semantics live here. The canonical VALO runtime authoriza
 
 ## 1. Overview
 
-reht is a public, model-agnostic standard for deciding whether a specific action is admissible at the execution boundary under current authority, evidence, policy and governed state.
+REHT is a public, model-agnostic standard for deciding whether a specific action is admissible at the execution boundary under current authority, evidence, policy and governed state.
 
 It is not a model, agent or policy engine. It is an interoperable standards/conformance layer between reasoning and consequence.
 
