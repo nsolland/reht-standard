@@ -11,7 +11,6 @@ An open, vendor-neutral standard for determining whether an intent still has aut
 > **Hosting status — 2026-08-20:** this repository is public. It contains the vendor-neutral REHT standards and conformance surface under Apache License 2.0. See [PUBLICATION_STATUS.md](PUBLICATION_STATUS.md).
 
 [![status](https://img.shields.io/badge/status-draft%20v0.5-8a6d3b)](CHANGELOG.md)
-[![validation](https://github.com/nsolland/reht-standard/actions/workflows/validate.yml/badge.svg)](https://github.com/nsolland/reht-standard/actions/workflows/validate.yml)
 [![publication](https://img.shields.io/badge/repository-public-1f2937)](PUBLICATION_STATUS.md)
 [![license](https://img.shields.io/badge/license-Apache%202.0-1f2937)](LICENSE)
 [![schema](https://img.shields.io/badge/schema-JSON%20Schema%202020--12-1f2937)](schemas/)
