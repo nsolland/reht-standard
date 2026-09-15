@@ -1,0 +1,65 @@
+{
+  "profile": "reht.grant-lineage-sensitive-revocation",
+  "version": "0.1.0-draft.1",
+  "target_specification": "0.6.0-draft.1",
+  "invariant": "same permissions + different grant lineage + same revocation -> opposite decision",
+  "statement": "An effective permission projection is not authorization equivalence. REHT resolves the exact grant lineage at consequence time and applies the current revocation state to that lineage.",
+  "requirements": [
+    "exact_grant_lineage_resolved_at_consequence_time",
+    "current_revocation_applied_to_each_lineage",
+    "revoked_ancestor_grant_is_non_executable",
+    "unaffected_independent_lineage_is_not_denied_by_association",
+    "flattened_permission_projection_does_not_determine_authorization"
+  ],
+  "paired_cases": [
+    {
+      "id": "GLR-PAIR-001",
+      "shared": {
+        "action": {
+          "actor_ref": "principal-1",
+          "capability": "payments.create",
+          "target": "merchant-1",
+          "purpose_ref": "purchase"
+        },
+        "permission_projection": {
+          "principal_ref": "principal-1",
+          "capabilities": [
+            "payments.create"
+          ],
+          "targets": [
+            "merchant-1"
+          ],
+          "purpose_refs": [
+            "purchase"
+          ]
+        },
+        "revocation_state": {
+          "revocation_ref": "revocation-1",
+          "revoked_grant_ref": "grant-root-a"
+        }
+      },
+      "cases": [
+        {
+          "id": "GLR-NEG-REVOKED-LINEAGE-001",
+          "permission_projection_ref": "shared.permission_projection",
+          "revocation_state_ref": "shared.revocation_state",
+          "grant_lineage": [
+            "grant-root-a",
+            "grant-child-a"
+          ],
+          "expected": "NON_EXECUTABLE"
+        },
+        {
+          "id": "GLR-POS-INDEPENDENT-LINEAGE-001",
+          "permission_projection_ref": "shared.permission_projection",
+          "revocation_state_ref": "shared.revocation_state",
+          "grant_lineage": [
+            "grant-root-b",
+            "grant-child-b"
+          ],
+          "expected": "MAY_CONTINUE_REHT_EVALUATION"
+        }
+      ]
+    }
+  ]
+}
