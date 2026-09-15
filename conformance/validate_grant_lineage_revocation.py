@@ -6,7 +6,7 @@ from pathlib import Path
 
 PROFILE = Path(__file__).with_name("grant-lineage-revocation-v0.1.json")
 INVARIANT = (
-    "same permissions + different grant lineage + same revocation -> opposite decision"
+    "same permissions + different grant lineage + same revocation → opposite decision"
 )
 REQUIRED_REQUIREMENTS = {
     "exact_grant_lineage_resolved_at_consequence_time",

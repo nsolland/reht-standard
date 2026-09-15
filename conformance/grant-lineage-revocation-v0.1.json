@@ -2,7 +2,7 @@
   "profile": "reht.grant-lineage-sensitive-revocation",
   "version": "0.1.0-draft.1",
   "target_specification": "0.6.0-draft.1",
-  "invariant": "same permissions + different grant lineage + same revocation -> opposite decision",
+  "invariant": "same permissions + different grant lineage + same revocation → opposite decision",
   "statement": "An effective permission projection is not authorization equivalence. REHT resolves the exact grant lineage at consequence time and applies the current revocation state to that lineage.",
   "requirements": [
     "exact_grant_lineage_resolved_at_consequence_time",
