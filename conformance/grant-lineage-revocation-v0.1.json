@@ -48,6 +48,7 @@
             "grant-root-a",
             "grant-child-a"
           ],
+          "expected_authorized": false,
           "expected": "NON_EXECUTABLE"
         },
         {
@@ -59,6 +60,7 @@
             "grant-root-b",
             "grant-child-b"
           ],
+          "expected_authorized": true,
           "expected": "MAY_CONTINUE_REHT_EVALUATION"
         }
       ]

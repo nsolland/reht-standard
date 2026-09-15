@@ -62,6 +62,13 @@ def validate() -> None:
         "NON_EXECUTABLE",
         "MAY_CONTINUE_REHT_EVALUATION",
     }
+    assert {
+        case["expected_authorized"] for case in cases
+    } == {False, True}, "the paired cases require opposite authorization decisions"
+    assert by_expected["NON_EXECUTABLE"]["expected_authorized"] is False
+    assert (
+        by_expected["MAY_CONTINUE_REHT_EVALUATION"]["expected_authorized"] is True
+    )
 
     blocked_lineage = set(by_expected["NON_EXECUTABLE"]["grant_lineage"])
     unaffected_lineage = set(
