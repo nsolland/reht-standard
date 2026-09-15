@@ -41,6 +41,7 @@
       "cases": [
         {
           "id": "GLR-NEG-REVOKED-LINEAGE-001",
+          "action_ref": "shared.action",
           "permission_projection_ref": "shared.permission_projection",
           "revocation_state_ref": "shared.revocation_state",
           "grant_lineage": [
@@ -51,6 +52,7 @@
         },
         {
           "id": "GLR-POS-INDEPENDENT-LINEAGE-001",
+          "action_ref": "shared.action",
           "permission_projection_ref": "shared.permission_projection",
           "revocation_state_ref": "shared.revocation_state",
           "grant_lineage": [

@@ -32,15 +32,21 @@ def validate() -> None:
     assert pair["id"] == "GLR-PAIR-001"
 
     shared = pair["shared"]
+    action = shared["action"]
     permission_projection = shared["permission_projection"]
     revocation_state = shared["revocation_state"]
     revoked_grant_ref = revocation_state["revoked_grant_ref"]
     assert permission_projection["capabilities"]
     assert revoked_grant_ref
+    assert action["actor_ref"] == permission_projection["principal_ref"]
+    assert action["capability"] in permission_projection["capabilities"]
+    assert action["target"] in permission_projection["targets"]
+    assert action["purpose_ref"] in permission_projection["purpose_refs"]
 
     cases = pair["cases"]
     assert len(cases) == 2
     assert len({case["id"] for case in cases}) == 2
+    assert {case["action_ref"] for case in cases} == {"shared.action"}
     assert {
         case["permission_projection_ref"] for case in cases
     } == {"shared.permission_projection"}
